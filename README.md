@@ -1,3 +1,3 @@
 # castle
 
-A CLI tool to generate web applications with ease.
+A CLI tool to build web applications with ease.
