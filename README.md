@@ -4,7 +4,7 @@ castle
 A project scaffolding CLI for the web
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/castle.svg)](https://npmjs.org/package/@prismify/castle)
+[![Version](https://img.shields.io/npm/v/@prismify/castle.svg)](https://npmjs.org/package/@prismify/castle)
 [![Downloads/week](https://img.shields.io/npm/dw/@prismify/castle.svg)](https://npmjs.org/package/castle)
 [![License](https://img.shields.io/npm/l/@prismify/castle.svg)](https://github.com/https://github.com/prismify/castle.git/blob/master/package.json)
 
