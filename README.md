@@ -15,11 +15,11 @@ A project scaffolding CLI for the web
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g castle
+$ npm install -g @prismify/castle
 $ castle COMMAND
 running command...
 $ castle (-v|--version|version)
-castle/1.0.0-alpha.1 darwin-x64 node-v13.0.1
+@prismify/castle/1.0.0-alpha.1 darwin-x64 node-v13.0.1
 $ castle --help [COMMAND]
 USAGE
   $ castle COMMAND
@@ -28,7 +28,39 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`castle configure`](#castle-configure)
+* [`castle create [NAME]`](#castle-create-name)
 * [`castle help [COMMAND]`](#castle-help-command)
+* [`castle init`](#castle-init)
+
+## `castle configure`
+
+configure the project using the configuration file
+
+```
+USAGE
+  $ castle configure
+```
+
+_See code: [src/commands/configure.ts](https://github.com/prismify/castle/blob/v1.0.0-alpha.1/src/commands/configure.ts)_
+
+## `castle create [NAME]`
+
+create a new project
+
+```
+USAGE
+  $ castle create [NAME]
+
+ARGUMENTS
+  NAME  name of the project
+
+OPTIONS
+  -f, --framework=Nuxt|Sapper|Next  [default: Nuxt]
+  -v, --version=version             [default: latest]
+```
+
+_See code: [src/commands/create.ts](https://github.com/prismify/castle/blob/v1.0.0-alpha.1/src/commands/create.ts)_
 
 ## `castle help [COMMAND]`
 
@@ -46,4 +78,13 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
+
+## `castle init`
+
+```
+USAGE
+  $ castle init
+```
+
+_See code: [src/commands/init.ts](https://github.com/prismify/castle/blob/v1.0.0-alpha.1/src/commands/init.ts)_
 <!-- commandsstop -->
