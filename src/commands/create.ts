@@ -1,4 +1,4 @@
-import {Command, flags} from '@oclif/command'
+import { Command, flags } from '@oclif/command'
 import * as inquirer from 'inquirer'
 
 import create from '../actions/create'
@@ -6,15 +6,15 @@ import create from '../actions/create'
 export class CreateCommand extends Command {
   static description = 'create a new project'
   static args = [
-    {name: 'name', description: 'name of the project'}
+    { name: 'name', description: 'name of the project' }
   ]
   static flags = {
-    framework: flags.string({options: ['Nuxt', 'Sapper', 'Next'], char: 'f', default: 'Nuxt'}),
-    version: flags.string({char: 'v', default: 'latest'})
+    framework: flags.string({ options: ['Nuxt', 'Sapper', 'Next'], char: 'f', default: 'Nuxt' }),
+    version: flags.string({ char: 'v', default: 'latest' })
   }
 
   async run() {
-    const {args, flags} = this.parse(CreateCommand)
+    const { args, flags } = this.parse(CreateCommand)
 
     // Project name
     const name = (args.name || 'app') as string
@@ -25,7 +25,7 @@ export class CreateCommand extends Command {
         name: 'framework',
         message: 'select a framework',
         type: 'list',
-        choices: [{name: 'Nuxt'}, {name: 'Sapper'}, {name: 'Next'}]
+        choices: [{ name: 'Nuxt' }, { name: 'Sapper' }, { name: 'Next' }]
       }])).framework
     )
 

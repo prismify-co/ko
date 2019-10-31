@@ -1,7 +1,7 @@
-import {existsSync, mkdirSync, readFileSync} from 'fs'
+import { existsSync, mkdirSync, readFileSync } from 'fs'
 import latestVersion from 'latest-version'
-import {join} from 'path'
-import {rm} from 'shelljs'
+import { join } from 'path'
+import { rm } from 'shelljs'
 
 import create from '../main'
 
@@ -41,7 +41,7 @@ describe('create a minimal nuxt application', () => {
 
     it('should have version 2.0.0 of nuxt', async () => {
       const path = join(__dirname, 'output', 'app-latest')
-      const {dependencies} = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
+      const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
 
       expect(dependencies.nuxt).toEqual(`^${await latestVersion('nuxt')}`)
     })
@@ -82,7 +82,7 @@ describe('create a minimal nuxt application', () => {
 
     it('should have the latest version of nuxt', async () => {
       const path = join(__dirname, 'output', 'app-v2')
-      const {dependencies} = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
+      const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
 
       expect(dependencies.nuxt).toEqual('^2.0.0')
     })

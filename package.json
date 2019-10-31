@@ -1,12 +1,12 @@
 {
-  "name": "@prismify/castle",
+  "name": "@prismify/ko",
   "description": "A project scaffolding CLI for the web",
   "version": "1.0.0-alpha.1",
   "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
   "bin": {
-    "castle": "./bin/run"
+    "ko": "./bin/run"
   },
-  "bugs": "https://github.com/prismify/castle.git/issues",
+  "bugs": "https://github.com/prismify/ko.git/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -46,7 +46,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/prismify/castle.git",
+  "homepage": "https://github.com/prismify/ko.git",
   "keywords": [
     "oclif"
   ],
@@ -54,16 +54,16 @@
   "main": "index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "castle",
+    "bin": "ko",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "https://github.com/prismify/castle.git",
+  "repository": "https://github.com/prismify/ko.git",
   "scripts": {
+    "lint": "tslint -p . -t stylish --fix",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p . -t stylish",
-    "lint": "tslint -p . -t stylish --fix",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md"
