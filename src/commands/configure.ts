@@ -1,4 +1,4 @@
-import {Command} from '@oclif/command'
+import { Command } from '@oclif/command'
 
 import configure from '../actions/configure'
 

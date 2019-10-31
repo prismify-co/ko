@@ -1,8 +1,8 @@
 import * as fs from 'fs'
 import * as yml from 'js-yaml'
-import {join} from 'path'
+import { join } from 'path'
 
-import {IConfig, IPackage} from '../interfaces/config'
+import { IConfig, IPackage } from '../interfaces/config'
 
 export const CASTLE_CONFIG_FILENAME = 'castle.config.yml'
 export const CASTLE_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/castle-packages/'
@@ -24,7 +24,7 @@ export function init(name: string, framework: string, version: string) {
       name: framework,
       version
     }
-  }, {flowLevel: 3}), 'utf8')
+  }, { flowLevel: 3 }), 'utf8')
 }
 
 export function load(): IConfig {
@@ -34,16 +34,16 @@ export function load(): IConfig {
 
 function normalize(config: IConfig): IConfig {
   // Set the app name
-  let result: any = {name: config.name}
+  let result: any = { name: config.name }
 
   // Normalize the framework if it's as string
   if (typeof config.framework === 'string') {
-    result.framework = {name: config.framework, version: 'latest'}
+    result.framework = { name: config.framework, version: 'latest' }
   } else result.framework = config.framework
 
   // Normalize the repository's base url if it's a string
   if (typeof config.repository === 'string') {
-    result.repository = {url: config.repository}
+    result.repository = { url: config.repository }
   } else result.repository = (config.repository || {})
 
   CASTLE_CONFIG_CURRENT_REPOSITORY_URL = result.repository.url || CASTLE_CONFIG_REPOSITORY_URL
@@ -72,7 +72,7 @@ function normalize(config: IConfig): IConfig {
         let value = (task.package as any)[key] as IPackage
         let url = value.url || CASTLE_CONFIG_CURRENT_REPOSITORY_URL
         let version = value.version || 'latest'
-        return {name: task.name, package: {name: key, url, version}}
+        return { name: task.name, package: { name: key, url, version } }
       }
 
       if (!task.package.name) {

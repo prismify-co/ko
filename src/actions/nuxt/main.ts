@@ -1,7 +1,7 @@
-import {writeFileSync} from 'fs'
-import {join} from 'path'
-import {cd, exec, mkdir} from 'shelljs'
-import {promisify} from 'util'
+import { writeFileSync } from 'fs'
+import { join } from 'path'
+import { cd, exec, mkdir } from 'shelljs'
+import { promisify } from 'util'
 
 import * as config from '../../utils/config'
 const GithubContent = require('github-content')
