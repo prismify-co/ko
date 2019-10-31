@@ -16,7 +16,7 @@ export type IRepository = ({
 
 export type ITask = ({
   name: string,
-  package: IPackage | string
+  task: IPackage | string
 })
 
 export type IPackage = ({

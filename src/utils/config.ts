@@ -55,10 +55,10 @@ function normalize(config: IConfig): IConfig {
         throw new Error('Task name was not provided')
       }
       // Normalize the package if it's a string
-      if (typeof task.package === 'string') {
+      if (typeof task.task === 'string') {
         return {
-          name: task.name, package: {
-            name: task.package,
+          name: task.name, task: {
+            name: task.task,
             url: KO_CONFIG_CURRENT_REPOSITORY_URL,
             version: 'latest'
           }
@@ -67,26 +67,26 @@ function normalize(config: IConfig): IConfig {
 
       // The package could be an object that
       // the name of the package to run is the key
-      if (!task.package.name) {
+      if (!task.task.name) {
         const key = Object
-          .keys(task.package)
+          .keys(task.task)
           .filter(k => k !== 'version' && k !== 'url')[0]
-        let value = (task.package as any)[key] as IPackage
+        let value = (task.task as any)[key] as IPackage
         let url = value.url || KO_CONFIG_CURRENT_REPOSITORY_URL
         let version = value.version || 'latest'
-        return { name: task.name, package: { name: key, url, version } }
+        return { name: task.name, task: { name: key, url, version } }
       }
 
-      if (!task.package.name) {
-        throw new Error('Package name was not provided')
+      if (!task.task.name) {
+        throw new Error('Task name was not provided')
       }
 
-      if (!task.package.url) {
-        task.package.url = KO_CONFIG_CURRENT_REPOSITORY_URL
+      if (!task.task.url) {
+        task.task.url = KO_CONFIG_CURRENT_REPOSITORY_URL
       }
 
-      if (!task.package.version) {
-        task.package.version = 'latest'
+      if (!task.task.version) {
+        task.task.version = 'latest'
       }
 
       return task

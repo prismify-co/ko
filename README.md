@@ -5,10 +5,14 @@ A project scaffolding CLI for the web
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
 [![Downloads/week](https://img.shields.io/npm/dw/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
-[![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify/ko.git/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
 * [ko](#ko)
+* [About](#about)
+* [ko.config.yml](#koconfigyml)
+* [Limitations](#limitations)
+* [Roadmap](#roadmap)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -98,7 +102,7 @@ ARGUMENTS
   NAME  name of the project
 
 OPTIONS
-  -f, --framework=Nuxt|Sapper|Next  [default: Nuxt]
+  -f, --framework=nuxt|sapper|next  [default: nuxt]
   -v, --version=version             [default: latest]
 ```
 
