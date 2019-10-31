@@ -4,13 +4,13 @@ import { join } from 'path'
 
 import { IConfig, IPackage } from '../interfaces/config'
 
-export const CASTLE_CONFIG_FILENAME = 'castle.config.yml'
-export const CASTLE_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/castle-packages/'
+export const KO_CONFIG_FILENAME = 'ko.config.yml'
+export const KO_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/ko-packages/'
 
-export let CASTLE_CONFIG_CURRENT_REPOSITORY_URL = CASTLE_CONFIG_REPOSITORY_URL
+export let KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
 
 export function exists(path: string = process.cwd()): boolean {
-  return fs.existsSync(join(path, CASTLE_CONFIG_FILENAME))
+  return fs.existsSync(join(path, KO_CONFIG_FILENAME))
 }
 
 export function init(name: string, framework: string, version: string) {
@@ -18,7 +18,7 @@ export function init(name: string, framework: string, version: string) {
     return
   }
 
-  return fs.writeFileSync(join(process.cwd(), CASTLE_CONFIG_FILENAME), yml.dump({
+  return fs.writeFileSync(join(process.cwd(), KO_CONFIG_FILENAME), yml.dump({
     name,
     framework: {
       name: framework,
@@ -29,7 +29,7 @@ export function init(name: string, framework: string, version: string) {
 
 export function load(): IConfig {
   if (!exists()) throw new Error('Configuration file does not exist.')
-  return normalize(yml.safeLoad(fs.readFileSync(join(process.cwd(), CASTLE_CONFIG_FILENAME), 'utf8')) as IConfig)
+  return normalize(yml.safeLoad(fs.readFileSync(join(process.cwd(), KO_CONFIG_FILENAME), 'utf8')) as IConfig)
 }
 
 function normalize(config: IConfig): IConfig {
@@ -46,7 +46,7 @@ function normalize(config: IConfig): IConfig {
     result.repository = { url: config.repository }
   } else result.repository = (config.repository || {})
 
-  CASTLE_CONFIG_CURRENT_REPOSITORY_URL = result.repository.url || CASTLE_CONFIG_REPOSITORY_URL
+  KO_CONFIG_CURRENT_REPOSITORY_URL = result.repository.url || KO_CONFIG_REPOSITORY_URL
 
   // Normalize the tasks
   if (typeof config.tasks === 'object' && Array.isArray(config.tasks)) {
@@ -56,11 +56,13 @@ function normalize(config: IConfig): IConfig {
       }
       // Normalize the package if it's a string
       if (typeof task.package === 'string') {
-        return { name: task.name, package: {
-          name: task.package,
-          url: CASTLE_CONFIG_CURRENT_REPOSITORY_URL,
-          version: 'latest'
-        }}
+        return {
+          name: task.name, package: {
+            name: task.package,
+            url: KO_CONFIG_CURRENT_REPOSITORY_URL,
+            version: 'latest'
+          }
+        }
       }
 
       // The package could be an object that
@@ -70,7 +72,7 @@ function normalize(config: IConfig): IConfig {
           .keys(task.package)
           .filter(k => k !== 'version' && k !== 'url')[0]
         let value = (task.package as any)[key] as IPackage
-        let url = value.url || CASTLE_CONFIG_CURRENT_REPOSITORY_URL
+        let url = value.url || KO_CONFIG_CURRENT_REPOSITORY_URL
         let version = value.version || 'latest'
         return { name: task.name, package: { name: key, url, version } }
       }
@@ -80,7 +82,7 @@ function normalize(config: IConfig): IConfig {
       }
 
       if (!task.package.url) {
-        task.package.url = CASTLE_CONFIG_CURRENT_REPOSITORY_URL
+        task.package.url = KO_CONFIG_CURRENT_REPOSITORY_URL
       }
 
       if (!task.package.version) {
