@@ -1,0 +1,72 @@
+{
+  "name": "@prismify/ko",
+  "description": "A project scaffolding CLI for the web",
+  "version": "0.0.0",
+  "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
+  "bin": {
+    "ko": "./bin/run"
+  },
+  "bugs": "https://github.com/prismify/ko.git/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2",
+    "acorn": "^7.1.0",
+    "degit": "^2.1.4",
+    "github-content": "^1.0.1",
+    "inquirer": "^7.0.0",
+    "js-yaml": "^3.13.1",
+    "recast": "^0.18.5",
+    "shelljs": "^0.8.3",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/tslint": "^3",
+    "@types/inquirer": "^6.5.0",
+    "@types/jest": "^24.0.21",
+    "@types/js-yaml": "^3.12.1",
+    "@types/latest-version": "^4.0.1",
+    "@types/node": "^10",
+    "@types/shelljs": "^0.8.5",
+    "globby": "^10",
+    "jest": "^24.9.0",
+    "latest-version": "^5.1.0",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8",
+    "tslint": "^5",
+    "typescript": "^3.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/prismify/ko.git",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "ko",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "https://github.com/prismify/ko.git",
+  "scripts": {
+    "lint": "tslint -p . -t stylish --fix",
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "tslint -p . -t stylish",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "jest",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
