@@ -9,7 +9,7 @@ export class CreateCommand extends Command {
     { name: 'name', description: 'name of the project' }
   ]
   static flags = {
-    framework: flags.string({ options: ['Nuxt', 'Sapper', 'Next'], char: 'f', default: 'Nuxt' }),
+    framework: flags.string({ options: ['nuxt', 'sapper', 'next'], char: 'f', default: 'nuxt' }),
     version: flags.string({ char: 'v', default: 'latest' })
   }
 
@@ -41,9 +41,9 @@ export class CreateCommand extends Command {
       ).version.replace(/v/, '')
     )
 
-    this.log(`Project Name: ${name}, Framework: ${framework.toLowerCase()}, Version: ${version}`)
+    this.log(`Project Name: ${name}, Framework: ${framework}, Version: ${version}`)
 
     // Create the project
-    create(name, framework.toLowerCase(), version)
+    create(name, framework, version)
   }
 }

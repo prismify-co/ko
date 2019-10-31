@@ -9,6 +9,10 @@ A project scaffolding CLI for the web
 
 <!-- toc -->
 * [ko](#ko)
+* [About](#about)
+* [ko.config.yml](#koconfigyml)
+* [Limitations](#limitations)
+* [Roadmap](#roadmap)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -98,7 +102,7 @@ ARGUMENTS
   NAME  name of the project
 
 OPTIONS
-  -f, --framework=Nuxt|Sapper|Next  [default: Nuxt]
+  -f, --framework=nuxt|sapper|next  [default: nuxt]
   -v, --version=version             [default: latest]
 ```
 
