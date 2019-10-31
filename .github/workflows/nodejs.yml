@@ -25,6 +25,8 @@ jobs:
       uses: Borales/actions-yarn@v2.0.1
       with:
         cmd: test
+    - name: GitHub Action for Yarn
+      uses: Borales/actions-yarn@v2.0.1
       
       env:
         CI: true
