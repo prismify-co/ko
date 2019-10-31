@@ -6,7 +6,7 @@
   "bin": {
     "castle": "./bin/run"
   },
-  "bugs": "https://github.com/https://github.com/prismify/castle.git/issues",
+  "bugs": "https://github.com/prismify/castle.git/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
