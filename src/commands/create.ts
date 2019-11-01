@@ -21,27 +21,27 @@ export class CreateCommand extends Command {
 
     // Framework
     const framework: string = (
-      flags.framework || (await inquirer.prompt([{
+      flags.framework || ((await inquirer.prompt([{
         name: 'framework',
         message: 'select a framework',
         type: 'list',
         choices: [{ name: 'Nuxt' }, { name: 'Sapper' }, { name: 'Next' }]
-      }])).framework
+      }])).framework as string).toLowerCase()
     )
 
     // Version
     const version: string = (
-      flags.version || (await inquirer.prompt([
+      flags.version || ((await inquirer.prompt([
         {
           name: 'version',
           message: 'set version for framework',
           type: 'input'
         }
       ])
-      ).version.replace(/v/, '')
+      ).version as string).replace(/v/, '')
     )
 
-    this.log(`Project Name: ${name}, Framework: ${framework}, Version: ${version}`)
+    this.log(`Project: ${name}, Framework: ${framework}, Version: ${version}`)
 
     // Create the project
     create(name, framework, version)
