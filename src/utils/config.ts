@@ -5,7 +5,7 @@ import { join } from 'path'
 import { IConfig, IPackage } from '../interfaces/config'
 
 export const KO_CONFIG_FILENAME = 'ko.config.yml'
-export const KO_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/ko-packages/'
+export const KO_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/ko-tasks/'
 
 export let KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
 
