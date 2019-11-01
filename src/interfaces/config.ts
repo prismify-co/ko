@@ -5,7 +5,7 @@ import { IFrameworkKind } from './framework'
 export interface IConfig {
   readonly name: string,
   readonly framework: IFramework
-  readonly repository: IRepository | string
+  readonly repository: IRepository
   readonly tasks: ITask[] | string
 }
 
@@ -20,7 +20,7 @@ export type IRepository = ({
 
 export type ITask = ({
   name: string,
-  task: IPackage | string
+  task: IPackage
 })
 
 export type IPackage = ({

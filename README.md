@@ -8,15 +8,14 @@ A project scaffolding CLI for the web
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-
-- [ko](#ko)
-- [About](#about)
-- [ko.config.yml](#koconfigyml)
-- [Limitations](#limitations)
-- [Roadmap](#roadmap)
-- [Usage](#usage)
-- [Commands](#commands)
-  <!-- tocstop -->
+* [ko](#ko)
+* [About](#about)
+* [ko.config.yml](#koconfigyml)
+* [Limitations](#limitations)
+* [Roadmap](#roadmap)
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
 
 # About
 
@@ -72,7 +71,6 @@ ko run
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
@@ -84,15 +82,14 @@ USAGE
   $ ko COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`ko create [NAME]`](#ko-create-name)
-- [`ko help [COMMAND]`](#ko-help-command)
+* [`ko create [NAME]`](#ko-create-name)
+* [`ko help [COMMAND]`](#ko-help-command)
+* [`ko run`](#ko-run)
 
 ## `ko create [NAME]`
 
@@ -129,4 +126,14 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
 
+## `ko run`
+
+start the configuration process
+
+```
+USAGE
+  $ ko run
+```
+
+_See code: [src/commands/run.ts](https://github.com/prismify/ko/blob/v0.0.1-0/src/commands/run.ts)_
 <!-- commandsstop -->

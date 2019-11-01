@@ -6,10 +6,14 @@ import { IConfig, IConfigInitOptions, IUserConfig, IUserPackage, IUserTask } fro
 import { IFrameworkKind } from '../interfaces/framework'
 
 export const KO_CONFIG_FILENAME = 'ko.config.yml'
-export const KO_CONFIG_REPOSITORY_URL = 'https://www.github.com/prismify-co/ko-tasks/'
+export const KO_CONFIG_REPOSITORY_URL = 'https://github.com/prismify-co/ko-tasks'
 
 export let KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
 
+/**
+ * Initalize a ko configuration file
+ * @param options options to define the configuration
+ */
 export function init(options: IConfigInitOptions) {
   // Normalize the path
   const path = (options.path || process.cwd()).replace(KO_CONFIG_FILENAME, '')
@@ -23,6 +27,10 @@ export function init(options: IConfigInitOptions) {
   }, { flowLevel: 3 }), 'utf8')
 }
 
+/**
+ * Load a ko configuration file
+ * @param path path to the configuration
+ */
 export function load(path: string = process.cwd()): IConfig {
   // Normalize the path
   const configPath = path.replace(KO_CONFIG_FILENAME, '')
@@ -30,6 +38,10 @@ export function load(path: string = process.cwd()): IConfig {
   return normalize(yml.safeLoad(readFileSync(join(configPath, KO_CONFIG_FILENAME), 'utf8')) as IUserConfig)
 }
 
+/**
+ * Normalize a ko configuration file
+ * @param config configuration to normalize
+ */
 export function normalize(config: IUserConfig): IConfig {
   // Set the app name
   let result: any = { name: config.name }
