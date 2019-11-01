@@ -38,7 +38,7 @@ export default async function create(name: string, framework: string, version: s
 
   // Create the nuxt.config.js file
   writeFileSync(join(root, 'nuxt.config.js'),
-   'module.exports = {}', 'utf8'
+    'module.exports = {}', 'utf8'
   )
 
   // CD into cwd/name
@@ -57,7 +57,7 @@ export default async function create(name: string, framework: string, version: s
   )
 
   // Write the configuration file
-  config.init(name, framework, version)
+  config.init({ name, framework: { name: framework, version } })
 
   // Download the latest gitignore for node
   const gitignore = await download.apply(gc, ['Node.gitignore'])
