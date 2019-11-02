@@ -15,6 +15,7 @@ export type IFramework = ({
 })
 
 export type IRepository = ({
+  name: string,
   url: string
 })
 
@@ -44,6 +45,7 @@ export type IUserFramework = ({
 }) & ({ [framework in IFrameworkKind]: ({ version: string }) | string }) | string
 
 export type IUserRepository = ({
+  name: string,
   url: string
 })
 

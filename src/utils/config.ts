@@ -6,6 +6,7 @@ import { IConfig, IConfigInitOptions, IUserConfig, IUserPackage, IUserTask } fro
 import { IFrameworkKind } from '../interfaces/framework'
 
 export const KO_CONFIG_FILENAME = 'ko.config.yml'
+export const KO_CONFIG_REPOSITORY_NAME = '@prismify/ko-tasks'
 export const KO_CONFIG_REPOSITORY_URL = 'https://github.com/prismify-co/ko-tasks'
 
 export let KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
@@ -72,10 +73,31 @@ export function normalize(config: IUserConfig): IConfig {
 
   // Normalize the repository's base url if it's a string
   if (typeof config.repository === 'string') {
-    result.repository = { url: config.repository || KO_CONFIG_REPOSITORY_URL }
+    // If the string is a url like github.com, gitlab.com, etc,
+    // make sure there is a package name for the repository
+    if (config.repository.includes('.com')) {
+      if (config.repository !== KO_CONFIG_REPOSITORY_URL) {
+        throw new Error('Repository\'s package name was not provided')
+      }
+      result.repository = {
+        name: KO_CONFIG_REPOSITORY_NAME,
+        url: config.repository || KO_CONFIG_REPOSITORY_URL
+      }
+    } else {
+      result.repository = {
+        name: config.repository || KO_CONFIG_REPOSITORY_NAME,
+        url: config.repository || KO_CONFIG_REPOSITORY_URL
+      }
+    }
+
   } else result.repository = (config.repository || {
+    name: KO_CONFIG_REPOSITORY_NAME,
     url: KO_CONFIG_REPOSITORY_URL
   })
+
+  if (!result.repository.name) {
+    throw new Error('Repository\'s package name was not provided')
+  }
 
   KO_CONFIG_CURRENT_REPOSITORY_URL = result.repository.url || KO_CONFIG_REPOSITORY_URL
 
