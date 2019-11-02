@@ -20,7 +20,7 @@ A project scaffolding CLI for the web
 # About
 
 ko is a project scaffolding tool that is meant to easily create and configure projects for Nuxt.js, Next.js, and Sapper.
-ko is at it's early stages so anything can change. At the moment, ko is inspired to be something similar to Ansible but for the common web frameworks. 
+ko is at it's early stages so anything can change. At the moment, ko is inspired to be something similar to Ansible but for the common web frameworks.
 
 For example, imagine that you've followed the docs to create a minimal Nuxt app on your local machine. You then install the necessary modules for Nuxt and started to copy and paste the code snippets that give you a place to start. But, before you know it, it's taken you some amount of time to get your Nuxt app up and going.
 
@@ -44,7 +44,7 @@ framework:
   version: latest
 
 tasks:
-  - name: 'Install Tailwindcss'
+  - name: "Install Tailwindcss"
     task:
       name: tailwindcss
       version: latest
@@ -58,15 +58,15 @@ ko run
 
 # Limitations
 
-* ko can only generate a minimal nuxt application at the moment.
-* ko cannot configure projects at the moment.
+- ko can only generate a minimal nuxt application for the moment.
+- ko cannot configure projects for the moment.
+- ko uses yarn as the package manager for the moment.
 
 # Roadmap
 
-* Support other projects like Next.js and Sapper
-* Support ko tasks (see About)
-* Support initialization of Git and Docker
-
+- Support other projects like Next.js and Sapper
+- Support ko tasks (see About)
+- Support initialization of Git and Docker
 
 # Usage
 
@@ -89,6 +89,7 @@ USAGE
 <!-- commands -->
 * [`ko create [NAME]`](#ko-create-name)
 * [`ko help [COMMAND]`](#ko-help-command)
+* [`ko run`](#ko-run)
 
 ## `ko create [NAME]`
 
@@ -124,4 +125,15 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
+
+## `ko run`
+
+start the configuration process
+
+```
+USAGE
+  $ ko run
+```
+
+_See code: [src/commands/run.ts](https://github.com/prismify/ko/blob/v0.0.1-0/src/commands/run.ts)_
 <!-- commandsstop -->

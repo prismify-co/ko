@@ -1,7 +1,10 @@
 import { Command, flags } from '@oclif/command'
+import cli from 'cli-ux'
+import dbg = require('debug')
 import * as inquirer from 'inquirer'
 
 import create from '../actions/create'
+const debug = dbg('ko:cli:create')
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
@@ -21,29 +24,34 @@ export class CreateCommand extends Command {
 
     // Framework
     const framework: string = (
-      flags.framework || (await inquirer.prompt([{
+      flags.framework || ((await inquirer.prompt([{
         name: 'framework',
         message: 'select a framework',
         type: 'list',
         choices: [{ name: 'Nuxt' }, { name: 'Sapper' }, { name: 'Next' }]
-      }])).framework
+      }])).framework as string).toLowerCase()
     )
 
     // Version
     const version: string = (
-      flags.version || (await inquirer.prompt([
+      flags.version || ((await inquirer.prompt([
         {
           name: 'version',
           message: 'set version for framework',
           type: 'input'
         }
       ])
-      ).version.replace(/v/, '')
+      ).version as string).replace(/v/, '')
     )
 
-    this.log(`Project Name: ${name}, Framework: ${framework}, Version: ${version}`)
-
     // Create the project
-    create(name, framework, version)
+    try {
+      cli.action.start(`creating project: ${name}, framework: ${framework}, version: ${version}`, undefined, { stdout: true })
+      create(name, framework, version)
+      cli.action.stop()
+    } catch (error) {
+      debug(`ko [error]: ${error}`)
+      this.catch(error)
+    }
   }
 }

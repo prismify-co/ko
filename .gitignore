@@ -50,6 +50,8 @@ pids
 typings/
 yarn-debug.log*
 yarn-error.log*
-
+**/__test__/output/
+**/**/__test__/output/
+output/
 .DS_Store
 .nuxt/
