@@ -1,3 +1,4 @@
+import dbg = require('debug')
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 import { cd, exec, mkdir } from 'shelljs'
@@ -5,6 +6,8 @@ import { promisify } from 'util'
 
 import * as config from '../../utils/config'
 const GithubContent = require('github-content')
+
+const debug = dbg('ko:actions:nuxt:create')
 
 const gc = new GithubContent({
   owner: 'github',
@@ -21,9 +24,11 @@ export default async function create(name: string, framework: string, version: s
   const root = join(cwd, name)
 
   // Create the project folder
+  debug(`ko [info]: creating directory ${name}`)
   mkdir('-p', root)
 
   // Create the package.json file
+  debug('ko [info]: writing package.json')
   writeFileSync(join(root, 'package.json'),
     `{
       "name": "${name}",
@@ -32,36 +37,45 @@ export default async function create(name: string, framework: string, version: s
         "build": "nuxt build",
         "build:analyze": "nuxt build --analyze",
         "start": "nuxt start"
-      }
+      },
+      "license": "MIT"
     }`, 'utf8'
   )
 
   // Create the nuxt.config.js file
+  debug('ko [info]: writing nuxt.config.js')
   writeFileSync(join(root, 'nuxt.config.js'),
     'module.exports = {}', 'utf8'
   )
 
   // CD into cwd/name
+  debug(`ko [info]: cd ${root}`)
   cd(root)
 
   // Install nuxt
-  exec(`yarn add nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
+  debug(`ko [info]: installing nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
+  exec(`yarn add -s nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
 
   // Create the pages directory
+  debug('ko [info] creating nuxt directories')
   mkdir('assets', 'components', 'layouts', 'middleware', 'pages', 'plugins', 'static', 'store')
 
   // Create the first page
+  debug('ko [info] creating index.vue')
   writeFileSync(join(root, 'pages', 'index.vue'),
     '<template>\n<h1>Hello world!</h1>\n</template>',
     'utf8'
   )
 
   // Write the configuration file
+  debug('ko [info] initializing configuration file')
   config.init({ name, framework: { name: framework, version } })
 
   // Download the latest gitignore for node
+  debug('ko [info] downloading .gitignore for node')
   const gitignore = await download.apply(gc, ['Node.gitignore'])
 
   // Write the .gitignore file
+  debug(`ko [info] writing .gitignore to ${root}`)
   writeFileSync(join(root, '.gitignore'), gitignore.contents.toString(), 'utf8')
 }
