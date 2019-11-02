@@ -6,7 +6,7 @@
   "bin": {
     "ko": "./bin/run"
   },
-  "bugs": "https://github.com/prismify/ko.git/issues",
+  "bugs": "https://github.com/prismify-co/ko.git/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -49,7 +49,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/prismify/ko.git",
+  "homepage": "https://github.com/prismify-co/ko.git",
   "keywords": [
     "oclif"
   ],
@@ -62,7 +62,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "https://github.com/prismify/ko.git",
+  "repository": "https://github.com/prismify-co/ko.git",
   "scripts": {
     "lint": "tslint -p . -t stylish --fix",
     "postpack": "rm -f oclif.manifest.json",
