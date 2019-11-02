@@ -3,7 +3,7 @@ import { join } from 'path'
 import { mkdir, rm } from 'shelljs'
 
 import { IConfig, IConfigInitOptions, ITask, IUserConfig } from '../../interfaces/config'
-import { init, KO_CONFIG_REPOSITORY_URL, load, normalize } from '../config'
+import { init, KO_CONFIG_REPOSITORY_NAME, KO_CONFIG_REPOSITORY_URL, load, normalize } from '../config'
 
 const yaml = require('yaml-template')
 
@@ -40,7 +40,10 @@ describe('utils/config', () => {
           name: 'nuxt',
           version: 'latest'
         },
-        repository: { url: KO_CONFIG_REPOSITORY_URL },
+        repository: {
+          name: KO_CONFIG_REPOSITORY_NAME,
+          url: KO_CONFIG_REPOSITORY_URL
+        },
         tasks: []
       } as IConfig)
     })
@@ -55,6 +58,7 @@ describe('utils/config', () => {
           version: 'latest'
         },
         repository: {
+          name: KO_CONFIG_REPOSITORY_NAME,
           url: KO_CONFIG_REPOSITORY_URL
         },
         tasks: []
@@ -67,6 +71,7 @@ describe('utils/config', () => {
           version: 'latest'
         },
         repository: {
+          name: KO_CONFIG_REPOSITORY_NAME,
           url: KO_CONFIG_REPOSITORY_URL
         },
         tasks: [
@@ -88,6 +93,7 @@ describe('utils/config', () => {
           version: 'latest'
         },
         repository: {
+          name: KO_CONFIG_REPOSITORY_NAME,
           url: KO_CONFIG_REPOSITORY_URL
         },
         tasks: 'my-ultimate-setup'
