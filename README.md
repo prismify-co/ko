@@ -76,7 +76,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.1-0 darwin-x64 node-v13.0.1
+@prismify/ko/0.0.1-1 darwin-x64 node-v13.0.1
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -107,7 +107,7 @@ OPTIONS
   -v, --version=version             [default: latest]
 ```
 
-_See code: [src/commands/create.ts](https://github.com/prismify/ko/blob/v0.0.1-0/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/prismify/ko/blob/v0.0.1-1/src/commands/create.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -135,5 +135,5 @@ USAGE
   $ ko run
 ```
 
-_See code: [src/commands/run.ts](https://github.com/prismify/ko/blob/v0.0.1-0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/prismify/ko/blob/v0.0.1-1/src/commands/run.ts)_
 <!-- commandsstop -->
