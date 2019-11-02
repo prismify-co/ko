@@ -462,6 +462,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/debug@^4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
+  integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -1028,7 +1033,7 @@ cli-cursor@^3.1.0:
   dependencies:
     restore-cursor "^3.1.0"
 
-cli-ux@^5.2.1:
+cli-ux@^5.2.1, cli-ux@^5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/cli-ux/-/cli-ux-5.3.3.tgz#6459e180da29f2850473b9bf2f1ae097e5257d31"
   integrity sha512-a16g+BTjASUH41s1pevai4P3JKwhx85wkOSm6sXWsk6KkdSmDeJ16pSCn2x3nqK7W8n35igOu2YiW+qFkqLRJg==
