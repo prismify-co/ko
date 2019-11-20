@@ -29,7 +29,7 @@ export function manage(config: IConfig) {
       let runner = (await import(path))
       runner = await (runner.default ? runner.default : runner) as ITaskRunner
       // Move back up to the root directory
-      process.chdir(path)
+      process.chdir(rootDir)
       // Start the runner
       cli.action.start(item.name.toLowerCase(), undefined, { stdout: true })
       await runner({ version: item.task.version, command: 'install' })
