@@ -78,7 +78,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.1 darwin-x64 node-v13.1.0
+@prismify/ko/0.0.2 darwin-x64 node-v13.1.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -89,9 +89,28 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`ko create [NAME]`](#ko-create-name)
 * [`ko create:nuxt [NAME]`](#ko-createnuxt-name)
 * [`ko help [COMMAND]`](#ko-help-command)
 * [`ko run`](#ko-run)
+
+## `ko create [NAME]`
+
+create a new project
+
+```
+USAGE
+  $ ko create [NAME]
+
+ARGUMENTS
+  NAME  name of the project
+
+OPTIONS
+  -f, --framework=nuxt|sapper|next
+  -v, --version=version             [default: latest]
+```
+
+_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.2/src/commands/create.ts)_
 
 ## `ko create:nuxt [NAME]`
 
@@ -105,11 +124,10 @@ ARGUMENTS
   NAME  name of the project
 
 OPTIONS
-  -f, --framework=nuxt|sapper|next  [default: nuxt]
-  -v, --version=version             [default: latest]
+  -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.1/src/commands/create/nuxt.ts)_
+_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.2/src/commands/create/nuxt.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -137,5 +155,5 @@ USAGE
   $ ko run
 ```
 
-_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.1/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.2/src/commands/run.ts)_
 <!-- commandsstop -->
