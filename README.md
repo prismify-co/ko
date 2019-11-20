@@ -44,10 +44,12 @@ framework:
   version: latest
 
 tasks:
-  - name: "Install Tailwindcss"
+  - name: Install Tailwindcss
     task:
       name: tailwindcss
       version: latest
+  - name: Install Prismic
+    task: prismic
 ```
 
 3. Configure the project
@@ -59,7 +61,7 @@ ko run
 # Limitations
 
 - ko can only generate a minimal nuxt application for the moment.
-- ko cannot configure projects for the moment.
+- ko ~~cannot~~ can somewhat configure projects for the moment.
 - ko uses yarn as the package manager for the moment.
 
 # Roadmap
