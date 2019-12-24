@@ -7,7 +7,7 @@ import create from '../../actions/create'
 const debug = dbg('ko:cli:create')
 
 export class CreateNuxtCommand extends Command {
-  static description = 'create a new project'
+  static description = 'create a new nuxt project'
   static args = [
     { name: 'name', description: 'name of the project' }
   ]
