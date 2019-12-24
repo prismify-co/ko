@@ -60,9 +60,9 @@ ko run
 
 # Limitations
 
-- ko can only generate a minimal nuxt and next applications.
+- ko can only generate minimal nuxt and next applications.
 - ko ~~cannot~~ can somewhat configure projects for the moment.
-- ko uses yarn as the package manager for the moment.
+- ~~ko uses yarn as the package manager for the moment.~~
 
 # Roadmap
 
