@@ -62,9 +62,9 @@ describe('create a minimal nuxt application', () => {
     })
   })
 
-  describe('create(app-v2, nuxt, v2.0.0)', () => {
+  describe('create(app, nuxt, v2.0.0)', () => {
     beforeAll(async () => {
-      await create('app-v2', 'nuxt', 'v2.0.0')
+      await create('app', 'nuxt', 'v2.0.0')
     })
 
     afterAll(() => {
@@ -72,16 +72,16 @@ describe('create a minimal nuxt application', () => {
     })
 
     it('should create a directory for the project', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-v2'))).toBe(true)
+      expect(existsSync(join(__dirname, 'output', 'app'))).toBe(true)
     })
 
     it('should create a package.json file', () => {
-      const path = join(__dirname, 'output', 'app-v2')
+      const path = join(__dirname, 'output', 'app')
       expect(existsSync(join(path, 'package.json')))
     })
 
-    it('should have the latest version of nuxt', async () => {
-      const path = join(__dirname, 'output', 'app-v2')
+    it('should have v2.0.0 of nuxt', async () => {
+      const path = join(__dirname, 'output', 'app')
       const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
 
       expect(dependencies.nuxt).toEqual('^2.0.0')
@@ -90,16 +90,16 @@ describe('create a minimal nuxt application', () => {
     it('should create the directories for nuxt', () => {
       ['assets', 'components', 'layouts', 'middleware', 'pages', 'plugins', 'static', 'store']
         .forEach(dir => {
-          expect(existsSync(join(__dirname, 'output', 'app-v2', dir))).toBe(true)
+          expect(existsSync(join(__dirname, 'output', 'app', dir))).toBe(true)
         })
     })
 
     it('should create an index.vue', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-v2', 'pages', 'index.vue'))).toBe(true)
+      expect(existsSync(join(__dirname, 'output', 'app', 'pages', 'index.vue'))).toBe(true)
     })
 
     it('should create a gitignore file', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-v2', '.gitignore'))).toBe(true)
+      expect(existsSync(join(__dirname, 'output', 'app', '.gitignore'))).toBe(true)
     })
   })
 })
