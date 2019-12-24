@@ -28,7 +28,7 @@ export class CreateCommand extends Command {
         name: 'framework',
         message: 'select a framework',
         type: 'list',
-        choices: [{ name: 'Nuxt' }, { name: 'Sapper' }, { name: 'Next' }]
+        choices: [{ name: 'Nuxt' }, { name: 'Next' }, { name: 'Sapper' }]
       }])).framework as string).toLowerCase()
     )
 
