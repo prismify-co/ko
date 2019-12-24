@@ -57,25 +57,25 @@ export default async function create(name: string, framework: string, version: s
   exec(`yarn add -s nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
 
   // Create the pages directory
-  debug('ko [info] creating nuxt directories')
+  debug('ko [info]: creating nuxt directories')
   mkdir('assets', 'components', 'layouts', 'middleware', 'pages', 'plugins', 'static', 'store')
 
   // Create the first page
-  debug('ko [info] creating index.vue')
+  debug('ko [info]: creating index.vue')
   writeFileSync(join(root, 'pages', 'index.vue'),
     '<template>\n<h1>Hello world!</h1>\n</template>',
     'utf8'
   )
 
   // Write the configuration file
-  debug('ko [info] initializing configuration file')
+  debug('ko [info]: initializing configuration file')
   config.init({ name, framework: { name: framework, version } })
 
   // Download the latest gitignore for node
-  debug('ko [info] downloading .gitignore for node')
+  debug('ko [info]: downloading .gitignore for node')
   const gitignore = await download.apply(gc, ['Node.gitignore'])
 
   // Write the .gitignore file
-  debug(`ko [info] writing .gitignore to ${root}`)
+  debug(`ko [info]: writing .gitignore to ${root}`)
   writeFileSync(join(root, '.gitignore'), gitignore.contents.toString(), 'utf8')
 }
