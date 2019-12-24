@@ -60,7 +60,7 @@ ko run
 
 # Limitations
 
-- ko can only generate a minimal nuxt application for the moment.
+- ko can only generate a minimal nuxt and next applications.
 - ko ~~cannot~~ can somewhat configure projects for the moment.
 - ko uses yarn as the package manager for the moment.
 
@@ -90,6 +90,7 @@ USAGE
 
 <!-- commands -->
 * [`ko create [NAME]`](#ko-create-name)
+* [`ko create:next [NAME]`](#ko-createnext-name)
 * [`ko create:nuxt [NAME]`](#ko-createnuxt-name)
 * [`ko help [COMMAND]`](#ko-help-command)
 * [`ko run`](#ko-run)
@@ -112,9 +113,26 @@ OPTIONS
 
 _See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/create.ts)_
 
+## `ko create:next [NAME]`
+
+create a new next project
+
+```
+USAGE
+  $ ko create:next [NAME]
+
+ARGUMENTS
+  NAME  name of the project
+
+OPTIONS
+  -v, --version=version  [default: latest]
+```
+
+_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/create/next.ts)_
+
 ## `ko create:nuxt [NAME]`
 
-create a new project
+create a new nuxt project
 
 ```
 USAGE
