@@ -78,7 +78,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.3 darwin-x64 node-v13.1.0
+@prismify/ko/0.0.4 darwin-x64 node-v13.1.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -111,7 +111,7 @@ OPTIONS
   -v, --version=version             [default: latest]
 ```
 
-_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.4/src/commands/create.ts)_
 
 ## `ko create:next [NAME]`
 
@@ -128,7 +128,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/create/next.ts)_
+_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.4/src/commands/create/next.ts)_
 
 ## `ko create:nuxt [NAME]`
 
@@ -145,7 +145,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/create/nuxt.ts)_
+_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.4/src/commands/create/nuxt.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -162,7 +162,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
 
 ## `ko run`
 
@@ -173,5 +173,5 @@ USAGE
   $ ko run
 ```
 
-_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.3/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.4/src/commands/run.ts)_
 <!-- commandsstop -->
