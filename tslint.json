@@ -1,6 +1,16 @@
 {
   "extends": "@oclif/tslint",
   "rules": {
-    "object-curly-spacing": [true, "always"]
+    "object-curly-spacing": [
+      true,
+      "always"
+    ],
+    "ter-indent": [
+      true,
+      2,
+      {
+        "SwitchCase": true
+      }
+    ]
   }
 }
