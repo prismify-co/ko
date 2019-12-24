@@ -84,7 +84,7 @@ describe('create a minimal next application', () => {
       const path = join(__dirname, 'output', 'app')
       const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
 
-      expect(dependencies.next).toEqual('^9.0.0')
+      expect(dependencies.next).toEqual('9.0.0')
     })
 
     it('should create the directories for next', () => {

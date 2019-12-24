@@ -64,7 +64,7 @@ describe('create a minimal nuxt application', () => {
 
   describe('create(app, nuxt, v2.0.0)', () => {
     beforeAll(async () => {
-      await create('app', 'nuxt', 'v2.0.0')
+      await create('app', 'nuxt', '2.0.0')
     })
 
     afterAll(() => {
@@ -84,7 +84,7 @@ describe('create a minimal nuxt application', () => {
       const path = join(__dirname, 'output', 'app')
       const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
 
-      expect(dependencies.nuxt).toEqual('^2.0.0')
+      expect(dependencies.nuxt).toEqual('2.0.0')
     })
 
     it('should create the directories for nuxt', () => {

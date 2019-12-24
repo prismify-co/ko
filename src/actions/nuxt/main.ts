@@ -1,9 +1,10 @@
 import dbg = require('debug')
 import { writeFileSync } from 'fs'
 import { join } from 'path'
-import { cd, exec, mkdir } from 'shelljs'
+import { cd, mkdir } from 'shelljs'
 import { promisify } from 'util'
 
+import { Package } from '../../modules'
 import * as config from '../../utils/config'
 const GithubContent = require('github-content')
 
@@ -53,9 +54,12 @@ export default async function create(name: string, framework: string, version: s
   cd(root)
 
   // Install nuxt
-  debug(`ko [info]: installing nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
-  exec(`yarn add -s nuxt@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
-
+  debug(`ko [info]: installing nuxt@${version}`)
+  await Package.add([{
+    name: 'nuxt',
+    version,
+    dev: false
+  }], { silent: true })
   // Create the pages directory
   debug('ko [info]: creating nuxt directories')
   mkdir('assets', 'components', 'layouts', 'middleware', 'pages', 'plugins', 'static', 'store')
