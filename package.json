@@ -14,6 +14,7 @@
     "@types/debug": "^4.1.5",
     "acorn": "^7.1.0",
     "cli-ux": "^5.3.3",
+    "common-tags": "^1.8.0",
     "debug": "^4.1.1",
     "github-content": "^1.0.1",
     "inquirer": "^7.0.0",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/tslint": "^3",
+    "@types/common-tags": "^1.8.0",
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.21",
     "@types/js-yaml": "^3.12.1",

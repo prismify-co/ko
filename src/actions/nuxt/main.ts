@@ -1,3 +1,4 @@
+import { html } from 'common-tags'
 import dbg = require('debug')
 import { writeFileSync } from 'fs'
 import { join } from 'path'
@@ -66,8 +67,11 @@ export default async function create(name: string, framework: string, version: s
 
   // Create the first page
   debug('ko [info]: creating index.vue')
-  writeFileSync(join(root, 'pages', 'index.vue'),
-    '<template>\n<h1>Hello world!</h1>\n</template>',
+  writeFileSync(join(root, 'pages', 'index.vue'), html`
+    <div>
+      <h1>Made with ko</h1>
+    </div>
+  `,
     'utf8'
   )
 
