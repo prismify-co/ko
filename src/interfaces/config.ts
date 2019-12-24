@@ -3,11 +3,16 @@ import { IFrameworkKind } from './framework'
 // IConfig defines the configuration
 // after it was normalized
 export interface IConfig {
-  readonly name: string,
+  readonly name: string
+  readonly vars?: IVars
   readonly framework: IFramework
   readonly repository: IRepository
   readonly tasks: ITask[] | string
 }
+
+export type IVars = ({
+  [key: string]: string | number | boolean | object
+})
 
 export type IFramework = ({
   name: string,
