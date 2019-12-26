@@ -5,7 +5,7 @@ import { join } from 'path'
 import { cd, mkdir } from 'shelljs'
 import { promisify } from 'util'
 
-import { Package } from '../../modules'
+import { Package } from '../../modules/main'
 import * as config from '../../utils/config'
 const GithubContent = require('github-content')
 
