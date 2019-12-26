@@ -56,7 +56,7 @@ export default async function create(name: string, framework: string, version: s
 
   // Install nuxt
   debug(`ko [info]: installing nuxt@${version}`)
-  await Package.add([{
+  Package.add([{
     name: 'nuxt',
     version,
     dev: false

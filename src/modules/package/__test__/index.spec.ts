@@ -2,7 +2,7 @@ import { existsSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { cat, mkdir, rm } from 'shelljs'
 
-import Package from '../'
+import Package from '../main'
 
 describe('modules/package', () => {
   const dir = join(__dirname, 'output')
@@ -23,10 +23,9 @@ describe('modules/package', () => {
     it('should install react', () => {
       Package.add(['react'], {
         cwd: dir
-      }).then(() => {
-        expect(existsSync(join(dir, 'node_modules'))).toBe(true)
-        expect(JSON.parse(cat(join(dir, 'package.json'))).dependencies.react).not.toBeUndefined()
-      }).catch()
+      })
+      expect(existsSync(join(dir, 'node_modules'))).toBe(true)
+      expect(JSON.parse(cat(join(dir, 'package.json'))).dependencies.react).not.toBeUndefined()
     })
 
     it('should install babel as a dev dependency', () => {
@@ -36,14 +35,13 @@ describe('modules/package', () => {
         dev: true
       }], {
         cwd: dir
-      }).then(() => {
-        expect(existsSync(join(dir, 'node_modules'))).toBe(true)
-        expect(JSON.parse(cat(join(dir, 'package.json'))).devDependencies.babel).not.toBeUndefined()
-      }).catch()
+      })
+      expect(existsSync(join(dir, 'node_modules'))).toBe(true)
+      expect(JSON.parse(cat(join(dir, 'package.json'))).devDependencies.babel).not.toBeUndefined()
     })
 
-    it('should install moment@v2.0.0', async () => {
-      await Package.add([{
+    it('should install moment@v2.0.0', () => {
+      Package.add([{
         name: 'moment',
         version: '2.0.0',
         dev: false
@@ -58,9 +56,8 @@ describe('modules/package', () => {
     it('should remove react', () => {
       Package.remove(['react'], {
         cwd: dir
-      }).then(() => {
-        expect(cat(join(dir, 'package.json'))).not.toContain('react')
-      }).catch()
+      })
+      expect(cat(join(dir, 'package.json'))).not.toContain('react')
     })
 
     it('should remove babel as a dev dependency', () => {
@@ -70,9 +67,8 @@ describe('modules/package', () => {
         dev: true
       }], {
         cwd: dir
-      }).then(() => {
-        expect(cat(join(dir, 'package.json'))).not.toContain('babel')
-      }).catch()
+      })
+      expect(cat(join(dir, 'package.json'))).not.toContain('babel')
     })
   })
 })

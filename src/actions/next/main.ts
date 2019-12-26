@@ -60,7 +60,7 @@ export default async function create(name: string, framework: string, version: s
 
   // Install next
   debug(`ko [info]: installing next@${/[0-9]+/g.test(version) ? `v${version}` : version}`)
-  await Package.add([{
+  Package.add([{
     name: 'next',
     version,
     dev: false
