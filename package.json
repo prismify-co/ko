@@ -17,6 +17,7 @@
     "common-tags": "^1.8.0",
     "debug": "^4.1.1",
     "github-content": "^1.0.1",
+    "gitly": "^1.1.1",
     "inquirer": "^7.0.0",
     "js-yaml": "^3.13.1",
     "recast": "^0.18.5",
