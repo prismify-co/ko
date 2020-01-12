@@ -19,12 +19,7 @@ A project scaffolding CLI for the web
 
 # About
 
-ko is a project scaffolding tool that is meant to easily create and configure projects for Nuxt.js, Next.js, and Sapper.
-ko is at it's early stages so anything can change. At the moment, ko is inspired to be something similar to Ansible but for the common web frameworks.
-
-For example, imagine that you've followed the docs to create a minimal Nuxt app on your local machine. You then install the necessary modules for Nuxt and started to copy and paste the code snippets that give you a place to start. But, before you know it, it's taken you some amount of time to get your Nuxt app up and going.
-
-ko tries to eliminate the need to manually configure the project as much as possible by allowing you to define the tasks necessary to configure your project.
+ko is a project scaffolding tool that is meant to easily create or clone projects like Nuxt.js, Next.js, and Sapper.
 
 ### Example
 
@@ -33,36 +28,6 @@ ko tries to eliminate the need to manually configure the project as much as poss
 ```bash
 ko create
 ```
-
-2. Define the configuration
-
-```yml
-# ko.config.yml
-name: app
-framework:
-  name: nuxt
-  version: latest
-
-tasks:
-  - name: Install Tailwindcss
-    task:
-      name: tailwindcss
-      version: latest
-  - name: Install Prismic
-    task: prismic
-```
-
-3. Configure the project
-
-```bash
-ko run
-```
-
-# Limitations
-
-- ko can only generate minimal nuxt and next applications.
-- ko ~~cannot~~ can somewhat configure projects for the moment.
-- ~~ko uses yarn as the package manager for the moment.~~
 
 # Roadmap
 
@@ -89,11 +54,27 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
 * [`ko create [NAME]`](#ko-create-name)
 * [`ko create:next [NAME]`](#ko-createnext-name)
 * [`ko create:nuxt [NAME]`](#ko-createnuxt-name)
 * [`ko help [COMMAND]`](#ko-help-command)
 * [`ko run`](#ko-run)
+
+## `ko clone REPOSITORY [DESTINATION]`
+
+clone an existing project
+
+```
+USAGE
+  $ ko clone REPOSITORY [DESTINATION]
+
+ARGUMENTS
+  REPOSITORY   The repository url (e.g. org/repo, github:org/repo)
+  DESTINATION  The destination to clone (optional)
+```
+
+_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/clone.ts)_
 
 ## `ko create [NAME]`
 
