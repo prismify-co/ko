@@ -10,8 +10,6 @@ A project scaffolding CLI for the web
 <!-- toc -->
 * [ko](#ko)
 * [About](#about)
-* [ko.config.yml](#koconfigyml)
-* [Limitations](#limitations)
 * [Roadmap](#roadmap)
 * [Usage](#usage)
 * [Commands](#commands)
@@ -43,7 +41,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.5 darwin-x64 node-v13.1.0
+@prismify/ko/0.0.6 darwin-x64 node-v13.1.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -74,7 +72,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/clone.ts)_
+_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/clone.ts)_
 
 ## `ko create [NAME]`
 
@@ -92,7 +90,7 @@ OPTIONS
   -v, --version=version             [default: latest]
 ```
 
-_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create.ts)_
 
 ## `ko create:next [NAME]`
 
@@ -109,7 +107,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/create/next.ts)_
+_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create/next.ts)_
 
 ## `ko create:nuxt [NAME]`
 
@@ -126,7 +124,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/create/nuxt.ts)_
+_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create/nuxt.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -154,5 +152,5 @@ USAGE
   $ ko run
 ```
 
-_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.5/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/run.ts)_
 <!-- commandsstop -->
