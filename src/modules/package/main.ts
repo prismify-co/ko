@@ -78,9 +78,9 @@ function run(action: 'add' | 'remove', packages: (string | IPackage)[], options:
     options.silent ? commandOptions.silent[manager] : '',
   ]
 
-  const go = (x: string, dev = false) => {
+  const go = (packages: string[], dev = false) => {
     const devOpts = ((dev === true) ? commandOptions.dev[manager] : '')
-    exec(`${manager} ${command} ${opts.join(' ') + devOpts} ${x}`, {
+    exec(`${manager} ${command} ${opts.join(' ') + devOpts} ${packages.join(' ')}`, {
       cwd: options.cwd || process.cwd(),
       silent: options.silent === true
     })
@@ -88,11 +88,11 @@ function run(action: 'add' | 'remove', packages: (string | IPackage)[], options:
 
   // Install core packages
   if (core_packages.length > 0) {
-    go(core_packages.join(' '))
+    go(core_packages)
   }
 
   if (dev_packages.length > 0) {
-    go(dev_packages.join(' '), true)
+    go(dev_packages, true)
   }
 }
 
