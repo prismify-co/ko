@@ -68,7 +68,7 @@ export default async function create(
   cd(root)
 
   // Initialize git
-  await git().init()
+  await git(root).init()
 
   // Install next
   debug(`ko [info]: installing next@${version}`)
@@ -96,7 +96,7 @@ export default async function create(
 
   // Create the directories
   debug('ko [info]: creating next directories')
-  mkdir('assets', 'components', 'pages', 'public', 'styles')
+  mkdir('-p', 'assets', 'components', 'pages', 'public', 'styles')
 
   // Create the initial pages
   debug('ko [info]: creating files under pages/')
@@ -131,6 +131,7 @@ export default async function create(
   await write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
 
   debug(`ko [info]: Add changes to git`)
+  await git(root).add('*')
   // Add the changes to the commit
-  await git().commit('Add initial files')
+  await git(root).commit('Add initial files')
 }
