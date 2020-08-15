@@ -5,6 +5,7 @@ import inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 import { InstallContext } from '../types'
 import install from '../packages/installer'
+import { setupTsnode } from '../utils/setup-ts-node'
 const debug = dbg('ko:commands:install')
 
 export class InstallCommand extends Command {
@@ -30,6 +31,8 @@ export class InstallCommand extends Command {
 
   async run() {
     const { args, flags } = this.parse(InstallCommand)
+    // Setup ts-node
+    setupTsnode()
 
     // Set the recipe name
     const name = args.name as string
@@ -39,7 +42,7 @@ export class InstallCommand extends Command {
     if (flags.prompt) context = merge(context, await prompt())
 
     try {
-      debug('ko [info]: installing ')
+      debug(`ko [info]: installing ${name}`)
       cli.action.start('configuring your app')
 
       install(context)
