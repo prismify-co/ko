@@ -19,7 +19,7 @@ export interface NPMPackage {
 }
 
 export interface DependencyConfig extends ExecutorConfig {
-  packages: NPMPackage[]
+  packages: (string | NPMPackage)[]
 }
 
 export interface FileConfig extends ExecutorConfig {
