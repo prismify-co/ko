@@ -41,7 +41,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.6 darwin-x64 node-v13.1.0
+@prismify/ko/0.0.6 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -54,10 +54,8 @@ USAGE
 <!-- commands -->
 * [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
 * [`ko create [NAME]`](#ko-create-name)
-* [`ko create:next [NAME]`](#ko-createnext-name)
-* [`ko create:nuxt [NAME]`](#ko-createnuxt-name)
 * [`ko help [COMMAND]`](#ko-help-command)
-* [`ko run`](#ko-run)
+* [`ko install RECIPE`](#ko-install-recipe)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -86,45 +84,13 @@ ARGUMENTS
   NAME  name of the project
 
 OPTIONS
-  -f, --framework=nuxt|sapper|next
-  -v, --version=version             [default: latest]
+  -f, --framework=next   [default: next]
+  -p, --prompt
+  -t, --typescript
+  -v, --version=version  [default: latest]
 ```
 
 _See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create.ts)_
-
-## `ko create:next [NAME]`
-
-create a new next project
-
-```
-USAGE
-  $ ko create:next [NAME]
-
-ARGUMENTS
-  NAME  name of the project
-
-OPTIONS
-  -v, --version=version  [default: latest]
-```
-
-_See code: [src/commands/create/next.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create/next.ts)_
-
-## `ko create:nuxt [NAME]`
-
-create a new nuxt project
-
-```
-USAGE
-  $ ko create:nuxt [NAME]
-
-ARGUMENTS
-  NAME  name of the project
-
-OPTIONS
-  -v, --version=version  [default: latest]
-```
-
-_See code: [src/commands/create/nuxt.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create/nuxt.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -141,16 +107,25 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-## `ko run`
+## `ko install RECIPE`
 
-start the configuration process
+install the recipe and configure the app
 
 ```
 USAGE
-  $ ko run
+  $ ko install RECIPE
+
+ARGUMENTS
+  RECIPE  The name of the recipe or the repository where the recipe
+
+OPTIONS
+  -c, --cache
+  -d, --dryRun
+  -p, --prompt
+  --host=github|gitlab|bitbucket  [default: github]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/run.ts)_
+_See code: [src/commands/install.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/install.ts)_
 <!-- commandsstop -->
