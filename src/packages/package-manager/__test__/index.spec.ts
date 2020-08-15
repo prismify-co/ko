@@ -1,4 +1,4 @@
-import { existsSync, readFile, writeFile, writeFileSync } from 'fs'
+import { exists as has, readFile, writeFile } from 'fs'
 import { join } from 'path'
 import { cat, mkdir, rm } from 'shelljs'
 import { promisify } from 'util'
@@ -7,6 +7,7 @@ import pkgm from '..'
 
 const read = promisify(readFile)
 const write = promisify(writeFile)
+const exists = promisify(has)
 
 const readPackage = async (path: string) =>
   JSON.parse((await read(join(path, 'package.json'))).toString('utf-8'))
@@ -32,24 +33,25 @@ const examplePackage = JSON.stringify({
   homepage: 'https://github.com/prismify/prismify-ko',
 })
 
-describe('modules/package', () => {
-  const dir = join(__dirname, 'output')
+const OUTPUT = join(__dirname, 'output')
+const NODE_MODULES = join(OUTPUT, 'node_modules')
 
+describe('modules/package', () => {
   beforeAll(async () => {
-    mkdir(dir)
-    await write(join(dir, 'package.json'), examplePackage, 'utf-8')
+    mkdir(OUTPUT)
+    await write(join(OUTPUT, 'package.json'), examplePackage, 'utf-8')
   })
 
   afterAll(() => {
-    rm('-rf', dir)
+    rm('-rf', OUTPUT)
   })
 
   describe('install', () => {
     it('should install react', async () => {
       await pkgm().add(['react'], {
-        cwd: dir,
+        cwd: OUTPUT,
       })
-      const { dependencies } = await readPackage(dir)
+      const { dependencies } = await readPackage(OUTPUT)
       expect(dependencies.react).not.toBeUndefined()
     })
 
@@ -63,10 +65,10 @@ describe('modules/package', () => {
           },
         ],
         {
-          cwd: dir,
+          cwd: OUTPUT,
         }
       )
-      const { devDependencies } = await readPackage(dir)
+      const { devDependencies } = await readPackage(OUTPUT)
       expect(devDependencies.babel).not.toBeUndefined()
     })
 
@@ -80,20 +82,26 @@ describe('modules/package', () => {
           },
         ],
         {
-          cwd: dir,
+          cwd: OUTPUT,
         }
       )
-      const { dependencies } = await readPackage(dir)
+      const { dependencies } = await readPackage(OUTPUT)
       expect(dependencies.moment).toContain('2.0.0')
     })
+  })
+
+  it('should install dependencies and devDependencies', async () => {
+    rm('-rf', NODE_MODULES)
+    await pkgm().install({ cwd: OUTPUT })
+    expect(await exists(NODE_MODULES)).toEqual(true)
   })
 
   describe('remove', () => {
     it('should remove react', async () => {
       await pkgm().remove(['react'], {
-        cwd: dir,
+        cwd: OUTPUT,
       })
-      expect(cat(join(dir, 'package.json'))).not.toContain('react')
+      expect(cat(join(OUTPUT, 'package.json'))).not.toContain('react')
     })
 
     it('should remove babel as a dev dependency', async () => {
@@ -105,10 +113,10 @@ describe('modules/package', () => {
           },
         ],
         {
-          cwd: dir,
+          cwd: OUTPUT,
         }
       )
-      expect(cat(join(dir, 'package.json'))).not.toContain('babel')
+      expect(cat(join(OUTPUT, 'package.json'))).not.toContain('babel')
     })
   })
 })
