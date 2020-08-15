@@ -6,12 +6,10 @@
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "output/"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules/", "output/", "**/**/output/*", "**/**/**/output/*"]
 }
