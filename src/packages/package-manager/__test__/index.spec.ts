@@ -84,7 +84,7 @@ describe('modules/package', () => {
         }
       )
       const { dependencies } = await readPackage(dir)
-      expect(dependencies.moment).toBe('2.0.0')
+      expect(dependencies.moment).toContain('2.0.0')
     })
   })
 
