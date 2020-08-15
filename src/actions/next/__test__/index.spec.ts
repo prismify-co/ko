@@ -3,7 +3,7 @@ import latestVersion from 'latest-version'
 import { join } from 'path'
 import { rm, ls } from 'shelljs'
 import { promisify } from 'util'
-import create from '../main'
+import create from '..'
 
 const exists = promisify(has)
 const mkdir = promisify(createDir)

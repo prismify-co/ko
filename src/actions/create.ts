@@ -1,4 +1,4 @@
-import next from './next/main'
+import next from './next'
 import { CreateContext } from '../types'
 
 export default function ({
