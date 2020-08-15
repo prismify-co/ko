@@ -8,12 +8,11 @@ A project scaffolding and configuration CLI for the web
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-
-- [ko](#ko)
-- [About](#about)
-- [Roadmap](#roadmap)
-- [Usage](#usage)
-- [Commands](#commands)
+* [ko](#ko)
+* [About](#about)
+* [Roadmap](#roadmap)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # About
@@ -42,29 +41,26 @@ ko create
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.6 darwin-x64 node-v14.0.0
+@prismify/ko/0.0.7 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-- [`ko create [NAME]`](#ko-create-name)
-- [`ko help [COMMAND]`](#ko-help-command)
-- [`ko install RECIPE`](#ko-install-recipe)
+* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
+* [`ko create [NAME]`](#ko-create-name)
+* [`ko help [COMMAND]`](#ko-help-command)
+* [`ko install RECIPE`](#ko-install-recipe)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -79,7 +75,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/clone.ts)_
+_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.7/src/commands/clone.ts)_
 
 ## `ko create [NAME]`
 
@@ -99,7 +95,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.7/src/commands/create.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -136,6 +132,5 @@ OPTIONS
   --host=github|gitlab|bitbucket  [default: github]
 ```
 
-_See code: [src/commands/install.ts](https://github.com/prismify-co/ko/blob/v0.0.6/src/commands/install.ts)_
-
+_See code: [src/commands/install.ts](https://github.com/prismify-co/ko/blob/v0.0.7/src/commands/install.ts)_
 <!-- commandsstop -->
