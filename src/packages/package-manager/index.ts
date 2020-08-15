@@ -70,6 +70,14 @@ export class PackageManager {
     return { devDependencies, dependencies }
   }
 
+  async install(options: NPMPackageManagerOptions = {}): Promise<void> {
+    const manager: PackageManagerName = options?.manager || (await this.which())
+    const { stdout } = await execa(manager, ['install'], {
+      cwd: options.cwd || process.cwd(),
+    })
+    if (!options.silent) console.log(stdout)
+  }
+
   /**
    * Determines whether a package exists in `package.json`
    * @param package The name of the package to check
