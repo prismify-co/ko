@@ -60,7 +60,7 @@ export class Executor {
         // Add the changes
         await git(this.#options.cwd).add('*')
         // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(d.explanation))
+        this.#commits.push(await git(this.#options.cwd).commit(d.name))
       }
     })
   }
@@ -79,7 +79,7 @@ export class Executor {
         // Add the changes
         await git(this.#options.cwd).add('*')
         // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(t.explanation))
+        this.#commits.push(await git(this.#options.cwd).commit(t.name))
       }
     })
   }
@@ -102,7 +102,7 @@ export class Executor {
         // Add the changes
         await git(this.#options.cwd).add('*')
         // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(f.explanation))
+        this.#commits.push(await git(this.#options.cwd).commit(f.name))
       }
     })
   }
