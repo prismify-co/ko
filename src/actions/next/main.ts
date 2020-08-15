@@ -16,8 +16,6 @@ const write = async (path: string, data: string) =>
 const read = async (path: string) =>
   (await readFileAsync(path)).toString('utf-8')
 
-// import execa from 'execa'
-
 const GithubContent = require('github-content')
 
 const debug = dbg('ko:actions:next:create')
