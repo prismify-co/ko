@@ -10,7 +10,8 @@ export class CloneCommand extends Command {
   static args = [
     {
       name: 'repository',
-      description: 'The repository url (e.g. org/repo, github:org/repo)',
+      description:
+        'The repository url (e.g. org/repo, github:org/repo, https://www.github.com/org/repo)',
       required: true,
     },
     { name: 'destination', description: 'The destination to clone (optional)' },
