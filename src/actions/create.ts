@@ -1,12 +1,17 @@
 import next from './next/main'
-import nuxt from './nuxt/main'
+import { CreateContext } from '../types'
 
-export default function (name: string, framework: string, version: string) {
+export default function ({
+  name,
+  framework,
+  version,
+  typescript,
+}: CreateContext) {
   switch (framework) {
     case 'nuxt':
-      return nuxt(name, framework, version)
+      return
     case 'next':
-      return next(name, framework, version)
+      return next(name, framework, version, typescript)
     case 'sapper':
       return
     default:
