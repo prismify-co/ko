@@ -35,10 +35,9 @@ const examplePackage = JSON.stringify({
 describe('modules/package', () => {
   const dir = join(__dirname, 'output')
 
-  beforeAll(async (done) => {
+  beforeAll(async () => {
     mkdir(dir)
     await write(join(dir, 'package.json'), examplePackage, 'utf-8')
-    done()
   })
 
   afterAll(() => {
@@ -46,16 +45,15 @@ describe('modules/package', () => {
   })
 
   describe('install', () => {
-    it('should install react', async (done) => {
+    it('should install react', async () => {
       await pkgm().add(['react'], {
         cwd: dir,
       })
       const { dependencies } = await readPackage(dir)
       expect(dependencies.react).not.toBeUndefined()
-      done()
     })
 
-    it('should install babel as a dev dependency', async (done) => {
+    it('should install babel as a dev dependency', async () => {
       await pkgm().add(
         [
           {
@@ -70,10 +68,9 @@ describe('modules/package', () => {
       )
       const { devDependencies } = await readPackage(dir)
       expect(devDependencies.babel).not.toBeUndefined()
-      done()
     })
 
-    it('should install moment@v2.0.0', async (done) => {
+    it('should install moment@v2.0.0', async () => {
       await pkgm().add(
         [
           {
@@ -88,20 +85,18 @@ describe('modules/package', () => {
       )
       const { dependencies } = await readPackage(dir)
       expect(dependencies.moment).toBe('2.0.0')
-      done()
     })
   })
 
   describe('remove', () => {
-    it('should remove react', async (done) => {
+    it('should remove react', async () => {
       await pkgm().remove(['react'], {
         cwd: dir,
       })
       expect(cat(join(dir, 'package.json'))).not.toContain('react')
-      done()
     })
 
-    it('should remove babel as a dev dependency', async (done) => {
+    it('should remove babel as a dev dependency', async () => {
       await pkgm().remove(
         [
           {
@@ -114,7 +109,6 @@ describe('modules/package', () => {
         }
       )
       expect(cat(join(dir, 'package.json'))).not.toContain('babel')
-      done()
     })
   })
 })
