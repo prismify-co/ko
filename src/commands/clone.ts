@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command'
+import Command from '@oclif/command'
 import dbg = require('debug')
 import { extract, fetch } from 'gitly'
 import { homedir } from 'os'
@@ -8,15 +8,19 @@ const debug = dbg('ko:cli:clone')
 export class CloneCommand extends Command {
   static description = 'clone an existing project'
   static args = [
-    { name: 'repository', description: 'The repository url (e.g. org/repo, github:org/repo)', required: true, },
-    { name: 'destination', description: 'The destination to clone (optional)' }
+    {
+      name: 'repository',
+      description: 'The repository url (e.g. org/repo, github:org/repo)',
+      required: true,
+    },
+    { name: 'destination', description: 'The destination to clone (optional)' },
   ]
 
   async run() {
     const { args } = this.parse(CloneCommand)
 
     // The repository to clone
-    const name = (args.repository) as string
+    const name = args.repository as string
     if (!name) {
       return this.error('No repository provided')
     }
