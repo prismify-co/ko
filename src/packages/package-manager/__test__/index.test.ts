@@ -36,7 +36,7 @@ const examplePackage = JSON.stringify({
 const OUTPUT = join(__dirname, 'output')
 const NODE_MODULES = join(OUTPUT, 'node_modules')
 
-describe('modules/package', () => {
+describe('packages/package-manager', () => {
   beforeAll(async () => {
     mkdir(OUTPUT)
     await write(join(OUTPUT, 'package.json'), examplePackage, 'utf-8')
