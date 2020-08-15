@@ -52,27 +52,26 @@ export class InstallCommand extends Command {
 }
 
 async function prompt() {
-  const host =
-    (await inquirer.prompt([
-      {
-        name: 'typescript',
-        message: '',
-        type: 'input',
-        choices: ['github', 'gitlab', 'bitbucket'],
-        default: 'github',
-      },
-    ])) === 'true'
+  const host = ((await inquirer.prompt([
+    {
+      name: 'typescript',
+      message: 'Choose a host',
+      type: 'list',
+      choices: ['GitHub', 'GitLab', 'BitBucket'],
+      default: 'GitHub',
+    },
+  ])) as string).toLowerCase()
 
   const cache =
     (await inquirer.prompt([
       {
-        name: 'typescript',
-        message: '',
-        type: 'input',
-        choices: ['true', 'false'],
-        default: 'true',
+        name: 'cache',
+        message: 'Disable cache?',
+        type: 'list',
+        choices: ['Yes', 'No'],
+        default: 'No',
       },
-    ])) === 'true'
+    ])) === 'No'
 
   return { host, cache }
 }

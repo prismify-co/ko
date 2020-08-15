@@ -7,13 +7,26 @@ import { merge, omit } from 'lodash'
 
 import create from '../actions/create'
 import { CreateContext } from '../types'
+import checkcwd from '../utils/check-cwd'
+import promptContinue from '../utils/prompt-continue'
+import latestVersion = require('latest-version')
 const debug = dbg('ko:cli:create')
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
-  static args = [{ name: 'name', description: 'name of the project' }]
+  static args = [
+    {
+      name: 'name',
+      description: 'The name of the project or "." for cwd',
+      required: true,
+    },
+  ]
   static flags = {
-    framework: flags.string({ options: ['next'], default: 'next', char: 'f' }),
+    framework: flags.string({
+      options: ['next'],
+      default: 'next',
+      char: 'f',
+    }),
     version: flags.string({ char: 'v', default: 'latest' }),
     typescript: flags.boolean({ default: true, char: 't' }),
     prompt: flags.boolean({ default: false, char: 'p' }),
@@ -23,13 +36,22 @@ export class CreateCommand extends Command {
     const { args, flags } = this.parse(CreateCommand)
 
     // Set the project name
-    const name = (args.name || 'app') as string
+    let name = args.name as string
+
     // Set the initial context for project creation
     let context: CreateContext = { name, ...omit(flags, 'prompt') }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
 
     try {
+      if (
+        name === '.' &&
+        !(await checkcwd()) &&
+        !(await promptContinue(`This directory isn't clean.`))
+      ) {
+        this.exit()
+      }
+
       cli.action.start(
         `creating project: ${name}, framework: ${context.framework}, version: ${context.version}`,
         undefined,
@@ -45,6 +67,11 @@ export class CreateCommand extends Command {
       this.catch(error)
     }
   }
+
+  async catch(error: any) {
+    if (error?.oclif?.exit === 0) return
+    throw error
+  }
 }
 
 async function prompt() {
@@ -52,24 +79,29 @@ async function prompt() {
     await inquirer.prompt([
       {
         name: 'framework',
-        message: 'select a framework',
+        message: 'Select a framework',
         type: 'list',
         choices: [{ name: 'Next' }],
       },
     ])
   ).framework as string).toLowerCase()
 
-  const versions = (await execa('npm', ['view', 'next', 'versions'])).stdout
-    .replace(/\[|\]/g, '')
-    .split(',')
+  const versions: string[] = JSON.parse(
+    (await execa('npm', ['view', 'next', 'versions', '--json'])).stdout
+  )
+    .filter((v: string) => !v.includes('beta') || !v.includes('alpha'))
+    .slice(-50)
+
+  const latest = await latestVersion('next')
 
   const version = ((
     await inquirer.prompt([
       {
         name: 'version',
-        message: 'set version for framework',
+        message: 'Select a version',
         type: 'list',
-        choices: versions.slice(-5),
+        default: latest,
+        choices: versions,
       },
     ])
   ).version as string).replace(/v/, '')
@@ -78,11 +110,11 @@ async function prompt() {
     (await inquirer.prompt([
       {
         name: 'typescript',
-        message: '',
-        type: 'input',
-        choices: ['true', 'false'],
-        default: 'true',
+        message: 'Enable TypeScript?',
+        type: 'list',
+        choices: ['Yes', 'No'],
+        default: 'Yes',
       },
-    ])) === 'true'
+    ])) === 'Yes'
   return { framework, version, typescript }
 }
