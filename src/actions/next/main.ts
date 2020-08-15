@@ -7,6 +7,7 @@ import git from 'simple-git'
 import { promisify } from 'util'
 import config, { Framework } from '../../utils/config'
 import pkgm from '../../packages/package-manager'
+import { mkpdir } from '../../utils/mkpdir'
 
 const readFileAsync = promisify(readFile)
 const writeFileAsync = promisify(writeFile)
@@ -44,7 +45,7 @@ export default async function create(
 
   // Create the project folder
   debug(`ko [info]: creating directory ${name}`)
-  mkdir('-p', root)
+  mkpdir(name)
 
   // Create the package.json file
   debug('ko [info]: writing package.json')
