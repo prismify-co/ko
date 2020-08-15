@@ -46,15 +46,16 @@ describe('modules/package', () => {
   })
 
   describe('install', () => {
-    it('should install react', async () => {
+    it('should install react', async (done) => {
       await pkgm().add(['react'], {
         cwd: dir,
       })
       const { dependencies } = await readPackage(dir)
       expect(dependencies.react).not.toBeUndefined()
+      done()
     })
 
-    it('should install babel as a dev dependency', async () => {
+    it('should install babel as a dev dependency', async (done) => {
       await pkgm().add(
         [
           {
@@ -69,9 +70,10 @@ describe('modules/package', () => {
       )
       const { devDependencies } = await readPackage(dir)
       expect(devDependencies.babel).not.toBeUndefined()
+      done()
     })
 
-    it('should install moment@v2.0.0', async () => {
+    it('should install moment@v2.0.0', async (done) => {
       await pkgm().add(
         [
           {
@@ -86,18 +88,20 @@ describe('modules/package', () => {
       )
       const { dependencies } = await readPackage(dir)
       expect(dependencies.moment).toBe('2.0.0')
+      done()
     })
   })
 
   describe('remove', () => {
-    it('should remove react', async () => {
+    it('should remove react', async (done) => {
       await pkgm().remove(['react'], {
         cwd: dir,
       })
       expect(cat(join(dir, 'package.json'))).not.toContain('react')
+      done()
     })
 
-    it('should remove babel as a dev dependency', async () => {
+    it('should remove babel as a dev dependency', async (done) => {
       await pkgm().remove(
         [
           {
@@ -110,6 +114,7 @@ describe('modules/package', () => {
         }
       )
       expect(cat(join(dir, 'package.json'))).not.toContain('babel')
+      done()
     })
   })
 })

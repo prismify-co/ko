@@ -1,105 +1,227 @@
-import { existsSync, mkdirSync, readFileSync } from 'fs'
+import { exists as has, mkdir as createDir, readFileSync } from 'fs'
 import latestVersion from 'latest-version'
 import { join } from 'path'
-import { rm } from 'shelljs'
-
+import { rm, ls } from 'shelljs'
+import { promisify } from 'util'
 import create from '../main'
 
-function createOutputDir() {
-  if (!existsSync(join(__dirname, 'output'))) {
-    mkdirSync(join(__dirname, 'output'))
+const exists = promisify(has)
+const mkdir = promisify(createDir)
+
+const OUTPUT_DIR = join(__dirname, 'output')
+const LATEST_DIR = join(OUTPUT_DIR, 'app-latest')
+const SPECIFIED_DIR = join(OUTPUT_DIR, 'app-specified')
+const JS_DIR = join(OUTPUT_DIR, 'app-js')
+
+jest.setTimeout(300000)
+
+async function createOutputDir() {
+  if (!(await exists(OUTPUT_DIR))) {
+    await mkdir(OUTPUT_DIR)
   }
-  process.chdir(join(__dirname, 'output'))
+  process.chdir(OUTPUT_DIR)
 }
 
-function removeOutputDir() {
+async function removeOutputDir() {
   process.chdir(join('../'))
-  if (existsSync(join(__dirname, 'output'))) {
-    rm('-rf', join(__dirname, 'output'))
+  if (await exists(OUTPUT_DIR)) {
+    rm('-rf', OUTPUT_DIR)
   }
 }
 
 describe('create a minimal next application', () => {
-  describe('create(app-latest, next, latest)', () => {
-    beforeAll(async () => {
-      createOutputDir()
-      await create('app-latest', 'next', 'latest')
+  beforeAll(async (done) => {
+    await createOutputDir()
+    done()
+  })
+
+  afterAll(async (done) => {
+    await removeOutputDir()
+    done()
+  })
+
+  afterEach(() => {
+    process.chdir(OUTPUT_DIR)
+  })
+
+  describe('latest', () => {
+    beforeAll(async (done) => {
+      await create('app-latest', 'next', '', true)
+      done()
     })
 
-    afterAll(() => {
-      removeOutputDir()
+    it('should create a directory for the project', async (done) => {
+      expect(await exists(LATEST_DIR)).toEqual(true)
+      done()
     })
 
-    it('should create a directory for the project', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-latest'))).toBe(true)
+    it('should create a package.json file', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'package.json'))).toEqual(true)
+      done()
     })
 
-    it('should create a package.json file', () => {
-      const path = join(__dirname, 'output', 'app-latest')
-      expect(existsSync(join(path, 'package.json')))
+    it('should create a tsconfig.json file', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'tsconfig.json'))).toEqual(true)
+      done()
     })
 
-    it('should have the latest version of next', async () => {
-      const path = join(__dirname, 'output', 'app-latest')
-      const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
+    it('should create a next.config.js file', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'next.config.js'))).toEqual(true)
+      done()
+    })
+
+    it('should have the latest version of next', async (done) => {
+      const { dependencies } = JSON.parse(
+        readFileSync(join(LATEST_DIR, 'package.json'), 'utf8')
+      )
 
       expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
+      done()
     })
 
-    it('should create the directories for next', () => {
-      ['assets', 'components', 'pages', 'public']
-        .forEach(dir => {
-          expect(existsSync(join(__dirname, 'output', 'app-latest', dir))).toBe(true)
-        })
+    it('should create the directories for next', async (done) => {
+      const pages = ['components', 'pages', 'styles', 'public']
+      pages.forEach(async (dir) => {
+        expect(await exists(join(LATEST_DIR, dir))).toEqual(true)
+      })
+      done()
     })
 
-    it('should create an index.jsx', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-latest', 'pages', 'index.jsx'))).toBe(true)
+    it('should create an index.tsx', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'pages', 'index.tsx'))).toEqual(true)
+      done()
     })
 
-    it('should create a gitignore file', () => {
-      expect(existsSync(join(__dirname, 'output', 'app-latest', '.gitignore'))).toBe(true)
+    it('should create an _app.tsx', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'pages', '_app.tsx'))).toEqual(true)
+      done()
+    })
+
+    it('should create an _document.tsx', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'pages', '_document.tsx'))).toEqual(
+        true
+      )
+      done()
+    })
+
+    it('should create an home.module.css', async (done) => {
+      expect(
+        await exists(join(LATEST_DIR, 'styles', 'home.module.css'))
+      ).toEqual(true)
+      done()
+    })
+
+    it('should create an globals.css', async (done) => {
+      expect(await exists(join(LATEST_DIR, 'styles', 'globals.css'))).toEqual(
+        true
+      )
+      done()
+    })
+
+    it('should create a gitignore file', async (done) => {
+      expect(await exists(join(LATEST_DIR, '.gitignore'))).toEqual(true)
+      done()
     })
   })
 
-  describe('create(app, next, v9.0.0)', () => {
-    beforeAll(async () => {
-      await create('app', 'next', 'v9.0.0')
+  describe('v9.3.0', () => {
+    beforeAll(async (done) => {
+      await create('app-specified', 'next', '9.3.0', true)
+      done()
     })
 
-    afterAll(() => {
-      removeOutputDir()
+    it('should create a directory for the project', async (done) => {
+      expect(await exists(SPECIFIED_DIR)).toEqual(true)
+      done()
     })
 
-    it('should create a directory for the project', () => {
-      expect(existsSync(join(__dirname, 'output', 'app'))).toBe(true)
+    it('should create a package.json file', async (done) => {
+      expect(await exists(join(SPECIFIED_DIR, 'package.json'))).toEqual(true)
+      done()
     })
 
-    it('should create a package.json file', () => {
-      const path = join(__dirname, 'output', 'app')
-      expect(existsSync(join(path, 'package.json')))
+    it('should have the latest version of next', async (done) => {
+      const { dependencies } = JSON.parse(
+        readFileSync(join(SPECIFIED_DIR, 'package.json'), 'utf8')
+      )
+      expect(dependencies.next).toEqual(`^9.3.0`)
+      done()
+    })
+  })
+
+  describe('javascript', () => {
+    beforeAll(async (done) => {
+      await create('app-js', 'next', '', false)
+      done()
     })
 
-    it('should have v9.0.0 of next', async () => {
-      const path = join(__dirname, 'output', 'app')
-      const { dependencies } = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'))
-
-      expect(dependencies.next).toEqual('9.0.0')
+    it('should create a directory for the project', async (done) => {
+      expect(await exists(JS_DIR)).toEqual(true)
+      done()
     })
 
-    it('should create the directories for next', () => {
-      ['assets', 'components', 'pages', 'public']
-        .forEach(dir => {
-          expect(existsSync(join(__dirname, 'output', 'app', dir))).toBe(true)
-        })
+    it('should create a package.json file', async (done) => {
+      expect(await exists(join(JS_DIR, 'package.json'))).toEqual(true)
+      done()
     })
 
-    it('should create an index.jsx', () => {
-      expect(existsSync(join(__dirname, 'output', 'app', 'pages', 'index.jsx'))).toBe(true)
+    it('should create a tsconfig.json file', async (done) => {
+      expect(await exists(join(JS_DIR, 'tsconfig.json'))).toEqual(false)
+      done()
     })
 
-    it('should create a gitignore file', () => {
-      expect(existsSync(join(__dirname, 'output', 'app', '.gitignore'))).toBe(true)
+    it('should create a next.config.js file', async (done) => {
+      expect(await exists(join(JS_DIR, 'next.config.js'))).toEqual(true)
+      done()
+    })
+
+    it('should have the latest version of next', async (done) => {
+      const { dependencies } = JSON.parse(
+        readFileSync(join(JS_DIR, 'package.json'), 'utf8')
+      )
+
+      expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
+      done()
+    })
+
+    it('should create the directories for next', async (done) => {
+      const pages = ['components', 'pages', 'styles', 'public']
+      pages.forEach(async (dir) => {
+        expect(await exists(join(JS_DIR, dir))).toEqual(true)
+      })
+      done()
+    })
+
+    it('should create an index.js', async (done) => {
+      expect(await exists(join(JS_DIR, 'pages', 'index.js'))).toEqual(true)
+      done()
+    })
+
+    it('should create an _app.js', async (done) => {
+      expect(await exists(join(JS_DIR, 'pages', '_app.js'))).toEqual(true)
+      done()
+    })
+
+    it('should create an _document.js', async (done) => {
+      expect(await exists(join(JS_DIR, 'pages', '_document.js'))).toEqual(true)
+      done()
+    })
+
+    it('should create an home.module.css', async (done) => {
+      expect(await exists(join(JS_DIR, 'styles', 'home.module.css'))).toEqual(
+        true
+      )
+      done()
+    })
+
+    it('should create an globals.css', async (done) => {
+      expect(await exists(join(JS_DIR, 'styles', 'globals.css'))).toEqual(true)
+      done()
+    })
+
+    it('should create a gitignore file', async (done) => {
+      expect(await exists(join(JS_DIR, '.gitignore'))).toEqual(true)
+      done()
     })
   })
 })
