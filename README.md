@@ -1,6 +1,6 @@
 # ko
 
-A project scaffolding CLI for the web
+A project scaffolding and configuration CLI for the web
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
@@ -17,7 +17,11 @@ A project scaffolding CLI for the web
 
 # About
 
-ko is a project scaffolding tool that is meant to easily create or clone projects like Nuxt.js, Next.js, and Sapper.
+ko is a (WIP) project scaffolding and configuration tool that is meant to easily create or clone projects like Nuxt.js, Next.js, and Sapper.
+
+This project is heavily inspired by [blitz](https://github.com/blitz-js/blitz). Blitz is a Ruby on Rails like project based on Next.js. Blitz also allows you to configure the project by using their CLI. Rather than building a web framework, this project focuses on the configuration portion of their CLI and aims to target different frameworks.
+
+At the time of this writng, ko can generate a basic Next.js app and clone repositories from GitHub, GitLab, and Bitbucket.
 
 ### Example
 
@@ -29,9 +33,10 @@ ko create
 
 # Roadmap
 
-- Support other projects like Next.js and Sapper
-- Support ko tasks (see About)
-- Support initialization of Git and Docker
+- Support other projects like Nuxt.js and Sapper
+- Support ko recipes (Experimental! Please do not use!)
+  - Configures your project by running `ko install [recipe]`. e.g. Chakra
+- Support for Docker
 
 # Usage
 
@@ -118,7 +123,7 @@ USAGE
   $ ko install RECIPE
 
 ARGUMENTS
-  RECIPE  The name of the recipe or the repository where the recipe
+  RECIPE  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
 
 OPTIONS
   -c, --cache
