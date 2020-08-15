@@ -57,6 +57,8 @@ export class Executor {
       if (d.packages.length > 0) {
         // Install the packages
         pkgm().add(d.packages, { cwd: this.#options.cwd })
+        // Add the changes
+        await git(this.#options.cwd).add('*')
         // Commit the changes
         this.#commits.push(await git(this.#options.cwd).commit(d.explanation))
       }
@@ -74,6 +76,9 @@ export class Executor {
         const original = (await readFileAsync(path)).toString('utf-8')
         const processed = processFile(original, t.transform)
         await writeFileAsync(path, processed, 'utf-8')
+        // Add the changes
+        await git(this.#options.cwd).add('*')
+        // Commit the changes
         this.#commits.push(await git(this.#options.cwd).commit(t.explanation))
       }
     })
@@ -93,7 +98,11 @@ export class Executor {
           const template = handlebars.compile(file)
           file = template(f.context)
         }
-        await writeFileAsync(file, path, 'utf-8')
+        await writeFileAsync(path, file, 'utf-8')
+        // Add the changes
+        await git(this.#options.cwd).add('*')
+        // Commit the changes
+        this.#commits.push(await git(this.#options.cwd).commit(f.explanation))
       }
     })
   }
