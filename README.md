@@ -58,7 +58,7 @@ USAGE
 
 <!-- commands -->
 * [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-* [`ko create [NAME]`](#ko-create-name)
+* [`ko create NAME`](#ko-create-name)
 * [`ko help [COMMAND]`](#ko-help-command)
 * [`ko install RECIPE`](#ko-install-recipe)
 
@@ -71,22 +71,22 @@ USAGE
   $ ko clone REPOSITORY [DESTINATION]
 
 ARGUMENTS
-  REPOSITORY   The repository url (e.g. org/repo, github:org/repo)
+  REPOSITORY   The repository url (e.g. org/repo, github:org/repo, https://www.github.com/org/repo)
   DESTINATION  The destination to clone (optional)
 ```
 
 _See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.9/src/commands/clone.ts)_
 
-## `ko create [NAME]`
+## `ko create NAME`
 
 create a new project
 
 ```
 USAGE
-  $ ko create [NAME]
+  $ ko create NAME
 
 ARGUMENTS
-  NAME  name of the project
+  NAME  The name of the project or "." for cwd
 
 OPTIONS
   -f, --framework=next   [default: next]
