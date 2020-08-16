@@ -8,6 +8,8 @@ import { promisify } from 'util'
 
 import { Executor } from './executor'
 import pkgm from '../package-manager'
+import dbg from 'debug'
+const debug = dbg('ko:packages:installer')
 
 const read = async (path: string) =>
   (await promisify(readFile)(path)).toString('utf-8')
@@ -44,6 +46,7 @@ export default async function install({
   const cwd = process.cwd()
 
   if (isNavtiveRecipe(name)) {
+    debug(`ko [info]: ${name} is native`)
     // Grab the recipes
     const source = await gitly('prismify-co/ko-recipes', gitlyOpts)
     // Create a temp directory if it doesn't exist
@@ -56,12 +59,14 @@ export default async function install({
   }
 
   if (isLocalPath(name)) {
+    debug(`ko [info]: ${name} is local`)
     const path = resolve(name)
     // Execute from the local path
     return execute(cwd, path, await entry(path), dryRun)
   }
 
   if (isUrlRecipe(name)) {
+    debug(`ko [info]: ${name} is remote`)
     // Download from host
     const source = await gitly(name, gitlyOpts)
     // Create a temp directory if it doesn't exist
