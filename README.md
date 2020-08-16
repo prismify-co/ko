@@ -8,11 +8,12 @@ A project scaffolding and configuration CLI for the web
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-* [ko](#ko)
-* [About](#about)
-* [Roadmap](#roadmap)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [ko](#ko)
+- [About](#about)
+- [Roadmap](#roadmap)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # About
@@ -38,7 +39,7 @@ ko create
 - Generate Next.js projects
 - :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-ko/ko-recipes)
 
-# Roadmap
+## Roadmap
 
 - Support other frameworks like Nuxt.js and Sapper
 - Support for Docker (?)
@@ -47,6 +48,7 @@ ko create
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
@@ -58,15 +60,17 @@ USAGE
   $ ko COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-* [`ko create NAME`](#ko-create-name)
-* [`ko help [COMMAND]`](#ko-help-command)
-* [`ko install NAME`](#ko-install-name)
+
+- [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
+- [`ko create NAME`](#ko-create-name)
+- [`ko help [COMMAND]`](#ko-help-command)
+- [`ko install NAME`](#ko-install-name)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -139,4 +143,5 @@ OPTIONS
 ```
 
 _See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/install.ts)_
+
 <!-- commandsstop -->
