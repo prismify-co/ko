@@ -1,0 +1,8 @@
+# node modules
+node_modules/**
+**/node_modules/**
+
+# outputs
+lib/**
+output/**
+**/output/**
