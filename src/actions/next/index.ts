@@ -103,21 +103,21 @@ export default async function create(
   debug('ko [info]: creating files under pages/')
   const pages = ['_app.txt', '_document.txt', 'index.txt']
 
-  pages.forEach(async (file) => {
+  for (const file of pages) {
     const script = file.replace('txt', typescript ? 'tsx' : 'js')
     const page = await read(join(templatesPath, `pages/${file}`))
     await write(resolve(`pages/${script}`), handlebars.compile(page)({ name }))
-  })
+  }
 
   // Create the initial styles
   debug('ko [info]: creating files under styles/')
   const styles = ['globals.css', 'home.module.css']
-  styles.forEach(async (file) => {
+  for (const file of styles) {
     await write(
       resolve(`styles/${file}`),
       await read(join(templatesPath, `styles/${file}`))
     )
-  })
+  }
 
   // Write the configuration file
   debug('ko [info]: initializing configuration file')
