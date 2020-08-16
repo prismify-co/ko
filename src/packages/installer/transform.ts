@@ -1,9 +1,15 @@
 import { builders } from 'ast-types/gen/builders'
 import { namedTypes, NamedTypes } from 'ast-types/gen/namedTypes'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync as exists, readFile, writeFile } from 'fs'
 import { parse, print, types } from 'recast'
 import * as babel from 'recast/parsers/babel'
 import getBabelOptions, { Overrides } from 'recast/parsers/_babel_options'
+import { promisify } from 'util'
+
+const read = async (path: string) =>
+  (await promisify(readFile)(path)).toString('utf-8')
+const write = async (path: string, data: string) =>
+  promisify(writeFile)(path, data)
 
 export const customTsParser = {
   parse(source: string, options?: Overrides) {
@@ -29,23 +35,23 @@ export type Transformer = (
   types: NamedTypes
 ) => types.ASTNode
 
-export function processFile(
+export async function processFile(
   original: string,
   transformerFn: Transformer
-): string {
+): Promise<string> {
   const ast = parse(original, { parser: customTsParser })
   const transformedCode = print(transformerFn(ast, types.builders, namedTypes))
     .code
   return transformedCode
 }
 
-export function transform(
+export async function transform(
   transformerFn: Transformer,
   targetFilePaths: string[]
-): TransformResult[] {
+): Promise<TransformResult[]> {
   const results: TransformResult[] = []
   for (const filePath of targetFilePaths) {
-    if (!existsSync(filePath)) {
+    if (!exists(filePath)) {
       results.push({
         status: TransformStatus.Failure,
         filename: filePath,
@@ -53,10 +59,11 @@ export function transform(
       })
     }
     try {
-      const fileBuffer = readFileSync(filePath)
-      const fileSource = fileBuffer.toString('utf-8')
-      const transformedCode = processFile(fileSource, transformerFn)
-      writeFileSync(filePath, transformedCode)
+      const transformedCode = await processFile(
+        await read(filePath),
+        transformerFn
+      )
+      await write(filePath, transformedCode)
       results.push({
         status: TransformStatus.Success,
         filename: filePath,

@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { exists, readFile } from 'fs'
+import { existsSync as exists, readFile } from 'fs'
 import { resolve } from 'path'
 import { promisify } from 'util'
 
@@ -17,8 +17,8 @@ export type NPMPackageManagerOptions = {
 }
 
 export class PackageManager {
-  async which(): Promise<PackageManagerName> {
-    if (await existsAysnc(resolve('yarn.lock'))) {
+  which(): PackageManagerName {
+    if (exists(resolve('yarn.lock'))) {
       return 'yarn'
     }
     return 'npm'
@@ -84,7 +84,7 @@ export class PackageManager {
    */
   async has(name: string): Promise<boolean> {
     const pkgPath = resolve('package.json')
-    if (await existsAysnc(pkgPath)) {
+    if (exists(pkgPath)) {
       const pkg = JSON.parse((await read(pkgPath)).toString('utf-8'))
       const { devDependencies, dependencies } = pkg
       return (
