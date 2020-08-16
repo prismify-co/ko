@@ -4,12 +4,10 @@ module.exports = {
     [
       'module-resolver',
       {
-        root: ['./src'],
+        root: ['./'],
         alias: {
-          // '@ko/builder'
-          // '@ko/package-manager': './packages/package-manager',
+          '@ko/utils/(.+)': './utils/\\1',
           '@ko': ([, name]) => {
-            if (name.includes('utils')) return './utils'
             if (name.includes('types')) return './types'
             return `./packages${name}`
           },
