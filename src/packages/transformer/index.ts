@@ -1,15 +1,9 @@
-import { builders } from 'ast-types/gen/builders'
-import { namedTypes, NamedTypes } from 'ast-types/gen/namedTypes'
-import { existsSync as exists, readFile, writeFile } from 'fs'
+import { namedTypes } from 'ast-types/gen/namedTypes'
 import { parse, print, types } from 'recast'
 import * as babel from 'recast/parsers/babel'
 import getBabelOptions, { Overrides } from 'recast/parsers/_babel_options'
-import { promisify } from 'util'
-
-const read = async (path: string) =>
-  (await promisify(readFile)(path)).toString('utf-8')
-const write = async (path: string, data: string) =>
-  promisify(writeFile)(path, data)
+import { Transformer } from './types'
+import { exists, write, read } from '@ko/utils/fs'
 
 export const customTsParser = {
   parse(source: string, options?: Overrides) {
@@ -29,11 +23,6 @@ export interface TransformResult {
   filename: string
   error?: Error
 }
-export type Transformer = (
-  ast: types.ASTNode,
-  builder: builders,
-  types: NamedTypes
-) => types.ASTNode
 
 export async function processFile(
   original: string,
@@ -59,11 +48,8 @@ export async function transform(
       })
     }
     try {
-      const transformedCode = await processFile(
-        await read(filePath),
-        transformerFn
-      )
-      await write(filePath, transformedCode)
+      const transformedCode = await processFile(read(filePath), transformerFn)
+      write(filePath, transformedCode)
       results.push({
         status: TransformStatus.Success,
         filename: filePath,

@@ -1,18 +1,15 @@
-import { existsSync as exists, readFile } from 'fs'
+import { existsSync as exists } from 'fs'
 import { extract, fetch as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
 import { mkdir } from 'shelljs'
-import { InstallContext } from '../../types'
-import { promisify } from 'util'
+import { InstallContext } from '../../../types'
+import { Executor } from '@ko/builder'
 
-import { Executor } from './executor'
-import pkgm from '../package-manager'
+import pkgm from '../../package-manager'
 import dbg from 'debug'
+import { read } from '@ko/utils/fs'
 const debug = dbg('ko:packages:installer')
-
-const read = async (path: string) =>
-  (await promisify(readFile)(path)).toString('utf-8')
 
 const isNavtiveRecipe = (path: string) => /^([\w\-_]*)$/.test(path)
 
@@ -84,7 +81,7 @@ export async function entry(path: string) {
 
   // Determine whether the entry point exists
   if (exists(pkgPath)) {
-    const json = JSON.parse(await read(pkgPath))
+    const json = JSON.parse(read(pkgPath))
 
     if (!json.main) {
       throw new Error('A valid entry point does not exist')

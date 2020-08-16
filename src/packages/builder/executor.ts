@@ -1,13 +1,11 @@
-import { readFile, writeFile } from 'fs'
 import globby from 'globby'
 import handlebars from 'handlebars'
 import { merge } from 'lodash'
 import pkgm from '../../packages/package-manager'
 import git, { CommitSummary } from 'simple-git'
-import { promisify } from 'util'
 import dbg from 'debug'
 
-import { processFile } from './transform'
+import { processFile } from '../transformer'
 import {
   DependencyConfig,
   FileConfig,
@@ -16,11 +14,9 @@ import {
   TransformConfig,
 } from './types'
 import { resolve } from 'path'
+import { write, read } from '@ko/utils/fs'
 
 const debug = dbg('ko:packages:installer:executor')
-const read = async (path: string) =>
-  (await promisify(readFile)(path)).toString('utf-8')
-const write = promisify(writeFile)
 
 export type ExecutorOptions = {
   cwd?: string
@@ -78,9 +74,9 @@ export class Executor {
     { transform, name }: TransformConfig,
     path: string
   ) => {
-    const original = await read(path)
+    const original = read(path)
     const processed = await processFile(original, transform)
-    await write(path, processed, 'utf-8')
+    write(path, processed, 'utf-8')
     // Add the changes
     await git(this.#options.cwd).add('*')
     // Commit the changes
@@ -115,10 +111,10 @@ export class Executor {
     file: Buffer | string
   ) => {
     if (context) {
-      const template = handlebars.compile(await read(file.toString('utf-8')))
+      const template = handlebars.compile(read(file.toString('utf-8')))
       file = template(context)
     }
-    await write(path, file, 'utf-8')
+    write(path, file, 'utf-8')
     // Add the changes
     await git(this.#options.cwd).add('*')
     // Commit the changes
@@ -141,7 +137,7 @@ export class Executor {
         continue
       }
 
-      const file = await read(fc.path)
+      const file = read(fc.path)
       await this.#createFile(fc, file)
     }
   }

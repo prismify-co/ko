@@ -1,15 +1,16 @@
 import Command, { flags } from '@oclif/command'
 import cli from 'cli-ux'
-import dbg = require('debug')
-import execa = require('execa')
+import dbg from 'debug'
+import execa from 'execa'
 import * as inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 
-import create from '../actions/create'
-import { CreateContext } from '../types'
-import checkcwd from '../utils/check-cwd'
-import promptContinue from '../utils/prompt-continue'
-import latestVersion = require('latest-version')
+import create from '@ko/core/create'
+import { CreateContext } from '@ko/types'
+import checkcwd from '@ko/utils/check-cwd'
+import promptContinue from '@ko/utils/prompt-continue'
+import latestVersion from 'latest-version'
+import { setupTsnode } from '@ko/utils/setup-ts-node'
 const debug = dbg('ko:cli:create')
 
 export class CreateCommand extends Command {
@@ -33,8 +34,8 @@ export class CreateCommand extends Command {
   }
 
   async run() {
+    setupTsnode()
     const { args, flags } = this.parse(CreateCommand)
-
     // Set the project name
     const name = args.name as string
 

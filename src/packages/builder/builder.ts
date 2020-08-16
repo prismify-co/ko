@@ -1,5 +1,3 @@
-import merge = require('lodash/merge')
-
 import executor from './executor'
 import {
   DependencyConfig,
@@ -8,6 +6,7 @@ import {
   StepsConfig,
   TransformConfig,
 } from './types'
+import { merge } from 'lodash'
 
 export type BuilderOptions = {
   cwd?: string

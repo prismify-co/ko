@@ -1,21 +1,14 @@
 import dbg from 'debug'
-import { readFile, writeFile } from 'fs'
+
 import handlebars from 'handlebars'
 import { join, resolve } from 'path'
 import { cd, mkdir, touch } from 'shelljs'
 import git from 'simple-git'
 import { promisify } from 'util'
-import config, { Framework } from '../../utils/config'
-import pkgm from '../../packages/package-manager'
-import { mkpdir } from '../../utils/mkpdir'
-
-const readFileAsync = promisify(readFile)
-const writeFileAsync = promisify(writeFile)
-
-const write = async (path: string, data: string) =>
-  writeFileAsync(path, data, 'utf-8')
-const read = async (path: string) =>
-  (await readFileAsync(path)).toString('utf-8')
+import config, { Framework } from '../../../config'
+import pkgm from '@ko/package-manager'
+import { mkpdir } from '@ko/utils/mkpdir'
+import { write, read } from '@ko/utils/fs'
 
 const GithubContent = require('github-content')
 
@@ -49,8 +42,8 @@ export default async function create(
 
   // Create the package.json file
   debug('ko [info]: writing package.json')
-  const pkg = await read(join(__dirname, 'templates', 'package.txt'))
-  await write(
+  const pkg = read(join(__dirname, 'templates', 'package.txt'))
+  write(
     join(root, 'package.json'),
     handlebars.compile(pkg)({
       name,
@@ -59,9 +52,9 @@ export default async function create(
 
   // Create the next.config.js file
   debug('ko [info]: writing next.config.js')
-  await write(
+  write(
     join(root, 'next.config.js'),
-    await read(join(templatesPath, 'next.config.txt'))
+    read(join(templatesPath, 'next.config.txt'))
   )
 
   // CD into cwd/name
@@ -105,17 +98,17 @@ export default async function create(
 
   for (const file of pages) {
     const script = file.replace('txt', typescript ? 'tsx' : 'js')
-    const page = await read(join(templatesPath, `pages/${file}`))
-    await write(resolve(`pages/${script}`), handlebars.compile(page)({ name }))
+    const page = read(join(templatesPath, `pages/${file}`))
+    write(resolve(`pages/${script}`), handlebars.compile(page)({ name }))
   }
 
   // Create the initial styles
   debug('ko [info]: creating files under styles/')
   const styles = ['globals.css', 'home.module.css']
   for (const file of styles) {
-    await write(
+    write(
       resolve(`styles/${file}`),
-      await read(join(templatesPath, `styles/${file}`))
+      read(join(templatesPath, `styles/${file}`))
     )
   }
 
@@ -129,7 +122,7 @@ export default async function create(
 
   // Write the .gitignore file
   debug(`ko [info]: writing .gitignore to ${root}`)
-  await write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
+  write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
 
   debug(`ko [info]: Add changes to git`)
   await git(root).add('*')

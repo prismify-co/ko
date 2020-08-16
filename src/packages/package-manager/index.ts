@@ -1,13 +1,10 @@
 import execa from 'execa'
-import { existsSync as exists, readFile } from 'fs'
+import { existsSync as exists } from 'fs'
 import { resolve } from 'path'
-import { promisify } from 'util'
-import { NPMPackage } from '../installer/types'
-
+import { NPMPackage } from './types'
 import dbg from 'debug'
+import { read } from '@ko/utils/fs'
 const debug = dbg('ko:packages:package-manager')
-
-const read = promisify(readFile)
 
 type PackageManagerName = 'yarn' | 'npm'
 
@@ -144,7 +141,7 @@ export class PackageManager {
   async has(name: string): Promise<boolean> {
     const pkgPath = resolve('package.json')
     if (exists(pkgPath)) {
-      const pkg = JSON.parse((await read(pkgPath)).toString('utf-8'))
+      const pkg = JSON.parse(read(pkgPath))
       const { devDependencies, dependencies } = pkg
       return (
         (devDependencies && devDependencies[name]) ||

@@ -6,3 +6,12 @@ node_modules/**
 lib/**
 output/**
 **/output/**
+
+# babel
+babel.config.js
+
+# oclif
+bin/**
+
+# jest
+jest.config.js

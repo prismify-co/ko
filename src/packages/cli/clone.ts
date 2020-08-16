@@ -1,8 +1,9 @@
 import Command from '@oclif/command'
-import dbg = require('debug')
+import dbg from 'debug'
 import { extract, fetch } from 'gitly'
 import { homedir } from 'os'
 import { join } from 'path'
+import { setupTsnode } from '@ko/utils/setup-ts-node'
 const debug = dbg('ko:cli:clone')
 
 export class CloneCommand extends Command {
@@ -18,6 +19,7 @@ export class CloneCommand extends Command {
   ]
 
   async run() {
+    setupTsnode()
     const { args } = this.parse(CloneCommand)
 
     // The repository to clone

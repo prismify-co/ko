@@ -1,15 +1,12 @@
-import { existsSync as exists, readFile, writeFile } from 'fs'
+import { existsSync as exists } from 'fs'
 import { join } from 'path'
 import { cat, mkdir, rm } from 'shelljs'
-import { promisify } from 'util'
-
 import pkgm from '..'
+import { write, readJSON, JSONLike } from '@ko/utils/fs'
 
-const read = promisify(readFile)
-const write = promisify(writeFile)
-
-const readPackage = async (path: string) =>
-  JSON.parse((await read(join(path, 'package.json'))).toString('utf-8'))
+const OUTPUT = join(__dirname, 'output')
+const NODE_MODULES = join(OUTPUT, 'node_modules')
+const PKG_PATH = join(OUTPUT, 'package.json')
 
 const examplePackage = JSON.stringify({
   name: 'package',
@@ -32,13 +29,10 @@ const examplePackage = JSON.stringify({
   homepage: 'https://github.com/prismify/prismify-ko',
 })
 
-const OUTPUT = join(__dirname, 'output')
-const NODE_MODULES = join(OUTPUT, 'node_modules')
-
 describe('packages/package-manager', () => {
   beforeAll(async () => {
     mkdir(OUTPUT)
-    await write(join(OUTPUT, 'package.json'), examplePackage, 'utf-8')
+    write(join(OUTPUT, 'package.json'), examplePackage, 'utf-8')
   })
 
   afterAll(() => {
@@ -50,8 +44,8 @@ describe('packages/package-manager', () => {
       await pkgm().add(['react'], {
         cwd: OUTPUT,
       })
-      const { dependencies } = await readPackage(OUTPUT)
-      expect(dependencies.react).not.toBeUndefined()
+      const { dependencies } = readJSON(PKG_PATH)
+      expect(((dependencies as unknown) as JSONLike).react).not.toBeUndefined()
     })
 
     it('should install babel as a dev dependency', async () => {
@@ -67,8 +61,10 @@ describe('packages/package-manager', () => {
           cwd: OUTPUT,
         }
       )
-      const { devDependencies } = await readPackage(OUTPUT)
-      expect(devDependencies.babel).not.toBeUndefined()
+      const { devDependencies } = readJSON(PKG_PATH)
+      expect(
+        ((devDependencies as unknown) as JSONLike).babel
+      ).not.toBeUndefined()
     })
 
     it('should install moment@v2.0.0', async () => {
@@ -84,8 +80,8 @@ describe('packages/package-manager', () => {
           cwd: OUTPUT,
         }
       )
-      const { dependencies } = await readPackage(OUTPUT)
-      expect(dependencies.moment).toContain('2.0.0')
+      const { dependencies } = readJSON(PKG_PATH)
+      expect(((dependencies as unknown) as JSONLike).moment).toContain('2.0.0')
     })
   })
 

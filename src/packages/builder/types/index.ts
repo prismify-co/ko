@@ -1,4 +1,5 @@
-import { Transformer } from '../transform'
+import { Transformer } from '@ko/transformer/types'
+import { NPMPackage } from '@ko/package-manager/types'
 
 interface Context {
   [x: string]: string | number | boolean | Context
@@ -11,13 +12,6 @@ export interface ExecutorConfig {
   // a bit to display to the user to give context to the change
   explanation: string
 }
-
-export interface NPMPackage {
-  name: string
-  version?: string
-  dev?: boolean
-}
-
 export interface DependencyConfig extends ExecutorConfig {
   packages: (string | NPMPackage)[]
 }

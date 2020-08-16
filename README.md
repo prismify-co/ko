@@ -75,7 +75,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [src/commands/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/commands/clone.ts)_
+_See code: [src/packages/cli/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/clone.ts)_
 
 ## `ko create NAME`
 
@@ -95,7 +95,7 @@ OPTIONS
   -v, --version=version  [default: latest]
 ```
 
-_See code: [src/commands/create.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/commands/create.ts)_
+_See code: [src/packages/cli/create.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/create.ts)_
 
 ## `ko help [COMMAND]`
 
@@ -132,5 +132,5 @@ OPTIONS
   --host=github|gitlab|bitbucket  [default: github]
 ```
 
-_See code: [src/commands/install.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/commands/install.ts)_
+_See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/install.ts)_
 <!-- commandsstop -->

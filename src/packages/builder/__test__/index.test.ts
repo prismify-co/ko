@@ -6,9 +6,9 @@ import {
 import { join } from 'path'
 import { promisify } from 'util'
 import { rm } from 'shelljs'
-import create from '../../../actions/next'
-import { entry, execute } from '..'
-import { setupTsnode } from '../../../utils/setup-ts-node'
+import create from '@ko/core/create/next'
+import { entry, execute } from '@ko/core/install'
+import { setupTsnode } from '@ko/utils/setup-ts-node'
 
 const mkdir = promisify(createDir)
 
@@ -54,15 +54,15 @@ describe('packages/installer', () => {
 
   describe('execute', () => {
     it('should modify a Next.js App', async () => {
-      const expected = (
-        await read(join(RECIPE_DIR, '_app_expected.txt')).toString('utf-8')
-      ).replace(/\s/g, '')
+      const expected = read(join(RECIPE_DIR, '_app_expected.txt'))
+        .toString('utf-8')
+        .replace(/\s/g, '')
 
       const entryPath = await entry(RECIPE_DIR)
       const { executor } = await execute(APP_DIR, RECIPE_DIR, entryPath, false)
-      const actual = (
-        await read(join(APP_DIR, 'pages', '_app.tsx')).toString('utf-8')
-      ).replace(/\s/g, '')
+      const actual = read(join(APP_DIR, 'pages', '_app.tsx'))
+        .toString('utf-8')
+        .replace(/\s/g, '')
       expect(executor.commits.length).toBeGreaterThan(0)
       expect(actual).toEqual(expected)
     })
