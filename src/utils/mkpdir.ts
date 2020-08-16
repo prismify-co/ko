@@ -1,5 +1,5 @@
-import { mkdir } from 'shelljs'
 import { resolve } from 'path'
+import { mkdir } from 'shelljs'
 
 /**
  * Creates a project directory only if the project is not the cwd
