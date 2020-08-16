@@ -109,7 +109,7 @@
     "prepack": "rm -rf lib && npm run build && npm run oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
-    "build": "babel src --out-dir lib --extensions '.ts,.tsx'"
+    "build": "tsc && babel src --out-dir lib --extensions '.ts,.tsx'"
   },
   "types": "lib/index.d.ts"
 }
