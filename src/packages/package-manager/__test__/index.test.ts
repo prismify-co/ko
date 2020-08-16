@@ -1,4 +1,4 @@
-import { exists as has, readFile, writeFile } from 'fs'
+import { existsSync as exists, readFile, writeFile } from 'fs'
 import { join } from 'path'
 import { cat, mkdir, rm } from 'shelljs'
 import { promisify } from 'util'
@@ -7,7 +7,6 @@ import pkgm from '..'
 
 const read = promisify(readFile)
 const write = promisify(writeFile)
-const exists = promisify(has)
 
 const readPackage = async (path: string) =>
   JSON.parse((await read(join(path, 'package.json'))).toString('utf-8'))
@@ -93,7 +92,7 @@ describe('packages/package-manager', () => {
   it('should install dependencies and devDependencies', async () => {
     rm('-rf', NODE_MODULES)
     await pkgm().install({ cwd: OUTPUT })
-    expect(await exists(NODE_MODULES)).toEqual(true)
+    expect(exists(NODE_MODULES)).toEqual(true)
   })
 
   describe('remove', () => {
