@@ -4,7 +4,7 @@ module.exports = {
     [
       'module-resolver',
       {
-        root: ['./'],
+        root: ['./src'],
         alias: {
           '@ko/utils/(.+)': './utils/\\1',
           '@ko': ([, name]) => {
