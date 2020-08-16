@@ -11,7 +11,6 @@ module.exports = {
           '@ko': ([, name]) => {
             if (name.includes('utils')) return './utils'
             if (name.includes('types')) return './types'
-            console.log(name)
             return `./packages${name}`
           },
         },
