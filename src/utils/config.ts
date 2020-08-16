@@ -1,11 +1,10 @@
-import { exists, readFile, writeFile } from 'fs'
+import { existsSync as exists, writeFile } from 'fs'
 import { resolve } from 'path'
 import { promisify } from 'util'
-const existsAsync = promisify(exists)
 const writeFileAsync = promisify(writeFile)
 
 const write = async (path: string, data: string) =>
-  await writeFileAsync(path, data, 'utf-8')
+  writeFileAsync(path, data, 'utf-8')
 
 export const KO_CONFIG_FILENAME = 'ko.config.json'
 export const KO_CONFIG_REPOSITORY_NAME = '@prismify/ko-tasks'
@@ -28,7 +27,7 @@ class Config {
   }
   async init() {
     const path = resolve(KO_CONFIG_FILENAME)
-    if (await existsAsync(path)) {
+    if (exists(path)) {
       return
     }
 
