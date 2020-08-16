@@ -33,12 +33,16 @@ At the time of this writng, ko can generate a basic Next.js app and clone reposi
 ko create
 ```
 
+## Features
+
+- Generate Next.js projects
+- :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-ko/ko-recipes)
+
 # Roadmap
 
-- Support other projects like Nuxt.js and Sapper
-- Support ko recipes (Experimental! Please do not use!)
-  - Configures your project by running `ko install [recipe]`. (e.g. Chakra)
-- Support for Docker
+- Support other frameworks like Nuxt.js and Sapper
+- Support for Docker (?)
+- Add `run` command (e.g. installing a list of recipes from `ko.config.json`)
 
 # Usage
 
@@ -92,8 +96,8 @@ ARGUMENTS
 
 OPTIONS
   -f, --framework=next   [default: next]
+  -j, --javascript       Use JavaScript
   -p, --prompt
-  -t, --typescript
   -v, --version=version  [default: latest]
 ```
 
