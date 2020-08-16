@@ -44,7 +44,6 @@ export class InstallCommand extends Command {
     try {
       debug(`ko [info]: installing ${name}`)
       cli.action.start('configuring your app')
-
       install(context)
       cli.action.stop()
     } catch (error) {
