@@ -12,7 +12,7 @@ export const KO_CONFIG_REPOSITORY_NAME = '@prismify/ko-tasks'
 export const KO_CONFIG_REPOSITORY_URL =
   'https://github.com/prismify-co/ko-tasks'
 
-export let KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
+export const KO_CONFIG_CURRENT_REPOSITORY_URL = KO_CONFIG_REPOSITORY_URL
 
 export type Framework = 'nuxt' | 'next' | 'sapper'
 

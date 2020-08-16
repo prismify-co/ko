@@ -36,7 +36,7 @@ export class CreateCommand extends Command {
     const { args, flags } = this.parse(CreateCommand)
 
     // Set the project name
-    let name = args.name as string
+    const name = args.name as string
 
     // Set the initial context for project creation
     let context: CreateContext = { name, ...omit(flags, 'prompt') }
