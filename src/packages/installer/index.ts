@@ -2,7 +2,7 @@ import { existsSync as exists, readFile } from 'fs'
 import { extract, fetch as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
-import { tempdir } from 'shelljs'
+import { mkdir } from 'shelljs'
 import { InstallContext } from '../../types'
 import { promisify } from 'util'
 
@@ -46,11 +46,13 @@ export default async function install({
   if (isNavtiveRecipe(name)) {
     // Grab the recipes
     const source = await gitly('prismify-co/ko-recipes', gitlyOpts)
+    // Create a temp directory if it doesn't exist
+    mkdir('-p', join(tmpdir(), 'ko-recipes'))
     // Extract the recipes into temp dir
-    const destination = await extract(source, tmpdir())
+    const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
     const path = join(destination, name, 'next')
     // Execute from directory
-    return execute(cwd, path, await entry(path, true), dryRun)
+    return execute(cwd, path, await entry(path), dryRun)
   }
 
   if (isLocalPath(name)) {
@@ -62,22 +64,18 @@ export default async function install({
   if (isUrlRecipe(name)) {
     // Download from host
     const source = await gitly(name, gitlyOpts)
+    // Create a temp directory if it doesn't exist
+    mkdir('-p', join(tmpdir(), 'ko-recipes'))
     // Extract the recipes into temp dir
-    const destination = await extract(source, tempdir())
+    const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
     // Execute from the directory
     return execute(cwd, destination, await entry(destination), dryRun)
   }
 }
 
-export async function entry(
-  path: string,
-  official: boolean = false,
-  framework: string = 'next'
-) {
+export async function entry(path: string) {
   // Check if this is the official repository
-  const pkgPath = official
-    ? join(path, framework, 'package.json')
-    : join(path, 'package.json')
+  const pkgPath = join(path, 'package.json')
 
   // Determine whether the entry point exists
   if (exists(pkgPath)) {
