@@ -2,6 +2,8 @@
 
 A project scaffolding and configuration CLI for the web
 
+![Node CI](https://github.com/prismify-co/ko/workflows/Node/badge.svg)
+
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
 [![Downloads/week](https://img.shields.io/npm/dw/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
