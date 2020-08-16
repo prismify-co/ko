@@ -67,7 +67,7 @@ _Install Chakra_
 ko install chakra
 ```
 
-#### . Start developing!
+#### 3. Start developing!
 
 ```bash
 yarn dev
