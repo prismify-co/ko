@@ -2,10 +2,11 @@ import execa from 'execa'
 import { existsSync as exists, readFile } from 'fs'
 import { resolve } from 'path'
 import { promisify } from 'util'
-
 import { NPMPackage } from '../installer/types'
 
-const existsAysnc = promisify(exists)
+import dbg from 'debug'
+const debug = dbg('ko:packages:package-manager')
+
 const read = promisify(readFile)
 
 type PackageManagerName = 'yarn' | 'npm'
@@ -28,24 +29,68 @@ export class PackageManager {
     packages: (string | NPMPackage)[],
     options: NPMPackageManagerOptions = {}
   ) {
-    const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || (await this.which())
-    // Install dependencies
-    await this.run(manager, 'add', dependencies, false, options)
-    // Install dev dependencies
-    await this.run(manager, 'add', devDependencies, true, options)
+    try {
+      const { dependencies, devDependencies } = this.packages(packages)
+      const manager: PackageManagerName = options?.manager || this.which()
+      // Install dependencies
+      await this.run(manager, 'add', dependencies, false, options)
+      // Install dev dependencies
+      await this.run(manager, 'add', devDependencies, true, options)
+    } catch (error) {
+      debug('ko [error]: An error occurred')
+      debug(error)
+    }
+  }
+
+  addSync(
+    packages: (string | NPMPackage)[],
+    options: NPMPackageManagerOptions = {}
+  ) {
+    try {
+      const { dependencies, devDependencies } = this.packages(packages)
+      const manager: PackageManagerName = options?.manager || this.which()
+      // Install dependencies
+      this.runSync(manager, 'add', dependencies, false, options)
+      // Install dev dependencies
+      this.runSync(manager, 'add', devDependencies, true, options)
+    } catch (error) {
+      debug('ko [error]: An error occurred')
+      debug(error)
+    }
   }
 
   async remove(
     packages: (string | Omit<NPMPackage, 'version'>)[],
     options: NPMPackageManagerOptions = {}
   ) {
-    const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || (await this.which())
-    // Install dependencies
-    await this.run(manager, 'remove', dependencies, false, options)
-    // Install dev dependencies
-    await this.run(manager, 'remove', devDependencies, true, options)
+    try {
+      const { dependencies, devDependencies } = this.packages(packages)
+      const manager: PackageManagerName = options?.manager || this.which()
+      // Install dependencies
+      await this.run(manager, 'remove', dependencies, false, options)
+      // Install dev dependencies
+      await this.run(manager, 'remove', devDependencies, true, options)
+    } catch (error) {
+      debug('ko [error]: An error occurred')
+      debug(error)
+    }
+  }
+
+  removeSync(
+    packages: (string | Omit<NPMPackage, 'version'>)[],
+    options: NPMPackageManagerOptions = {}
+  ) {
+    try {
+      const { dependencies, devDependencies } = this.packages(packages)
+      const manager: PackageManagerName = options?.manager || this.which()
+      // Install dependencies
+      this.runSync(manager, 'remove', dependencies, false, options)
+      // Install dev dependencies
+      this.runSync(manager, 'remove', devDependencies, true, options)
+    } catch (error) {
+      debug('ko [error]: An error occurred')
+      debug(error)
+    }
   }
 
   private packages(packages: (string | NPMPackage)[]) {
@@ -71,11 +116,25 @@ export class PackageManager {
   }
 
   async install(options: NPMPackageManagerOptions = {}): Promise<void> {
-    const manager: PackageManagerName = options?.manager || (await this.which())
+    debug('ko [info]: installing existing packages')
+
+    const manager: PackageManagerName = options?.manager || this.which()
     const { stdout } = await execa(manager, ['install'], {
       cwd: options.cwd || process.cwd(),
     })
-    if (!options.silent) console.log(stdout)
+
+    debug(stdout)
+  }
+
+  installSync(options: NPMPackageManagerOptions = {}): void {
+    debug('ko [info]: installing existing packages')
+
+    const manager: PackageManagerName = options?.manager || this.which()
+    const { stdout } = execa.sync(manager, ['install'], {
+      cwd: options.cwd || process.cwd(),
+    })
+
+    debug(stdout)
   }
 
   /**
@@ -104,6 +163,7 @@ export class PackageManager {
     options: NPMPackageManagerOptions
   ) {
     if (packages.length === 0) return
+    debug(`ko [info]: run:${command}`)
 
     let args: string[] = [command]
 
@@ -116,7 +176,35 @@ export class PackageManager {
     const { stdout } = await execa(manager, args, {
       cwd: options.cwd || process.cwd(),
     })
-    if (!options.silent) console.log(stdout)
+
+    debug(stdout)
+    // if (!options.silent) console.log(stdout)
+  }
+
+  async runSync(
+    manager: PackageManagerName,
+    command: 'add' | 'remove',
+    packages: string[],
+    dev: boolean,
+    options: NPMPackageManagerOptions
+  ) {
+    if (packages.length === 0) return
+    debug(`ko [info]: run:${command}`)
+
+    let args: string[] = [command]
+
+    if (command === 'remove' || (!dev && command === 'add')) {
+      args = [...args, ...packages]
+    } else {
+      args = [...args, '-D', ...packages]
+    }
+
+    const { stdout } = await execa.sync(manager, args, {
+      cwd: options.cwd || process.cwd(),
+    })
+
+    debug(stdout)
+    // if (!options.silent) console.log(stdout)
   }
 }
 
