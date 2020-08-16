@@ -5,6 +5,7 @@ import { merge } from 'lodash'
 import pkgm from '../../packages/package-manager'
 import git, { CommitSummary } from 'simple-git'
 import { promisify } from 'util'
+import dbg from 'debug'
 
 import { processFile } from './transform'
 import {
@@ -14,8 +15,12 @@ import {
   StepsConfig,
   TransformConfig,
 } from './types'
-const writeFileAsync = promisify(writeFile)
-const readFileAsync = promisify(readFile)
+import { resolve } from 'path'
+
+const debug = dbg('ko:packages:installer:executor')
+const read = async (path: string) =>
+  (await promisify(readFile)(path)).toString('utf-8')
+const write = promisify(writeFile)
 
 export type ExecutorOptions = {
   cwd?: string
@@ -26,7 +31,7 @@ export class Executor {
   #steps: StepsConfig[]
   #meta: RecipeMeta
   #options: ExecutorOptions
-  #commits: CommitSummary[] = []
+  commits: CommitSummary[] = []
   constructor(
     steps: StepsConfig[],
     meta: RecipeMeta,
@@ -43,8 +48,11 @@ export class Executor {
   }
 
   async run() {
+    debug('ko [info]: installing packages')
     await this.#installPackages()
+    debug('ko [info]: creating files')
     await this.#createFiles()
+    debug('ko [info]: transforming files')
     await this.#transformFiles()
     return this
   }
@@ -53,58 +61,89 @@ export class Executor {
     const dependencies = this.#steps.filter(
       (step) => step.type === 'dependency'
     ) as DependencyConfig[]
-    dependencies.forEach(async (d) => {
-      if (d.packages.length > 0) {
+    for (const dc of dependencies) {
+      if (dc.packages.length > 0) {
         // Install the packages
-        pkgm().add(d.packages, { cwd: this.#options.cwd })
+        await pkgm().add(dc.packages, { cwd: this.#options.cwd })
         // Add the changes
         await git(this.#options.cwd).add('*')
         // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(d.name))
+        const commit = await git(this.#options.cwd).commit(dc.name)
+        this.commits.push(commit)
       }
-    })
+    }
+  }
+
+  #transformFile = async (
+    { transform, name }: TransformConfig,
+    path: string
+  ) => {
+    const original = await read(path)
+    const processed = await processFile(original, transform)
+    await write(path, processed, 'utf-8')
+    // Add the changes
+    await git(this.#options.cwd).add('*')
+    // Commit the changes
+    const commit = await git(this.#options.cwd).commit(name)
+    this.commits.push(commit)
   }
 
   #transformFiles = async () => {
     const transforms = this.#steps.filter(
       (step) => step.type === 'transform'
     ) as TransformConfig[]
-    transforms.forEach(async (t) => {
-      for await (const path of globby.stream(t.files, {
-        cwd: this.#options.cwd,
-      })) {
-        const original = (await readFileAsync(path)).toString('utf-8')
-        const processed = processFile(original, t.transform)
-        await writeFileAsync(path, processed, 'utf-8')
-        // Add the changes
-        await git(this.#options.cwd).add('*')
-        // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(t.name))
+
+    for (const tc of transforms) {
+      const paths = tc.files
+      for (const path of paths) {
+        if (globby.hasMagic(path)) {
+          for await (const p of globby.stream(path, {
+            expandDirectories: true,
+          })) {
+            await this.#transformFile(tc, p.toString('utf-8'))
+          }
+          continue
+        }
+
+        await this.#transformFile(tc, resolve(path))
       }
-    })
+    }
+  }
+
+  #createFile = async (
+    { name, context, path }: FileConfig,
+    file: Buffer | string
+  ) => {
+    if (context) {
+      const template = handlebars.compile(await read(file.toString('utf-8')))
+      file = template(context)
+    }
+    await write(path, file, 'utf-8')
+    // Add the changes
+    await git(this.#options.cwd).add('*')
+    // Commit the changes
+    const commit = await git(this.#options.cwd).commit(name)
+    this.commits.push(commit)
   }
 
   #createFiles = async () => {
     const files = this.#steps.filter(
       (step) => step.type === 'file'
     ) as FileConfig[]
-    files.forEach(async (f) => {
-      for await (const path of globby.stream(f.path, {
-        cwd: this.#options.cwd,
-      })) {
-        let file = (await readFileAsync(path)).toString('utf-8')
 
-        if (f.context) {
-          const template = handlebars.compile(file)
-          file = template(f.context)
+    for (const fc of files) {
+      if (globby.hasMagic(fc.path)) {
+        for await (const file of globby.stream(fc.path, {
+          expandDirectories: true,
+        })) {
+          await this.#createFile(fc, file)
         }
-        await writeFileAsync(path, file, 'utf-8')
-        // Add the changes
-        await git(this.#options.cwd).add('*')
-        // Commit the changes
-        this.#commits.push(await git(this.#options.cwd).commit(f.name))
+        continue
       }
-    })
+
+      const file = await read(fc.path)
+      await this.#createFile(fc, file)
+    }
   }
 }
 
