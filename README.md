@@ -60,7 +60,7 @@ USAGE
 * [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
 * [`ko create NAME`](#ko-create-name)
 * [`ko help [COMMAND]`](#ko-help-command)
-* [`ko install RECIPE`](#ko-install-recipe)
+* [`ko install NAME`](#ko-install-name)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -114,16 +114,16 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-## `ko install RECIPE`
+## `ko install NAME`
 
 install the recipe and configure the app
 
 ```
 USAGE
-  $ ko install RECIPE
+  $ ko install NAME
 
 ARGUMENTS
-  RECIPE  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
+  NAME  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
 
 OPTIONS
   -c, --cache
