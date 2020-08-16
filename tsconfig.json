@@ -9,7 +9,8 @@
     "target": "es2017",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "lib": ["ESNext"]
   },
   "include": ["src"],
   "exclude": [
