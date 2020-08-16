@@ -1,4 +1,4 @@
-import { exists as has, readFile } from 'fs'
+import { existsSync as exists, readFile } from 'fs'
 import { extract, fetch as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
@@ -8,9 +8,7 @@ import { promisify } from 'util'
 
 import { Executor } from './executor'
 import pkgm from '../package-manager'
-import execa from 'execa'
 
-const exists = promisify(has)
 const read = async (path: string) =>
   (await promisify(readFile)(path)).toString('utf-8')
 
@@ -43,6 +41,8 @@ export default async function install({
     ...(cache === false ? { force: true } : {}),
   }
 
+  const cwd = process.cwd()
+
   if (isNavtiveRecipe(name)) {
     // Grab the recipes
     const source = await gitly('prismify-co/ko-recipes', gitlyOpts)
@@ -50,13 +50,13 @@ export default async function install({
     const destination = await extract(source, tmpdir())
     const path = join(destination, name, 'next')
     // Execute from directory
-    return execute(path, await entry(path, true), dryRun)
+    return execute(cwd, path, await entry(path, true), dryRun)
   }
 
   if (isLocalPath(name)) {
     const path = resolve(name)
     // Execute from the local path
-    return execute(path, await entry(path), dryRun)
+    return execute(cwd, path, await entry(path), dryRun)
   }
 
   if (isUrlRecipe(name)) {
@@ -65,26 +65,26 @@ export default async function install({
     // Extract the recipes into temp dir
     const destination = await extract(source, tempdir())
     // Execute from the directory
-    return execute(destination, await entry(destination), dryRun)
+    return execute(cwd, destination, await entry(destination), dryRun)
   }
 }
 
-async function entry(
+export async function entry(
   path: string,
   official: boolean = false,
   framework: string = 'next'
 ) {
   // Check if this is the official repository
-  path = official
+  const pkgPath = official
     ? join(path, framework, 'package.json')
     : join(path, 'package.json')
 
   // Determine whether the entry point exists
-  if (await exists(path)) {
-    const json = JSON.parse(await read(path))
+  if (exists(pkgPath)) {
+    const json = JSON.parse(await read(pkgPath))
 
     if (!json.main) {
-      throw new Error('A valid package.json does not exist')
+      throw new Error('A valid entry point does not exist')
     }
 
     return resolve(path, json.main)
@@ -92,31 +92,34 @@ async function entry(
 
   throw new Error('A valid package.json does not exist')
 }
-
-async function execute(path: string, entry: string, dryRun: boolean = false) {
-  // Save the current working directory
-  const cwd = process.cwd()
+/**
+ *
+ * @param app The path to the app
+ * @param path The path to the recipe
+ * @param entry The entry path
+ * @param dryRun Determines whether we should execute
+ */
+export async function execute(
+  cwd: string,
+  path: string,
+  entry: string,
+  dryRun: boolean
+) {
   // Set the current working directory to the destination
   process.chdir(path)
   // Install the packages
-  await pkgm().install()
-  // Determine if we need to compile the files
-  if (await exists(resolve('tsconfig.json'))) {
-    // Install typescript (just in case)
-    await pkgm().add(['typescript'])
-    // Compile the files
-    await execa(await pkgm().which(), ['run', 'tsc'])
-  }
+  await pkgm().install({ silent: true })
+  // Restore the current working directory
+  process.chdir(cwd)
   // Grab the executor
   const executor = (await import(entry)).default as Executor
   // Run the executor
-  executor
+  await executor
     .setOptions({
-      dryRun,
+      dryRun: dryRun,
+      cwd,
     })
     .run()
-  // Restore the current working directory
-  process.chdir(cwd)
 
-  return { executor, destination: path, cwd }
+  return { executor, path, entry, cwd }
 }
