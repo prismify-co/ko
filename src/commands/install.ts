@@ -12,7 +12,7 @@ export class InstallCommand extends Command {
   static description = 'install the recipe and configure the app'
   static args = [
     {
-      name: 'recipe',
+      name: 'name',
       description:
         'The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)',
       required: true,
@@ -37,9 +37,9 @@ export class InstallCommand extends Command {
     // Set the recipe name
     const name = args.name as string
     // Set the initial context for recipe installation
-    let context: InstallContext = { name, ...omit(flags, 'prompt') }
+    let context: InstallContext = merge(omit(flags, 'prompt'), { name })
     // Update the context if prompt was specified
-    if (flags.prompt) context = merge(context, await prompt())
+    if (flags.prompt) context = merge(await prompt(), context)
 
     try {
       debug(`ko [info]: installing ${name}`)
