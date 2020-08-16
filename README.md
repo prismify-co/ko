@@ -2,18 +2,18 @@
 
 A project scaffolding and configuration CLI for the web
 
-![Node CI](https://github.com/prismify-co/ko/workflows/Node/badge.svg)
-
+[![Node CI](https://github.com/prismify-co/ko/workflows/Node/badge.svg)](https://github.com/prismify-co/ko/actions?query=workflow%3ANode)
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
 [![Downloads/week](https://img.shields.io/npm/dw/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-* [ko](#ko)
-* [About](#about)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [ko](#ko)
+- [About](#about)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # About
@@ -76,6 +76,7 @@ yarn dev
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
@@ -87,15 +88,17 @@ USAGE
   $ ko COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-* [`ko create NAME`](#ko-create-name)
-* [`ko help [COMMAND]`](#ko-help-command)
-* [`ko install NAME`](#ko-install-name)
+
+- [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
+- [`ko create NAME`](#ko-create-name)
+- [`ko help [COMMAND]`](#ko-help-command)
+- [`ko install NAME`](#ko-install-name)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -168,4 +171,5 @@ OPTIONS
 ```
 
 _See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/install.ts)_
+
 <!-- commandsstop -->
