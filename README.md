@@ -19,9 +19,11 @@ A project scaffolding and configuration CLI for the web
 
 ko is a (WIP) project scaffolding and configuration tool that is meant to easily create or clone projects like Nuxt.js, Next.js, and Sapper.
 
-This project is heavily inspired by [Blitz](https://github.com/blitz-js/blitz). Blitz is a Ruby on Rails like project based on Next.js. Blitz also allows you to configure the project by using their CLI. Rather than building a web framework, this project focuses on the configuration portion of their CLI and aims to target different frameworks.
+This project is heavily inspired<sup><a id="one">[1](#one)</a></sup> by [Blitz](https://github.com/blitz-js/blitz). Blitz is a Ruby on Rails like project based on Next.js. Blitz also allows you to configure the project by using their CLI. However, rather than building a web framework, this project focuses on the configuration portion of their CLI and aims to target different frameworks.
 
 At the time of this writng, ko can generate a basic Next.js app and clone repositories from GitHub, GitLab, and Bitbucket.
+
+<sup id="1"><b>1</b></sup> Before knowing about Blitz, I had created a [Nuxt.js configurator](https://www.github.com/prismify-ko/ko-utils) that took a simiar approach.
 
 ### Example
 
