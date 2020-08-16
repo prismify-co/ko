@@ -35,7 +35,7 @@ ko create
 
 - Support other projects like Nuxt.js and Sapper
 - Support ko recipes (Experimental! Please do not use!)
-  - Configures your project by running `ko install [recipe]`. e.g. Chakra
+  - Configures your project by running `ko install [recipe]`. (e.g. Chakra)
 - Support for Docker
 
 # Usage
