@@ -10,10 +10,6 @@ A project scaffolding and configuration CLI for the web
 <!-- toc -->
 * [ko](#ko)
 * [About](#about)
-* [Create a Next.js app using TypeScript](#create-a-nextjs-app-using-typescript)
-* [Create a Next.js app using JavaScript](#create-a-nextjs-app-using-javascript)
-* [Change directory](#change-directory)
-* [Install Chakra](#install-chakra)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -41,27 +37,35 @@ At the time of this writng, ko can generate a basic Next.js app and clone reposi
 
 ### Get Started
 
-1. Create the project
+#### 1. Create the project
+
+_Create a Next.js app using TypeScript_
 
 ```bash
-# Create a Next.js app using TypeScript
 ko create hello
+```
 
-# Create a Next.js app using JavaScript
+_Create a Next.js app using JavaScript_
+
+```bash
 ko create hello --javascript # or -j
 ```
 
-2. Configure the project
+#### 2. Configure the project
+
+_`cd` into the project_
 
 ```bash
-# Change directory
 cd hello
+```
 
-# Install Chakra
+_Install Chakra_
+
+```bash
 ko install chakra
 ```
 
-3. Start developing!
+#### . Start developing!
 
 ```bash
 yarn dev
