@@ -8,12 +8,14 @@ A project scaffolding and configuration CLI for the web
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-
-- [ko](#ko)
-- [About](#about)
-- [Roadmap](#roadmap)
-- [Usage](#usage)
-- [Commands](#commands)
+* [ko](#ko)
+* [About](#about)
+* [Create a Next.js app using TypeScript](#create-a-nextjs-app-using-typescript)
+* [Create a Next.js app using JavaScript](#create-a-nextjs-app-using-javascript)
+* [Change directory](#change-directory)
+* [Install Chakra](#install-chakra)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # About
@@ -26,29 +28,48 @@ At the time of this writng, ko can generate a basic Next.js app and clone reposi
 
 <sup id="1"><b>1</b></sup> Before knowing about Blitz, I had created a [Nuxt.js configurator](https://www.github.com/prismify-ko/ko-utils) that took a simiar approach.
 
-### Example
-
-1. Create the project
-
-```bash
-ko create
-```
-
-## Features
+### Features
 
 - Generate Next.js projects
 - :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-ko/ko-recipes)
 
-## Roadmap
+### Roadmap
 
 - Support other frameworks like Nuxt.js and Sapper
 - Support for Docker (?)
 - Add `run` command (e.g. installing a list of recipes from `ko.config.json`)
 
+### Get Started
+
+1. Create the project
+
+```bash
+# Create a Next.js app using TypeScript
+ko create hello
+
+# Create a Next.js app using JavaScript
+ko create hello --javascript # or -j
+```
+
+2. Configure the project
+
+```bash
+# Change directory
+cd hello
+
+# Install Chakra
+ko install chakra
+```
+
+3. Start developing!
+
+```bash
+yarn dev
+```
+
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
@@ -60,17 +81,15 @@ USAGE
   $ ko COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-- [`ko create NAME`](#ko-create-name)
-- [`ko help [COMMAND]`](#ko-help-command)
-- [`ko install NAME`](#ko-install-name)
+* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
+* [`ko create NAME`](#ko-create-name)
+* [`ko help [COMMAND]`](#ko-help-command)
+* [`ko install NAME`](#ko-install-name)
 
 ## `ko clone REPOSITORY [DESTINATION]`
 
@@ -143,5 +162,4 @@ OPTIONS
 ```
 
 _See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.13/src/packages/cli/install.ts)_
-
 <!-- commandsstop -->
