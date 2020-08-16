@@ -29,7 +29,11 @@ export class CreateCommand extends Command {
       char: 'f',
     }),
     version: flags.string({ char: 'v', default: 'latest' }),
-    typescript: flags.boolean({ default: true, char: 't' }),
+    javascript: flags.boolean({
+      default: false,
+      char: 'j',
+      description: 'Use JavaScript',
+    }),
     prompt: flags.boolean({ default: false, char: 'p' }),
   }
 
@@ -40,7 +44,11 @@ export class CreateCommand extends Command {
     const name = args.name as string
 
     // Set the initial context for project creation
-    let context: CreateContext = { name, ...omit(flags, 'prompt') }
+    let context: CreateContext = {
+      name,
+      ...omit(flags, 'prompt', 'javascript'),
+      typescript: flags.javascript === false,
+    }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
 
@@ -107,15 +115,15 @@ async function prompt() {
     ])
   ).version as string).replace(/v/, '')
 
-  const typescript =
+  const javascript =
     (await inquirer.prompt([
       {
-        name: 'typescript',
-        message: 'Enable TypeScript?',
+        name: 'javascript',
+        message: 'Use JavaScript?',
         type: 'list',
         choices: ['Yes', 'No'],
-        default: 'Yes',
+        default: 'No',
       },
-    ])) === 'Yes'
-  return { framework, version, typescript }
+    ])) === 'No'
+  return { framework, version, typescript: javascript === false }
 }
