@@ -22,6 +22,9 @@ export class CreateCommand extends Command {
       required: true,
     },
   ]
+
+  static aliases = ['new']
+
   static flags = {
     framework: flags.string({
       options: ['next'],
