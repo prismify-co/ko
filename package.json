@@ -43,7 +43,6 @@
     "shelljs": "^0.8.4",
     "simple-git": "^2.17.0",
     "tsconfig-paths": "^3.9.0",
-    "tslib": "^2",
     "vue-template-compiler": "^2.6.11",
     "which": "^2.0.2"
   },
@@ -65,6 +64,7 @@
     "@types/which": "^1.3.2",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
+    "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "5.16.0",
     "eslint-config-xo-typescript": "^0.32.0",
@@ -106,10 +106,11 @@
     "oclif-dev": "node -r tsconfig-paths/register ./node_modules/.bin/oclif-dev",
     "lint": "eslint src --ext .ts",
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && npm run build && npm run oclif-dev manifest && oclif-dev readme",
+    "prepack": "npm run build && npm run oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
-    "build": "tsc && babel src --out-dir lib --extensions '.ts,.tsx'"
+    "build": "npm run clean && tsc && babel src --out-dir lib --extensions '.ts,.tsx'",
+    "clean": "rm -rf lib"
   },
   "types": "lib/index.d.ts"
 }
