@@ -74,6 +74,9 @@
     "eslint-config-xo-typescript": "^0.32.0",
     "eslint-plugin-oclif": "^0.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-copy": "^4.0.1",
     "jest": "^26.4.0",
     "ts-jest": "^26.2.0",
     "typescript": "^3.9.7"
@@ -109,7 +112,7 @@
     "prepack": "npm run build && npm run oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
-    "build": "npm run clean && tsc && babel src --out-dir lib --extensions '.ts,.tsx'",
+    "build": "npm run clean && gulp && tsc",
     "clean": "rm -rf lib"
   },
   "types": "lib/index.d.ts"
