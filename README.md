@@ -23,12 +23,12 @@ This project is heavily inspired<sup><a id="one">[1](#one)</a></sup> by [Blitz](
 
 At the time of this writng, ko can generate a basic Next.js app and clone repositories from GitHub, GitLab, and Bitbucket.
 
-<sup id="1"><b>1</b></sup> Before knowing about Blitz, I had created a [Nuxt.js configurator](https://www.github.com/prismify-ko/ko-utils) that took a simiar approach.
+<sup id="1"><b>1</b></sup> Before knowing about Blitz, I had created a [Nuxt.js configurator](https://www.github.com/prismify-co/ko-utils) that took a simiar approach.
 
 ### Features
 
 - Generate Next.js projects
-- :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-ko/ko-recipes)
+- :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-co/ko-recipes)
 
 ### Roadmap
 
