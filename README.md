@@ -167,6 +167,9 @@ OPTIONS
   -d, --dryRun
   -p, --prompt
   --host=github|gitlab|bitbucket  [default: github]
+
+ALIASES
+  $ ko add
 ```
 
 _See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.17/src/packages/cli/install.ts)_
