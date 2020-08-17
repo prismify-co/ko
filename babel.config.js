@@ -1,31 +1,34 @@
+const { resolve } = require('path')
+
 module.exports = {
-  presets: ['@babel/preset-typescript', '@babel/preset-env'],
-  plugins: [
+  presets: [
+    '@babel/preset-typescript',
     [
-      'module-resolver',
+      '@babel/preset-env',
       {
-        root: ['./src'],
-        alias: {
-          '@ko/utils/(.+)': './utils/\\1',
-          '@ko': ([, name]) => {
-            if (name.includes('types')) return './types'
-            return `./packages${name}`
-          },
+        targets: {
+          node: true,
         },
       },
     ],
+  ],
+  plugins: [
     '@babel/plugin-syntax-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator',
     '@babel/plugin-transform-typescript',
     '@babel/plugin-proposal-class-properties',
+    [
+      require.resolve('babel-plugin-module-resolver'),
+      {
+        root: [resolve('./')],
+        alias: {
+          '@ko': ([, name]) => {
+            if (name.includes('types')) return `./${name}`
+            return `./src/packages/${name}`
+          },
+        },
+      },
+    ],
   ],
-  ignore: [
-    '__test__',
-    'src/**/__test__/**',
-    'output/**',
-    '**/output/**',
-    '**/**/output/**',
-    '**/**/**/output/**',
-    '**/**/**/**/output/**',
-  ],
+  ignore: ['src/packages/**/__test__/**'],
 }
