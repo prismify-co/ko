@@ -55,3 +55,5 @@ yarn-error.log*
 output/
 .DS_Store
 .nuxt/
+.next/
+oclif.manifest.json
