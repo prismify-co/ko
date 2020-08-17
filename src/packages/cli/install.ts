@@ -19,6 +19,8 @@ export class InstallCommand extends Command {
     },
   ]
 
+  static aliases = ['add']
+
   static flags = {
     dryRun: flags.boolean({ default: false, char: 'd' }),
     host: flags.string({
