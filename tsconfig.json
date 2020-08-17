@@ -23,11 +23,17 @@
     "paths": {
       "@ko/*": ["src/packages/*"],
       "@ko/types": ["src/types"],
-      "@ko/types/*": ["src/types/*"],
-      "@ko/utils": ["src/utils"],
-      "@ko/utils/*": ["src/utils/*"]
+      "@ko/types/*": ["src/types/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "**/output/**", "**/__fixture__/**"]
+  "exclude": [
+    "node_modules",
+    "**/output/**",
+    "**/__fixture__/**",
+    "**/**/output/**",
+    "**/**/__fixture__/**",
+    "**/**/**/output/**",
+    "**/**/**/__fixture__/**"
+  ]
 }
