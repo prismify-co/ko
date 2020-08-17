@@ -15,3 +15,7 @@ bin/**
 
 # jest
 jest.config.js
+
+
+# gulp
+gulpfile.js
