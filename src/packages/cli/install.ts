@@ -6,6 +6,8 @@ import { merge, omit } from 'lodash'
 import { InstallContext } from '@ko/types'
 import install from '@ko/core/install'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
+import chalk from 'chalk'
+
 const debug = dbg('ko:commands:install')
 
 export class InstallCommand extends Command {
@@ -48,6 +50,11 @@ export class InstallCommand extends Command {
     console.log()
 
     install(context)
+
+    console.log(`${chalk.green('Success!')} 🎉`)
+    console.log()
+
+    console.log(`${chalk.green(name)} has been configured`)
   }
 }
 
