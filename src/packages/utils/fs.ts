@@ -1,6 +1,5 @@
 import { readFileSync, PathLike, writeFileSync } from 'fs'
 import { URL } from 'url'
-import { join } from 'path'
 
 export { existsSync as exists } from 'fs'
 /**

@@ -1,5 +1,4 @@
 import Command, { flags } from '@oclif/command'
-import { cli } from 'cli-ux'
 import dbg from 'debug'
 import inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
@@ -49,7 +48,7 @@ export class InstallCommand extends Command {
     console.log('Configuring your app')
     console.log()
 
-    await install(context)
+    await new Installer({ ...context, cwd: process.cwd() }).install()
 
     console.log(`${chalk.green('Success!')} 🎉`)
     console.log()

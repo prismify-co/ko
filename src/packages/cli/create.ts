@@ -1,6 +1,4 @@
 import Command, { flags } from '@oclif/command'
-import cli from 'cli-ux'
-import dbg from 'debug'
 import execa from 'execa'
 import * as inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
