@@ -45,8 +45,4 @@ export class BuilderBase {
     })
     return this
   }
-
-  build() {
-    return executor(this.steps, this.options)
-  }
 }

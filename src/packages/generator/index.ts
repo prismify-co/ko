@@ -1,4 +1,4 @@
-import { BuilderBase } from '@ko/builder'
+import { BuilderBase, executor } from '@ko/builder'
 import chalk from 'chalk'
 import cli from 'cli-ux'
 import { mkpdir } from '@ko/utils/mkpdir'
@@ -62,10 +62,10 @@ export class Generator extends BuilderBase {
 
     debug('Initialize the application')
     await this.init()
-    const builder = this.build()
+    const exe = executor(this.steps, this.options)
 
     debug('Start generating the application')
-    await builder.run()
+    await exe.run()
 
     debug(`Add changes to git`)
     await git().add('*')
@@ -80,7 +80,7 @@ export class Generator extends BuilderBase {
     )
     console.log()
 
-    return builder
+    return exe
   }
 }
 
