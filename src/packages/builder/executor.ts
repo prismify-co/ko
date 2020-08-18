@@ -9,14 +9,14 @@ import { processFile } from '../transformer'
 import {
   DependencyConfig,
   FileConfig,
-  RecipeMeta,
   StepsConfig,
   TransformConfig,
+  CustomConfig,
 } from './types'
 import { resolve } from 'path'
 import { write, read } from '@ko/utils/fs'
 
-const debug = dbg('ko:packages:installer:executor')
+const debug = dbg('ko:packages:executor')
 
 export type ExecutorOptions = {
   cwd?: string
@@ -25,16 +25,10 @@ export type ExecutorOptions = {
 
 export class Executor {
   #steps: StepsConfig[]
-  #meta: RecipeMeta
   #options: ExecutorOptions
   commits: CommitSummary[] = []
-  constructor(
-    steps: StepsConfig[],
-    meta: RecipeMeta,
-    options: ExecutorOptions
-  ) {
+  constructor(steps: StepsConfig[], options: ExecutorOptions) {
     this.#steps = steps
-    this.#meta = meta
     this.#options = merge(options, { cwd: process.cwd() })
   }
 
@@ -44,11 +38,13 @@ export class Executor {
   }
 
   async run() {
-    debug('ko [info]: installing packages')
+    debug('Installing packages')
     await this.#installPackages()
-    debug('ko [info]: creating files')
+    debug('Creating files')
     await this.#createFiles()
-    debug('ko [info]: transforming files')
+    debug('Running custom actions')
+    await this.#customActions()
+    debug('Transforming files')
     await this.#transformFiles()
     return this
   }
@@ -57,8 +53,14 @@ export class Executor {
     const dependencies = this.#steps.filter(
       (step) => step.type === 'dependency'
     ) as DependencyConfig[]
+
+    if (dependencies.length > 0) {
+      console.log(`Installing packages. This might take a couple of minutes.`)
+      console.log()
+    }
+
     for (const dc of dependencies) {
-      if (dc.packages.length > 0) {
+      if (dc.packages.length > 0 && dc.condition !== false) {
         // Install the packages
         await pkgm().add(dc.packages, { cwd: this.#options.cwd })
         // Add the changes
@@ -70,10 +72,13 @@ export class Executor {
     }
   }
 
-  #transformFile = async (
-    { transform, name }: TransformConfig,
+  transformFile = async (
+    { transform, name, condition }: TransformConfig,
     path: string
   ) => {
+    // Do not execute if the condition is false
+    if (condition === false) return
+
     const original = read(path)
     const processed = await processFile(original, transform)
     write(path, processed, 'utf-8')
@@ -89,6 +94,11 @@ export class Executor {
       (step) => step.type === 'transform'
     ) as TransformConfig[]
 
+    if (transforms.length > 0) {
+      console.log('Transforming files.')
+      console.log()
+    }
+
     for (const tc of transforms) {
       const paths = tc.files
       for (const path of paths) {
@@ -96,25 +106,28 @@ export class Executor {
           for await (const p of globby.stream(path, {
             expandDirectories: true,
           })) {
-            await this.#transformFile(tc, p.toString('utf-8'))
+            await this.transformFile(tc, p.toString('utf-8'))
           }
           continue
         }
 
-        await this.#transformFile(tc, resolve(path))
+        await this.transformFile(tc, resolve(path))
       }
     }
   }
 
-  #createFile = async (
-    { name, context, path }: FileConfig,
+  createFile = async (
+    { name, context, path, condition }: FileConfig,
     file: Buffer | string
   ) => {
+    // Do not execute if the condition is false
+    if (condition === false) return
+
     if (context) {
       const template = handlebars.compile(read(file.toString('utf-8')))
       file = template(context)
     }
-    write(path, file, 'utf-8')
+    write(path, file)
     // Add the changes
     await git(this.#options.cwd).add('*')
     // Commit the changes
@@ -127,26 +140,50 @@ export class Executor {
       (step) => step.type === 'file'
     ) as FileConfig[]
 
+    if (files.length > 0) {
+      console.log('Creating files.')
+      console.log()
+    }
+
     for (const fc of files) {
       if (globby.hasMagic(fc.path)) {
         for await (const file of globby.stream(fc.path, {
           expandDirectories: true,
         })) {
-          await this.#createFile(fc, file)
+          await this.createFile(fc, file)
         }
         continue
       }
 
       const file = read(fc.path)
-      await this.#createFile(fc, file)
+      await this.createFile(fc, file)
+    }
+  }
+
+  #customActions = async () => {
+    const actions = this.#steps.filter(
+      (step) => step.type === 'custom'
+    ) as CustomConfig[]
+
+    if (actions.length > 0) {
+      console.log('Running custom actions.')
+      console.log()
+
+      for (const action of actions) {
+        // Do not execute if the condition is false
+        if (action.condition === false) {
+          continue
+        }
+
+        await action.run()
+      }
     }
   }
 }
 
 export default function executor(
   steps: StepsConfig[] = [],
-  meta: RecipeMeta,
   options: ExecutorOptions
 ) {
-  return new Executor(steps, meta, options)
+  return new Executor(steps, options)
 }
