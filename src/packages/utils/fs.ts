@@ -41,7 +41,7 @@ export const write = (
 ) => writeFileSync(path, data, options)
 
 export interface JSONLike {
-  [x: string]: string | number | boolean | Date | JSON | JSONLikeArray
+  [x: string]: string | number | boolean | Date | JSON | JSONLikeArray | {}
 }
 
 export interface JSONLikeArray
