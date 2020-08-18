@@ -1,7 +1,7 @@
 import globby from 'globby'
 import handlebars from 'handlebars'
 import { merge } from 'lodash'
-import pkgm from '../package-manager'
+import pkgm from '@ko/package-manager'
 import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
 
@@ -12,7 +12,7 @@ import {
   StepsConfig,
   TransformConfig,
   CustomConfig,
-} from '../builder/types'
+} from '@ko/builder/types'
 import { resolve } from 'path'
 import { write, read } from '@ko/utils/fs'
 

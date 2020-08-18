@@ -1,5 +1,5 @@
-import { CreateContext } from '../../../types'
 import next from './next'
+import { CreateContext } from '@ko/types'
 
 export default function ({
   framework,

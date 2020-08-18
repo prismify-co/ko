@@ -3,7 +3,6 @@ import latestVersion from 'latest-version'
 import { join } from 'path'
 import { rm } from 'shelljs'
 import { promisify } from 'util'
-import next from '..'
 import generate from '../..'
 
 const mkdir = promisify(createDir)

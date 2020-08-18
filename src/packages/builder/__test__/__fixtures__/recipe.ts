@@ -1,5 +1,3 @@
-import builder from '../../builder'
-
 // eslint-disable-next-line import/no-default-export
 
 import { builders } from 'ast-types/gen/builders'
@@ -8,6 +6,7 @@ import { NamedTypes } from 'ast-types/gen/namedTypes'
 import { visit } from 'ast-types'
 import { addImport } from './utils/add-import'
 import extension from './utils/extension'
+import { builder } from '@ko/builder'
 
 function wrapComponentWithThemeProvider(
   ast: ASTNode,

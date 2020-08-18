@@ -1,12 +1,11 @@
 import {
-  RecipeMeta,
   StepsConfig,
   CustomConfig,
   FileConfig,
   DependencyConfig,
   TransformConfig,
-} from '../builder/types'
-import { BuilderOptions } from '../builder'
+} from '@ko/builder/types'
+import { BuilderOptions } from '@ko/builder'
 
 export default class Steps {
   protected steps: StepsConfig[] = []
