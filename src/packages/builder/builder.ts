@@ -1,7 +1,7 @@
-import executor from '../executor'
+import executor from '@ko/executor'
 import { RecipeMeta } from './types'
 import { merge } from 'lodash'
-import { Steps } from '../steps/steps'
+import Steps from '@ko/steps'
 
 export type BuilderOptions = {
   cwd?: string
