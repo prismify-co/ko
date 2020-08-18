@@ -8,7 +8,7 @@ import {
 } from './types'
 import { BuilderOptions, executor } from '.'
 
-export class BuilderBase {
+export class Steps {
   protected steps: StepsConfig[] = []
   protected options: BuilderOptions
 

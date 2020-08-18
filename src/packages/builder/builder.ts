@@ -8,13 +8,13 @@ import {
   CustomConfig,
 } from './types'
 import { merge } from 'lodash'
-import { BuilderBase } from './builder.base'
+import { Steps } from './builder.base'
 
 export type BuilderOptions = {
   cwd?: string
 }
 
-export class Builder extends BuilderBase {
+export class Builder extends Steps {
   meta: RecipeMeta = {
     name: '',
     description: '',

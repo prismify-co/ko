@@ -1,4 +1,4 @@
-import { BuilderBase, executor } from '@ko/builder'
+import { Steps, executor } from '@ko/builder'
 import chalk from 'chalk'
 import cli from 'cli-ux'
 import { mkpdir } from '@ko/utils/mkpdir'
@@ -11,7 +11,7 @@ import { rm } from 'shelljs'
 
 const debug = dbg('ko:core:generate:next')
 
-export class Generator extends BuilderBase {
+export class Generator extends Steps {
   constructor(
     private readonly name: string,
     private readonly framework: string,
