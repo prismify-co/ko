@@ -1,4 +1,4 @@
-import executor from '@ko/executor'
+import Executor from '@ko/executor'
 import { RecipeMeta } from './types'
 import { merge } from 'lodash'
 import Steps from '@ko/steps'
@@ -39,7 +39,7 @@ export class Builder extends Steps {
   }
 
   build() {
-    return executor(this.steps, this.options)
+    return new Executor(this.steps, this.options)
   }
 }
 

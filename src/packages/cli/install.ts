@@ -4,7 +4,7 @@ import dbg from 'debug'
 import inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 import { InstallContext } from '@ko/types'
-import install from '@ko/core/install'
+import Installer from '@ko/installer'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
 import chalk from 'chalk'
 

@@ -1,9 +1,9 @@
 import { join } from 'path'
 import { rm, mkdir } from 'shelljs'
-import { entry, execute } from '@ko/core/install'
+import { entry } from '@ko/installer'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
 import generate from '@ko/core/generate'
-import { exists, read } from '@ko/utils/fs'
+import { exists } from '@ko/utils/fs'
 
 const CWD = __dirname
 const APP_NAME = 'app-recipe'

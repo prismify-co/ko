@@ -1,4 +1,4 @@
-import { existsSync as exists, writeFile } from 'fs'
+import { existsSync as exists } from 'fs'
 import { resolve } from 'path'
 import { write } from '@ko/utils/fs'
 
