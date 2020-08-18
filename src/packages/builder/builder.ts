@@ -8,7 +8,7 @@ import {
   CustomConfig,
 } from './types'
 import { merge } from 'lodash'
-import { Steps } from './builder.base'
+import { Steps } from './steps'
 
 export type BuilderOptions = {
   cwd?: string
