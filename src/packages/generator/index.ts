@@ -25,6 +25,7 @@ export class Generator extends BuilderBase {
   private async init() {
     let shouldContinue = false
     if (
+      process.env.NODE_ENV !== 'test' &&
       exists(resolve(this.name)) &&
       (shouldContinue =
         (await cli.confirm(
