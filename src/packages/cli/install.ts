@@ -68,16 +68,14 @@ async function prompt() {
     },
   ])) as string).toLowerCase()
 
-  const cache =
-    (await inquirer.prompt([
-      {
-        name: 'cache',
-        message: 'Disable cache?',
-        type: 'list',
-        choices: ['Yes', 'No'],
-        default: 'No',
-      },
-    ])) === 'No'
+  const cache = await inquirer.prompt([
+    {
+      name: 'cache',
+      message: 'Disable cache?',
+      type: 'confirm',
+      default: false,
+    },
+  ])
 
   return { host, cache }
 }

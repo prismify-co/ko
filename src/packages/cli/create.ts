@@ -66,7 +66,7 @@ export class CreateCommand extends Command {
 
           default: false,
         },
-      ])) === false
+      ]))
     ) {
       return
     }
@@ -113,15 +113,13 @@ async function prompt() {
     ])
   ).version as string).replace(/v/, '')
 
-  const javascript =
-    (await inquirer.prompt([
-      {
-        name: 'javascript',
-        message: 'Use JavaScript?',
-        type: 'list',
-        choices: ['Yes', 'No'],
-        default: 'No',
-      },
-    ])) === 'No'
+  const javascript = await inquirer.prompt([
+    {
+      name: 'javascript',
+      message: 'Use JavaScript?',
+      type: 'confirm',
+      default: false,
+    },
+  ])
   return { framework, version, typescript: javascript === false }
 }
