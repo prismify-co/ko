@@ -1,8 +1,8 @@
 export interface CreateContext {
   name: string
   framework: string
-  version: string
-  typescript: boolean
+  version?: string
+  typescript?: boolean
 }
 
 export interface InstallContext {
