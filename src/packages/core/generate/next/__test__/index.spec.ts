@@ -3,7 +3,8 @@ import latestVersion from 'latest-version'
 import { join } from 'path'
 import { rm } from 'shelljs'
 import { promisify } from 'util'
-import create from '..'
+import next from '..'
+import generate from '../..'
 
 const mkdir = promisify(createDir)
 
@@ -43,7 +44,11 @@ describe('create a minimal next application', () => {
 
   describe('latest', () => {
     beforeAll(async () => {
-      await create('app-latest', 'next', '', true)
+      await generate({
+        name: 'app-latest',
+        framework: 'next',
+        typescript: true,
+      })
     })
 
     it('should create a directory for the project', async () => {
@@ -106,7 +111,12 @@ describe('create a minimal next application', () => {
 
   describe('v9.3.0', () => {
     beforeAll(async () => {
-      await create('app-specified', 'next', '9.3.0', true)
+      await generate({
+        name: 'app-specified',
+        framework: 'next',
+        version: '9.3.0',
+        typescript: true,
+      })
     })
 
     it('should create a directory for the project', async () => {
@@ -127,7 +137,7 @@ describe('create a minimal next application', () => {
 
   describe('javascript', () => {
     beforeAll(async () => {
-      await create('app-js', 'next', '', false)
+      await generate({ name: 'app-js', framework: 'next', typescript: false })
     })
 
     it('should create a directory for the project', async () => {

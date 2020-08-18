@@ -5,13 +5,10 @@ import execa from 'execa'
 import * as inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 
-import create from '@ko/core/create'
 import { CreateContext } from '@ko/types'
-import checkcwd from '@ko/utils/check-cwd'
-import promptContinue from '@ko/utils/prompt-continue'
 import latestVersion from 'latest-version'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
-const debug = dbg('ko:cli:create')
+import generate from '@ko/core/generate'
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
@@ -54,30 +51,7 @@ export class CreateCommand extends Command {
     }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
-
-    try {
-      if (
-        name === '.' &&
-        !(await checkcwd()) &&
-        !(await promptContinue(`This directory isn't clean.`))
-      ) {
-        this.exit()
-      }
-
-      cli.action.start(
-        `creating project: ${name}, framework: ${context.framework}, version: ${context.version}`,
-        undefined,
-        { stdout: true }
-      )
-
-      // Create the project
-      await create(context)
-
-      cli.action.stop()
-    } catch (error) {
-      debug(`ko [error]: ${error}`)
-      this.catch(error)
-    }
+    await generate(context)
   }
 
   async catch(error: any) {

@@ -2,16 +2,15 @@ import { CreateContext } from '../../../types'
 import next from './next'
 
 export default function ({
-  name,
   framework,
-  version,
-  typescript,
+  typescript = true,
+  ...rest
 }: CreateContext) {
   switch (framework) {
     case 'nuxt':
       return
     case 'next':
-      return next(name, framework, version, typescript)
+      return next({ framework, typescript, ...rest })
     case 'sapper':
       return
     default:
