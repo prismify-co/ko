@@ -5,8 +5,8 @@ import {
   FileConfig,
   DependencyConfig,
   TransformConfig,
-} from './types'
-import { BuilderOptions, executor } from '.'
+} from '../builder/types'
+import { BuilderOptions } from '../builder'
 
 export class Steps {
   protected steps: StepsConfig[] = []
