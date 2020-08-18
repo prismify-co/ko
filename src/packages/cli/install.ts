@@ -54,7 +54,7 @@ export class InstallCommand extends Command {
     console.log(`${chalk.green('Success!')} 🎉`)
     console.log()
 
-    console.log(`${chalk.green(name)} has been configured`)
+    console.log(`${chalk.green(name)} has been configured.`)
   }
 }
 
