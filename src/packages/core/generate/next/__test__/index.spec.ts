@@ -22,7 +22,7 @@ async function createOutputDir() {
   process.chdir(OUTPUT_DIR)
 }
 
-async function removeOutputDir() {
+function removeOutputDir() {
   process.chdir(join('../'))
   if (exists(OUTPUT_DIR)) {
     rm('-rf', OUTPUT_DIR)
@@ -51,19 +51,19 @@ describe('create a minimal next application', () => {
       })
     })
 
-    it('should create a directory for the project', async () => {
+    it('should create a directory for the project', () => {
       expect(exists(LATEST_DIR)).toEqual(true)
     })
 
-    it('should create a package.json file', async () => {
+    it('should create a package.json file', () => {
       expect(exists(join(LATEST_DIR, 'package.json'))).toEqual(true)
     })
 
-    it('should create a tsconfig.json file', async () => {
+    it('should create a tsconfig.json file', () => {
       expect(exists(join(LATEST_DIR, 'tsconfig.json'))).toEqual(true)
     })
 
-    it('should create a next.config.js file', async () => {
+    it('should create a next.config.js file', () => {
       expect(exists(join(LATEST_DIR, 'next.config.js'))).toEqual(true)
     })
 
@@ -75,36 +75,36 @@ describe('create a minimal next application', () => {
       expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
     })
 
-    it('should create the directories for next', async () => {
+    it('should create the directories for next', () => {
       const pages = ['components', 'pages', 'styles', 'public']
       for (const dir of pages) {
         expect(exists(join(LATEST_DIR, dir))).toEqual(true)
       }
     })
 
-    it('should create an index.tsx', async () => {
+    it('should create an index.tsx', () => {
       expect(exists(join(LATEST_DIR, 'pages', 'index.tsx'))).toEqual(true)
     })
 
-    it('should create an _app.tsx', async () => {
+    it('should create an _app.tsx', () => {
       expect(exists(join(LATEST_DIR, 'pages', '_app.tsx'))).toEqual(true)
     })
 
-    it('should create an _document.tsx', async () => {
+    it('should create an _document.tsx', () => {
       expect(exists(join(LATEST_DIR, 'pages', '_document.tsx'))).toEqual(true)
     })
 
-    it('should create an home.module.css', async () => {
+    it('should create an home.module.css', () => {
       expect(exists(join(LATEST_DIR, 'styles', 'home.module.css'))).toEqual(
         true
       )
     })
 
-    it('should create an globals.css', async () => {
+    it('should create an globals.css', () => {
       expect(exists(join(LATEST_DIR, 'styles', 'globals.css'))).toEqual(true)
     })
 
-    it('should create a gitignore file', async () => {
+    it('should create a gitignore file', () => {
       expect(exists(join(LATEST_DIR, '.gitignore'))).toEqual(true)
     })
   })
@@ -119,15 +119,15 @@ describe('create a minimal next application', () => {
       })
     })
 
-    it('should create a directory for the project', async () => {
+    it('should create a directory for the project', () => {
       expect(exists(SPECIFIED_DIR)).toEqual(true)
     })
 
-    it('should create a package.json file', async () => {
+    it('should create a package.json file', () => {
       expect(exists(join(SPECIFIED_DIR, 'package.json'))).toEqual(true)
     })
 
-    it('should have the latest version of next', async () => {
+    it('should have the latest version of next', () => {
       const { dependencies } = JSON.parse(
         readFileSync(join(SPECIFIED_DIR, 'package.json'), 'utf8')
       )
@@ -140,19 +140,19 @@ describe('create a minimal next application', () => {
       await generate({ name: 'app-js', framework: 'next', typescript: false })
     })
 
-    it('should create a directory for the project', async () => {
+    it('should create a directory for the project', () => {
       expect(exists(JS_DIR)).toEqual(true)
     })
 
-    it('should create a package.json file', async () => {
+    it('should create a package.json file', () => {
       expect(exists(join(JS_DIR, 'package.json'))).toEqual(true)
     })
 
-    it('should create a tsconfig.json file', async () => {
+    it('should create a tsconfig.json file', () => {
       expect(exists(join(JS_DIR, 'tsconfig.json'))).toEqual(false)
     })
 
-    it('should create a next.config.js file', async () => {
+    it('should create a next.config.js file', () => {
       expect(exists(join(JS_DIR, 'next.config.js'))).toEqual(true)
     })
 
@@ -164,34 +164,34 @@ describe('create a minimal next application', () => {
       expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
     })
 
-    it('should create the directories for next', async () => {
+    it('should create the directories for next', () => {
       const pages = ['components', 'pages', 'styles', 'public']
       for (const dir of pages) {
         expect(exists(join(JS_DIR, dir))).toEqual(true)
       }
     })
 
-    it('should create an index.js', async () => {
+    it('should create an index.js', () => {
       expect(exists(join(JS_DIR, 'pages', 'index.js'))).toEqual(true)
     })
 
-    it('should create an _app.js', async () => {
+    it('should create an _app.js', () => {
       expect(exists(join(JS_DIR, 'pages', '_app.js'))).toEqual(true)
     })
 
-    it('should create an _document.js', async () => {
+    it('should create an _document.js', () => {
       expect(exists(join(JS_DIR, 'pages', '_document.js'))).toEqual(true)
     })
 
-    it('should create an home.module.css', async () => {
+    it('should create an home.module.css', () => {
       expect(exists(join(JS_DIR, 'styles', 'home.module.css'))).toEqual(true)
     })
 
-    it('should create an globals.css', async () => {
+    it('should create an globals.css', () => {
       expect(exists(join(JS_DIR, 'styles', 'globals.css'))).toEqual(true)
     })
 
-    it('should create a gitignore file', async () => {
+    it('should create a gitignore file', () => {
       expect(exists(join(JS_DIR, '.gitignore'))).toEqual(true)
     })
   })

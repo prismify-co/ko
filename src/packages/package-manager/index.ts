@@ -123,7 +123,7 @@ export class PackageManager {
    * Determines whether a package exists in `package.json`
    * @param package The name of the package to check
    */
-  async has(name: string): Promise<boolean> {
+  has(name: string): boolean {
     const pkgPath = resolve('package.json')
     if (exists(pkgPath)) {
       const pkg = JSON.parse(read(pkgPath))

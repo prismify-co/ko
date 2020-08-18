@@ -49,7 +49,7 @@ export class InstallCommand extends Command {
     console.log('Configuring your app')
     console.log()
 
-    install(context)
+    await install(context)
 
     console.log(`${chalk.green('Success!')} 🎉`)
     console.log()

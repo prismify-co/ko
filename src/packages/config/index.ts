@@ -21,7 +21,7 @@ class Config {
   constructor(options: ConfigOptions) {
     this.#options = options
   }
-  async init() {
+  init() {
     const path = resolve(KO_CONFIG_FILENAME)
     if (exists(path)) {
       return
