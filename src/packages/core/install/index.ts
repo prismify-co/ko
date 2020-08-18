@@ -6,7 +6,7 @@ import { mkdir } from 'shelljs'
 
 import dbg from 'debug'
 import { read } from '@ko/utils/fs'
-import { Executor } from '@ko/executor'
+import Executor from '@ko/executor'
 import { InstallContext } from '@ko/types'
 import pkgm from '@ko/package-manager'
 const debug = dbg('ko:packages:installer')

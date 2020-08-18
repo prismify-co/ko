@@ -8,7 +8,7 @@ import dbg from 'debug'
 import { exists } from '@ko/utils/fs'
 import { rm } from 'shelljs'
 import Steps from '@ko/steps'
-import executor from '@ko/executor'
+import Executor from '@ko/executor'
 
 const debug = dbg('ko:core:generate:next')
 
@@ -65,7 +65,7 @@ export class Generator extends Steps {
 
     debug('Initialize the application')
     await this.init()
-    const exe = executor(this.steps, this.options)
+    const exe = new Executor(this.steps, this.options)
 
     debug('Start generating the application')
     await exe.run()
