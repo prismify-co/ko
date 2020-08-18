@@ -1,14 +1,7 @@
-import executor from './executor'
-import {
-  DependencyConfig,
-  FileConfig,
-  RecipeMeta,
-  StepsConfig,
-  TransformConfig,
-  CustomConfig,
-} from './types'
+import executor from '../executor'
+import { RecipeMeta } from './types'
 import { merge } from 'lodash'
-import { Steps } from './steps'
+import { Steps } from '../steps/steps'
 
 export type BuilderOptions = {
   cwd?: string
