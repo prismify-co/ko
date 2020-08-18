@@ -22,6 +22,11 @@ export class PackageManager {
     return 'npm'
   }
 
+  async init(options: NPMPackageManagerOptions = {}) {
+    const manager: PackageManagerName = options?.manager || this.which()
+    await execa(manager, ['init', '-y'])
+  }
+
   async add(
     packages: (string | NPMPackage)[],
     options: NPMPackageManagerOptions = {}
