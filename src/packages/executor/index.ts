@@ -1,18 +1,18 @@
 import globby from 'globby'
 import handlebars from 'handlebars'
 import { merge } from 'lodash'
-import pkgm from '../../packages/package-manager'
+import pkgm from '../package-manager'
 import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
 
-import { processFile } from '../transformer'
+import { processFile } from '@ko/transformer'
 import {
   DependencyConfig,
   FileConfig,
   StepsConfig,
   TransformConfig,
   CustomConfig,
-} from './types'
+} from '../builder/types'
 import { resolve } from 'path'
 import { write, read } from '@ko/utils/fs'
 
