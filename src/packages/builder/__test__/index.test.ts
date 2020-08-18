@@ -45,19 +45,19 @@ describe('packages/installer', () => {
     })
   })
 
-  describe('execute', () => {
-    it('should modify a Next.js App', async () => {
-      const expected = read(join(RECIPE_DIR, '_app_expected.txt')).replace(
-        /\s/g,
-        ''
-      )
+  // describe('execute', () => {
+  //   it('should modify a Next.js App', async () => {
+  //     const expected = read(join(RECIPE_DIR, '_app_expected.txt')).replace(
+  //       /\s/g,
+  //       ''
+  //     )
 
-      const entryPath = await entry(RECIPE_DIR)
-      const { executor } = await execute(APP_DIR, RECIPE_DIR, entryPath, false)
-      const actual = read(join(APP_DIR, 'pages', '_app.tsx')).replace(/\s/g, '')
-      expect(exists(join(APP_DIR, 'pages', '_app.tsx'))).toEqual(true)
-      expect(executor.commits.length).toBeGreaterThan(0)
-      expect(actual).toEqual(expected)
-    })
-  })
+  //     const entryPath = await entry(RECIPE_DIR)
+  //     const { executor } = await execute(APP_DIR, RECIPE_DIR, entryPath, false)
+  //     const actual = read(join(APP_DIR, 'pages', '_app.tsx')).replace(/\s/g, '')
+  //     expect(exists(join(APP_DIR, 'pages', '_app.tsx'))).toEqual(true)
+  //     expect(executor.commits.length).toBeGreaterThan(0)
+  //     expect(actual).toEqual(expected)
+  //   })
+  // })
 })
