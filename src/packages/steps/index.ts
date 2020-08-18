@@ -8,7 +8,7 @@ import {
 } from '../builder/types'
 import { BuilderOptions } from '../builder'
 
-export class Steps {
+export default class Steps {
   protected steps: StepsConfig[] = []
   protected options: BuilderOptions
 
