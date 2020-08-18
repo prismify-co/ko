@@ -26,13 +26,12 @@ const download: (
 
 export default async function next({
   name,
-  framework,
   version,
   typescript,
-}: CreateContext) {
+}: Omit<CreateContext, 'framework'>) {
   const templatesPath = join(__dirname, 'templates')
 
-  await generator(name, framework)
+  await generator(name, 'next')
     .addDependencyStep({
       name: 'Add initial dependencies',
       packages: [

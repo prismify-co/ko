@@ -10,7 +10,7 @@ export default function ({
     case 'nuxt':
       return
     case 'next':
-      return next({ framework, typescript, ...rest })
+      return next({ typescript, ...rest })
     case 'sapper':
       return
     default:

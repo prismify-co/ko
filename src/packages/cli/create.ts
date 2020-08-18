@@ -6,7 +6,7 @@ import { merge, omit } from 'lodash'
 import { CreateContext } from '@ko/types'
 import latestVersion from 'latest-version'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
-import generate from '@ko/core/generate'
+import generate from '@ko/frameworks'
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
