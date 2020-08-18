@@ -20,6 +20,7 @@
     "emitDeclarationOnly": true,
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
+    "noUnusedLocals": true,
     "paths": {
       "@ko/*": ["src/packages/*"],
       "@ko/types": ["src/types"],
