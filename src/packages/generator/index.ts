@@ -14,7 +14,8 @@ const debug = dbg('ko:core:generate:next')
 export class Generator extends BuilderBase {
   constructor(
     private readonly name: string,
-    private readonly framework: string
+    private readonly framework: string,
+    private readonly force: boolean = false
   ) {
     super()
   }
@@ -25,7 +26,7 @@ export class Generator extends BuilderBase {
   private async init() {
     let shouldContinue = false
     if (
-      process.env.NODE_ENV !== 'test' &&
+      (this.force === false || typeof this.force === 'undefined') &&
       exists(resolve(this.name)) &&
       (shouldContinue =
         (await cli.confirm(
@@ -49,6 +50,7 @@ export class Generator extends BuilderBase {
     await pkgm().init()
     // Initialize git
     await git().init()
+
     return this
   }
 
@@ -84,6 +86,10 @@ export class Generator extends BuilderBase {
   }
 }
 
-export default function generator(name: string, framework: string) {
-  return new Generator(name, framework)
+export default function generator(
+  name: string,
+  framework: string,
+  force: boolean = false
+) {
+  return new Generator(name, framework, force)
 }
