@@ -37,9 +37,9 @@ export class CloneCommand extends Command {
       }
     }
 
-    debug(`ko [info]: fetching ${name}`)
+    debug(`Fetching ${name}`)
     const source = await fetch(name, opts)
-    debug(`ko [info]: extracting ${source} into ${destination}`)
+    debug(`Extracting ${source} into ${destination}`)
     await extract(source, destination, opts)
   }
 }

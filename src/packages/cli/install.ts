@@ -43,15 +43,9 @@ export class InstallCommand extends Command {
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(await prompt(), context)
 
-    try {
-      debug(`ko [info]: installing ${name}`)
-      cli.action.start('configuring your app')
-      install(context)
-      cli.action.stop()
-    } catch (error) {
-      debug('ko [error]: ', error)
-      this.catch(error)
-    }
+    debug(`Installing ${name}`)
+    console.log('Configuring your app')
+    install(context)
   }
 }
 
