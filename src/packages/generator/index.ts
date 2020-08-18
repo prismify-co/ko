@@ -1,4 +1,3 @@
-import { Steps, executor } from '@ko/builder'
 import chalk from 'chalk'
 import cli from 'cli-ux'
 import { mkpdir } from '@ko/utils/mkpdir'
@@ -8,6 +7,8 @@ import git from 'simple-git'
 import dbg from 'debug'
 import { exists } from '@ko/utils/fs'
 import { rm } from 'shelljs'
+import Steps from '@ko/steps'
+import executor from '@ko/executor'
 
 const debug = dbg('ko:core:generate:next')
 

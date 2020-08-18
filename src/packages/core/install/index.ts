@@ -3,12 +3,12 @@ import { extract, fetch as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
 import { mkdir } from 'shelljs'
-import { InstallContext } from '../../../types'
-import { Executor } from '@ko/builder'
 
-import pkgm from '../../package-manager'
 import dbg from 'debug'
 import { read } from '@ko/utils/fs'
+import { Executor } from '@ko/executor'
+import { InstallContext } from '@ko/types'
+import pkgm from '@ko/package-manager'
 const debug = dbg('ko:packages:installer')
 
 const isNavtiveRecipe = (path: string) => /^([\w\-_]*)$/.test(path)
