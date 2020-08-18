@@ -45,6 +45,8 @@ export class InstallCommand extends Command {
 
     debug(`Installing ${name}`)
     console.log('Configuring your app')
+    console.log()
+
     install(context)
   }
 }
