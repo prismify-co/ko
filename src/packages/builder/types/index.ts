@@ -5,12 +5,25 @@ interface Context {
   [x: string]: string | number | boolean | Context
 }
 
+export type ExecutionType = 'dependency' | 'transform' | 'file' | 'custom'
+
 export interface ExecutorConfig {
-  // id: string | number
+  /**
+   * The name of the step
+   */
   name: string
-  type: 'dependency' | 'transform' | 'file'
-  // a bit to display to the user to give context to the change
-  explanation: string
+  /**
+   * The type of step
+   */
+  type: ExecutionType
+  /**
+   * A summary of the current step
+   */
+  summary?: string
+  /**
+   * The condition when a step should be able to run. (e.g. when a condition is false, the step will not execute)
+   */
+  condition?: boolean
 }
 export interface DependencyConfig extends ExecutorConfig {
   packages: (string | NPMPackage)[]
@@ -36,11 +49,16 @@ export interface TransformConfig extends ExecutorConfig {
   transform: Transformer
 }
 
+export interface CustomConfig extends ExecutorConfig {
+  run: (() => void) | (() => Promise<void>)
+}
+
 export type StepsConfig =
   | ExecutorConfig
   | DependencyConfig
   | FileConfig
   | TransformConfig
+  | CustomConfig
 
 export interface RecipeMeta {
   name: string
