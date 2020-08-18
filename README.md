@@ -28,7 +28,7 @@ At the time of this writng, ko can generate a basic Next.js app and clone reposi
 ### Features
 
 - Generate Next.js projects
-- :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-co/ko-recipes)
+- :warning: **Experimental** Configure the project via [Recipes](https://www.github.com/prismify-co/ko-recipes)
 
 ### Roadmap
 
