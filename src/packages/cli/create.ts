@@ -54,6 +54,7 @@ export class CreateCommand extends Command {
     await generate(context)
   }
 
+  // eslint-disable-next-line require-await
   async catch(error: any) {
     if (error?.oclif?.exit === 0) return
     throw error

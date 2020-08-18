@@ -30,7 +30,7 @@ const examplePackage = JSON.stringify({
 })
 
 describe('packages/package-manager', () => {
-  beforeAll(async () => {
+  beforeAll(() => {
     mkdir(OUTPUT)
     write(join(OUTPUT, 'package.json'), examplePackage, 'utf-8')
   })

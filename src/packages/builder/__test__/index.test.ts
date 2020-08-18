@@ -13,7 +13,7 @@ const RECIPE_DIR = join(CWD, '__fixtures__')
 
 jest.setTimeout(10 * 100000)
 
-async function createOutputDir() {
+function createOutputDir() {
   if (!exists(OUTPUT_DIR)) {
     mkdir(OUTPUT_DIR)
   } else {
@@ -26,7 +26,7 @@ async function createOutputDir() {
 describe('packages/installer', () => {
   beforeAll(async () => {
     setupTsnode()
-    await createOutputDir()
+    createOutputDir()
     await generate({
       framework: 'next',
       name: APP_NAME,
@@ -35,7 +35,7 @@ describe('packages/installer', () => {
     process.chdir(APP_DIR)
   })
 
-  afterAll(async () => {
+  afterAll(() => {
     process.chdir(CWD)
   })
 

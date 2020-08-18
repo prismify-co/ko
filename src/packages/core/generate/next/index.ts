@@ -50,7 +50,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Add scripts to package.json',
-      run: async () => {
+      run: () => {
         const pkgPath = resolve('package.json')
         const pkg = readJSON(pkgPath)
         writeJSON(pkgPath, {
@@ -65,7 +65,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Add next.config.js',
-      run: async () => {
+      run: () => {
         debug('Creating next.config.json')
         write(
           resolve('next.config.js'),
@@ -75,7 +75,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Initialize tsconfig.json',
-      run: async () => {
+      run: () => {
         debug('Creating tsconfig.json')
         touch('tsconfig.json')
       },
@@ -83,7 +83,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Create the directories',
-      run: async () => {
+      run: () => {
         // Create the directories
         debug('Creating next directories')
         mkdir('-p', 'assets', 'components', 'pages', 'public', 'styles')
@@ -91,7 +91,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Create initial pages',
-      run: async () => {
+      run: () => {
         // Create the initial pages
         debug('Creating files under pages/')
         const pages = ['_app.txt', '_document.txt', 'index.txt']
@@ -105,7 +105,7 @@ export default async function next({
     })
     .addCustomStep({
       name: 'Create the initial styles',
-      run: async () => {
+      run: () => {
         // Create the initial styles
         debug('Creating files under styles/')
         const styles = ['globals.css', 'home.module.css']

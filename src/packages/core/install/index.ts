@@ -19,7 +19,7 @@ const isUrlRecipe = (path: string) =>
 const isRepoShorthandRecipe = (path: string) =>
   /^([\w-_]*)\/([\w-_]*)$/.test(path)
 
-const isLocalPath = async (path: string) =>
+const isLocalPath = (path: string) =>
   !isNavtiveRecipe(path) &&
   !isUrlRecipe(path) &&
   !isRepoShorthandRecipe(path) &&
@@ -75,7 +75,7 @@ export default async function install({
   }
 }
 
-export async function entry(path: string) {
+export function entry(path: string) {
   // Check if this is the official repository
   const pkgPath = join(path, 'package.json')
 

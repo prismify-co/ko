@@ -24,10 +24,10 @@ export interface TransformResult {
   error?: Error
 }
 
-export async function processFile(
+export function processFile(
   original: string,
   transformerFn: Transformer
-): Promise<string> {
+): string {
   const ast = parse(original, { parser: customTsParser })
   const transformedCode = print(transformerFn(ast, types.builders, namedTypes))
     .code
