@@ -1,12 +1,9 @@
 import chalk from 'chalk'
-import cli from 'cli-ux'
 import { mkpdir } from '@ko/utils/mkpdir'
-import { join, resolve } from 'path'
+import { resolve } from 'path'
 import pkgm from '@ko/package-manager'
 import git from 'simple-git'
 import dbg from 'debug'
-import { exists } from '@ko/utils/fs'
-import { rm } from 'shelljs'
 import Steps from '@ko/steps'
 import Executor from '@ko/executor'
 
@@ -15,8 +12,7 @@ const debug = dbg('ko:core:generate:next')
 export class Generator extends Steps {
   constructor(
     private readonly name: string,
-    private readonly framework: string,
-    private readonly force: boolean = false
+    private readonly framework: string
   ) {
     super()
   }
@@ -25,24 +21,6 @@ export class Generator extends Steps {
    * Initialize the application
    */
   private async init() {
-    let shouldContinue = false
-    if (
-      (this.force === false || typeof this.force === 'undefined') &&
-      exists(resolve(this.name)) &&
-      (shouldContinue =
-        (await cli.confirm(
-          `The directory ${chalk.green(
-            this.name
-          )} is not empty. Would you like to continue?`
-        )) === false)
-    ) {
-      return this
-    }
-
-    if (shouldContinue) {
-      rm('-rf', resolve(join(this.name, 'package.json')))
-    }
-
     // Create app directory
     mkpdir(this.name)
     // Change directory
@@ -87,10 +65,6 @@ export class Generator extends Steps {
   }
 }
 
-export default function generator(
-  name: string,
-  framework: string,
-  force: boolean = false
-) {
-  return new Generator(name, framework, force)
+export default function generator(name: string, framework: string) {
+  return new Generator(name, framework)
 }

@@ -7,6 +7,9 @@ import { CreateContext } from '@ko/types'
 import latestVersion from 'latest-version'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
 import generate from '@ko/frameworks'
+import { exists } from '@ko/utils/fs'
+import chalk from 'chalk'
+import { resolve } from 'path'
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
@@ -49,6 +52,25 @@ export class CreateCommand extends Command {
     }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
+
+    // Determine if the app directory already exists
+    if (
+      exists(resolve(name)) &&
+      (await inquirer.prompt([
+        {
+          name: 'javascript',
+          message: `The directory ${chalk.green(
+            name
+          )} is not empty. Would you like to continue?`,
+          type: 'confirm',
+
+          default: false,
+        },
+      ])) === false
+    ) {
+      return
+    }
+
     await generate(context)
   }
 
