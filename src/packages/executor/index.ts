@@ -23,7 +23,7 @@ export type ExecutorOptions = {
   dryRun?: boolean
 }
 
-export class Executor {
+export default class Executor {
   #steps: StepsConfig[]
   #options: ExecutorOptions
   commits: CommitSummary[] = []
@@ -179,11 +179,4 @@ export class Executor {
       }
     }
   }
-}
-
-export default function executor(
-  steps: StepsConfig[] = [],
-  options: ExecutorOptions
-) {
-  return new Executor(steps, options)
 }
