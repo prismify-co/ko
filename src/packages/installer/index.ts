@@ -9,6 +9,7 @@ import { read } from '@ko/utils/fs'
 import Executor from '@ko/executor'
 import { InstallContext } from '@ko/types'
 import pkgm from '@ko/package-manager'
+import GitlyOptions from 'gitly/lib/interfaces/options'
 const debug = dbg('ko:packages:installer')
 
 export const isNavtiveRecipe = (path: string) => /^([\w\-_]*)$/.test(path)
@@ -26,52 +27,87 @@ export const isLocalPath = (path: string) =>
   exists(resolve(path))
 
 export default class Installer {
-  constructor(private readonly context: InstallContext) {}
-
-  async install() {
-    const { host, cache, dryRun } = this.context
-    // 1. Check if the recipe name is a simple name (i.e. "tailwind")
-    // 2. Check if the recipe name is a local path (i.e. "./path/to/recipe")
-    // 3. Check if the recipe name is a repository (i.e. "(github|bitbucket|gitlab).com/org/repo" or "org/repo")
-    const gitlyOpts = {
+  private gitlyOpts: GitlyOptions
+  constructor(private readonly context: InstallContext & { cwd: string }) {
+    const { host, cache } = this.context
+    this.gitlyOpts = {
       temp: join(homedir(), '.ko'),
       ...(host ? { host } : {}),
       ...(cache === false ? { force: true } : {}),
     }
+  }
 
+  async install() {
+    const { name } = this.context
+
+    // 1. Check if the recipe name is a simple name (i.e. "tailwind")
+    if (isNavtiveRecipe(name)) {
+      await this.installNative()
+    }
+
+    // 2. Check if the recipe name is a local path (i.e. "./path/to/recipe")
+    if (isLocalPath(name)) {
+      await this.installLocal()
+    }
+
+    // 3. Check if the recipe name is a repository (i.e. "(github|bitbucket|gitlab).com/org/repo" or "org/repo")
+    if (isUrlRecipe(name)) {
+      await this.installRemote()
+    }
+  }
+
+  async installNative() {
+    const { name, dryRun } = this.context
     const cwd = process.cwd()
 
-    if (isNavtiveRecipe(name)) {
-      debug(`${name} is native`)
-      // Grab the recipes
-      const source = await gitly('prismify-co/ko-recipes', gitlyOpts)
-      // Create a temp directory if it doesn't exist
-      mkdir('-p', join(tmpdir(), 'ko-recipes'))
-      // Extract the recipes into temp dir
-      const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
-      const path = join(destination, name, 'next')
-      // Execute from directory
-      return this.execute(cwd, path, await entry(path), dryRun)
-    }
+    debug(`${name} is native`)
+    // Grab the recipes
+    const source = await gitly('prismify-co/ko-recipes', this.gitlyOpts)
+    // Create a temp directory if it doesn't exist
+    mkdir('-p', join(tmpdir(), 'ko-recipes'))
+    // Extract the recipes into temp dir
+    const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
+    const path = join(destination, name, 'next')
+    // Execute from directory
+    return this.execute({
+      cwd,
+      path,
+      entry: await entry(path),
+      dryRun,
+    })
+  }
 
-    if (isLocalPath(name)) {
-      debug(`${name} is local`)
-      const path = resolve(name)
-      // Execute from the local path
-      return this.execute(cwd, path, await entry(path), dryRun)
-    }
+  async installLocal() {
+    const { dryRun } = this.context
+    const cwd = process.cwd()
 
-    if (isUrlRecipe(name)) {
-      debug(`${name} is remote`)
-      // Download from host
-      const source = await gitly(name, gitlyOpts)
-      // Create a temp directory if it doesn't exist
-      mkdir('-p', join(tmpdir(), 'ko-recipes'))
-      // Extract the recipes into temp dir
-      const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
-      // Execute from the directory
-      return this.execute(cwd, destination, await entry(destination), dryRun)
-    }
+    debug(`${name} is local`)
+    const path = resolve(name)
+    // Execute from the local path
+    return this.execute({
+      cwd,
+      path,
+      entry: await entry(path),
+      dryRun,
+    })
+  }
+
+  async installRemote() {
+    const { cwd, dryRun, name } = this.context
+    debug(`${name} is remote`)
+    // Download from host
+    const source = await gitly(name, this.gitlyOpts)
+    // Create a temp directory if it doesn't exist
+    mkdir('-p', join(tmpdir(), 'ko-recipes'))
+    // Extract the recipes into temp dir
+    const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
+    // Execute from the directory
+    return this.execute({
+      cwd,
+      path: destination,
+      entry: await entry(destination),
+      dryRun,
+    })
   }
 
   /**
@@ -81,12 +117,17 @@ export default class Installer {
    * @param entry The entry path
    * @param dryRun Determines whether we should execute
    */
-  private async execute(
-    cwd: string,
-    path: string,
-    entry: string,
+  async execute({
+    cwd,
+    path,
+    entry,
+    dryRun,
+  }: {
+    cwd: string
+    path: string
+    entry: string
     dryRun: boolean
-  ) {
+  }) {
     // Set the current working directory to the destination
     process.chdir(path)
     // Install the packages
