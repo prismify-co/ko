@@ -1,11 +1,10 @@
-import { Transformer } from '@ko/transformer/types'
 import { NPMPackage } from '@ko/package-manager/types'
+import { Transformer } from '@ko/transformer/types'
+export type ExecutionType = 'dependency' | 'transform' | 'file' | 'custom'
 
 interface Context {
   [x: string]: string | number | boolean | Context
 }
-
-export type ExecutionType = 'dependency' | 'transform' | 'file' | 'custom'
 
 export interface ExecutorConfig {
   /**
@@ -51,22 +50,4 @@ export interface TransformConfig extends ExecutorConfig {
 
 export interface CustomConfig extends ExecutorConfig {
   run: (() => void) | (() => Promise<void>)
-}
-
-export type StepsConfig =
-  | ExecutorConfig
-  | DependencyConfig
-  | FileConfig
-  | TransformConfig
-  | CustomConfig
-
-export interface RecipeMeta {
-  name: string
-  description: string
-  owner: string
-  repo: RepoMeta
-}
-
-export interface RepoMeta {
-  link: string
 }

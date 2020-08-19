@@ -1,10 +1,10 @@
+import { StepsConfig } from './types'
 import {
-  StepsConfig,
   CustomConfig,
   FileConfig,
   DependencyConfig,
   TransformConfig,
-} from '@ko/builder/types'
+} from '@ko/executor/types'
 
 export default class Steps {
   protected _steps: StepsConfig[] = []

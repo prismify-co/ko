@@ -6,17 +6,18 @@ import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
 
 import { processFile } from '@ko/transformer'
-import {
-  DependencyConfig,
-  FileConfig,
-  StepsConfig,
-  TransformConfig,
-  CustomConfig,
-} from '@ko/builder/types'
+
 import { resolve } from 'path'
 import { write, read } from '@ko/utils/fs'
 import { Subject, NextObserver, ErrorObserver, CompletionObserver } from 'rxjs'
 import chalk from 'chalk'
+import { StepsConfig } from '@ko/steps/types'
+import {
+  DependencyConfig,
+  TransformConfig,
+  FileConfig,
+  CustomConfig,
+} from './types'
 
 const debug = dbg('ko:packages:executor')
 
@@ -97,7 +98,7 @@ export default class Executor {
     if (condition === false) return
 
     const original = read(path)
-    const processed = await processFile(original, transform)
+    const processed = processFile(original, transform)
     write(path, processed, 'utf-8')
     // Add the changes
     await git(this.#options.cwd).add('*')
