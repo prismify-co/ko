@@ -76,7 +76,7 @@ export class CreateCommand extends Command {
       return
     }
 
-    const frameworkDir = join('../', 'frameworks', context.framework)
+    const frameworkDir = join(__dirname, '../', 'frameworks', context.framework)
     if (!exists(frameworkDir)) {
       console.log(
         `${chalk.green(
