@@ -1,15 +1,15 @@
 import Command, { flags } from '@oclif/command'
-import execa from 'execa'
 import * as inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 
 import { CreateContext } from '@ko/types'
-import latestVersion from 'latest-version'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
-import generate from '@ko/frameworks'
 import { exists } from '@ko/utils/fs'
 import chalk from 'chalk'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
+import execa from 'execa'
+import latestVersion from 'latest-version'
+import { FrameworkFactory } from '@ko/frameworks/types'
 
 export class CreateCommand extends Command {
   static description = 'create a new project'
@@ -71,7 +71,25 @@ export class CreateCommand extends Command {
       return
     }
 
-    await generate(context)
+    const frameworkDir = join('../', 'frameworks', context.framework)
+    if (!exists(frameworkDir)) {
+      console.log(
+        `${chalk.green(
+          context.framework
+        )} is not a supported framework 😭. Consider contributing to ko at https://github.com/prismify-co/ko`
+      )
+      return
+    }
+
+    // Subscribe to messages from the generator and exectutor
+    const next = (message: string) => {
+      console.log(message)
+      console.log()
+    }
+
+    const generator = (await import(frameworkDir)).default as FrameworkFactory
+    const executor = await generator(context).subscribe({ next }).generate()
+    executor.subscribe({ next })
   }
 
   // eslint-disable-next-line require-await
