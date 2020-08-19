@@ -6,10 +6,12 @@ import git from 'simple-git'
 import dbg from 'debug'
 import Steps from '@ko/steps'
 import Executor, { ExecutorOptions } from '@ko/executor'
+import { Subject, NextObserver, ErrorObserver, CompletionObserver } from 'rxjs'
 
 const debug = dbg('ko:core:generate:next')
 
 export class Generator extends Steps {
+  private readonly observable = new Subject<string>()
   constructor(
     private readonly name: string,
     private readonly framework: string,
@@ -34,16 +36,26 @@ export class Generator extends Steps {
     return this
   }
 
+  subscribe(
+    observer?:
+      | NextObserver<string>
+      | ErrorObserver<string>
+      | CompletionObserver<string>
+      | undefined
+  ) {
+    this.observable.subscribe(observer)
+    return this
+  }
+
   /**
    * Generate the application
    */
   async generate() {
-    console.log(
+    this.observable.next(
       `Creating a ✨ ${chalk.cyan('shiny')} ✨ new ${
         this.framework
       } app in ${chalk.green(resolve(this.name))}`
     )
-    console.log()
 
     debug('Initialize the application')
     await this.init()
@@ -57,13 +69,10 @@ export class Generator extends Steps {
     // Add the changes to the commit
     await git().commit('Add initial files')
 
-    console.log(`${chalk.green('Success!')} 🎉`)
-    console.log()
-
-    console.log(
+    this.observable.next(`${chalk.green('Success!')} 🎉`)
+    this.observable.next(
       `${chalk.cyan('cd')} into ${chalk.green(this.name)} and start developing!`
     )
-    console.log()
 
     return exe
   }

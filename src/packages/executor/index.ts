@@ -15,6 +15,8 @@ import {
 } from '@ko/builder/types'
 import { resolve } from 'path'
 import { write, read } from '@ko/utils/fs'
+import { Subject, NextObserver, ErrorObserver, CompletionObserver } from 'rxjs'
+import chalk from 'chalk'
 
 const debug = dbg('ko:packages:executor')
 
@@ -27,6 +29,7 @@ export default class Executor {
   #steps: StepsConfig[]
   #options: ExecutorOptions
   commits: CommitSummary[] = []
+  private readonly observable = new Subject<string>()
   constructor(steps: StepsConfig[], options: ExecutorOptions) {
     this.#steps = steps
     this.#options = merge(options, { cwd: process.cwd() })
@@ -49,14 +52,28 @@ export default class Executor {
     return this
   }
 
+  subscribe(
+    observer?:
+      | NextObserver<string>
+      | ErrorObserver<string>
+      | CompletionObserver<string>
+      | undefined
+  ) {
+    this.observable.subscribe(observer)
+    return this
+  }
+
   #installPackages = async () => {
     const dependencies = this.#steps.filter(
       (step) => step.type === 'dependency'
     ) as DependencyConfig[]
 
     if (dependencies.length > 0) {
-      console.log(`Installing packages. This might take a couple of minutes.`)
-      console.log()
+      this.observable.next(
+        `Installing ${chalk.cyan(
+          dependencies.length - 1
+        )} packages. This might take a couple of minutes.`
+      )
     }
 
     for (const dc of dependencies) {
@@ -95,8 +112,9 @@ export default class Executor {
     ) as TransformConfig[]
 
     if (transforms.length > 0) {
-      console.log('Transforming files.')
-      console.log()
+      this.observable.next(
+        `Transforming ${chalk.cyan(transforms.length - 1)} files.`
+      )
     }
 
     for (const tc of transforms) {
@@ -141,8 +159,7 @@ export default class Executor {
     ) as FileConfig[]
 
     if (files.length > 0) {
-      console.log('Creating files.')
-      console.log()
+      this.observable.next(`'Creating ${chalk.cyan(files.length - 1)} files.'`)
     }
 
     for (const fc of files) {
@@ -166,8 +183,9 @@ export default class Executor {
     ) as CustomConfig[]
 
     if (actions.length > 0) {
-      console.log('Running custom actions.')
-      console.log()
+      this.observable.next(
+        `Running ${chalk.cyan(actions.length - 1)} custom actions.`
+      )
 
       for (const action of actions) {
         // Do not execute if the condition is false
