@@ -29,8 +29,6 @@
     "cli-ux": "^5.4.10",
     "common-tags": "^1.8.0",
     "debug": "^4.1.1",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
     "execa": "^4.0.3",
     "github-content": "^1.0.1",
     "gitly": "^1.1.9",
@@ -49,7 +47,8 @@
     "tsconfig-paths": "^3.9.0",
     "vue-template-compiler": "^2.6.11",
     "which": "^2.0.2",
-    "yaml-template": "^1.0.0"
+    "yaml-template": "^1.0.0",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -76,12 +75,13 @@
     "eslint-config-xo-typescript": "^0.32.0",
     "eslint-plugin-oclif": "^0.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-copy": "^4.0.1",
     "jest": "^26.4.0",
-    "ts-jest": "^26.2.0",
-    "typescript": "^3.9.7"
+    "ts-jest": "^26.2.0"
   },
   "engines": {
     "node": ">=8.0.0"
