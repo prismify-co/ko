@@ -24,10 +24,19 @@ const download: (
   contents: Buffer
 }> = promisify(gc.file) as any
 
-const factory: FrameworkFactory = ({ name, version, typescript }) => {
+const factory: FrameworkFactory = ({
+  name,
+  version,
+  typescript,
+  dryRun = false,
+  cwd,
+}) => {
   const templatesPath = join(__dirname, 'templates')
 
-  return generator(name, 'next')
+  return generator(name, 'next', {
+    cwd,
+    dryRun,
+  })
     .addDependencyStep({
       name: 'Add initial dependencies',
       packages: [

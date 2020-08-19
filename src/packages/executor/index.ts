@@ -1,23 +1,30 @@
 import globby from 'globby'
 import handlebars from 'handlebars'
-import { merge } from 'lodash'
 import pkgm from '@ko/package-manager'
+import { processFile } from '@ko/transformer'
+import { write, read } from '@ko/utils/fs'
+import { StepsConfig } from '@ko/steps/types'
+
 import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
 
-import { processFile } from '@ko/transformer'
-
 import { resolve } from 'path'
-import { write, read } from '@ko/utils/fs'
-import { Subject, NextObserver, ErrorObserver, CompletionObserver } from 'rxjs'
 import chalk from 'chalk'
-import { StepsConfig } from '@ko/steps/types'
 import {
   DependencyConfig,
   TransformConfig,
   FileConfig,
   CustomConfig,
 } from './types'
+
+import {
+  KoEventEmitter,
+  KoObservable,
+  KoEvents,
+  KoEventType,
+} from '@ko/types/events'
+
+import { EventEmitter } from 'events'
 
 const debug = dbg('ko:packages:executor')
 
@@ -26,22 +33,43 @@ export type ExecutorOptions = {
   dryRun?: boolean
 }
 
-export default class Executor {
+export default class Executor implements KoObservable {
   #steps: StepsConfig[]
   #options: ExecutorOptions
-  commits: CommitSummary[] = []
-  private readonly observable = new Subject<string>()
+  readonly commits: CommitSummary[] = []
+  private readonly observable = new EventEmitter() as KoEventEmitter
   constructor(steps: StepsConfig[], options: ExecutorOptions) {
     this.#steps = steps
-    this.#options = merge(options, { cwd: process.cwd() })
+    this.#options = options
+  }
+
+  subscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    this.observable.on<T>(event, listener)
+    return this
+  }
+
+  subscribeOnce<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    this.observable.once<T>(event, listener)
+    return this
+  }
+
+  unsubscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    this.observable.off<T>(event, listener)
+    return this
+  }
+
+  unsubscribeAll<T extends KoEventType>(event?: T) {
+    this.observable.removeAllListeners(event)
+    return this
   }
 
   setOptions(options: ExecutorOptions) {
-    this.#options = merge(this.#options, { cwd: process.cwd() }, options)
+    this.#options = options
     return this
   }
 
   async run() {
+    this.observable.emit('start')
     debug('Installing packages')
     await this.#installPackages()
     debug('Creating files')
@@ -50,17 +78,7 @@ export default class Executor {
     await this.#customActions()
     debug('Transforming files')
     await this.#transformFiles()
-    return this
-  }
-
-  subscribe(
-    observer?:
-      | NextObserver<string>
-      | ErrorObserver<string>
-      | CompletionObserver<string>
-      | undefined
-  ) {
-    this.observable.subscribe(observer)
+    this.observable.emit('end')
     return this
   }
 
@@ -70,9 +88,10 @@ export default class Executor {
     ) as DependencyConfig[]
 
     if (dependencies.length > 0) {
-      this.observable.next(
+      this.observable.emit(
+        'event',
         `Installing ${chalk.cyan(
-          dependencies.length - 1
+          dependencies.map((d) => d.packages.length).reduce((a, b) => a + b) - 1
         )} packages. This might take a couple of minutes.`
       )
     }
@@ -113,7 +132,8 @@ export default class Executor {
     ) as TransformConfig[]
 
     if (transforms.length > 0) {
-      this.observable.next(
+      this.observable.emit(
+        'event',
         `Transforming ${chalk.cyan(transforms.length - 1)} files.`
       )
     }
@@ -160,7 +180,10 @@ export default class Executor {
     ) as FileConfig[]
 
     if (files.length > 0) {
-      this.observable.next(`'Creating ${chalk.cyan(files.length - 1)} files.'`)
+      this.observable.emit(
+        'event',
+        `'Creating ${chalk.cyan(files.length - 1)} files.'`
+      )
     }
 
     for (const fc of files) {
@@ -184,7 +207,8 @@ export default class Executor {
     ) as CustomConfig[]
 
     if (actions.length > 0) {
-      this.observable.next(
+      this.observable.emit(
+        'event',
         `Running ${chalk.cyan(actions.length - 1)} custom actions.`
       )
 

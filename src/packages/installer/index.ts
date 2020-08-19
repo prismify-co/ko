@@ -7,7 +7,7 @@ import { mkdir } from 'shelljs'
 import dbg from 'debug'
 import { read } from '@ko/utils/fs'
 import Executor from '@ko/executor'
-import { InstallContext } from '@ko/types'
+import { InstallContext } from '@ko/types/contexts'
 import pkgm from '@ko/package-manager'
 import GitlyOptions from 'gitly/lib/interfaces/options'
 const debug = dbg('ko:packages:installer')

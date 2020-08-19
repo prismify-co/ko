@@ -2,7 +2,7 @@ import Command, { flags } from '@oclif/command'
 import * as inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
 
-import { CreateContext } from '@ko/types'
+import { CreateContext } from '@ko/types/contexts'
 import { setupTsnode } from '@ko/utils/setup-ts-node'
 import { exists } from '@ko/utils/fs'
 import chalk from 'chalk'
@@ -86,15 +86,31 @@ export class CreateCommand extends Command {
       return
     }
 
-    // Subscribe to messages from the generator and exectutor
-    const next = (message: string) => {
+    const factory = (await import(frameworkDir)).default as FrameworkFactory
+    const generator = factory({
+      ...context,
+      cwd: resolve(name),
+      dryRun: false,
+    })
+    const executor = generator.executor
+
+    const listener = (message: string) => {
       console.log(message)
       console.log()
     }
 
-    const generator = (await import(frameworkDir)).default as FrameworkFactory
-    const executor = await generator(context).subscribe({ next }).generate()
-    executor.subscribe({ next })
+    generator.subscribe('event', listener)
+    executor.subscribe('event', (message: string) => {
+      console.log(message)
+      console.log()
+    })
+
+    generator.subscribeOnce('end', () => {
+      generator.unsubscribeAll()
+      executor.unsubscribeAll()
+    })
+
+    await generator.generate()
   }
 
   // eslint-disable-next-line require-await
