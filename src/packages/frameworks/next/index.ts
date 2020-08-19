@@ -6,7 +6,7 @@ import { mkdir, touch } from 'shelljs'
 import { promisify } from 'util'
 import { write, read, readJSON, writeJSON } from '@ko/utils/fs'
 import generator from '@ko/generator'
-import { CreateContext } from '@ko/types'
+import { FrameworkFactory } from '../types'
 
 const GithubContent = require('github-content')
 
@@ -24,14 +24,10 @@ const download: (
   contents: Buffer
 }> = promisify(gc.file) as any
 
-export default async function next({
-  name,
-  version,
-  typescript,
-}: Omit<CreateContext, 'framework'>) {
+const factory: FrameworkFactory = ({ name, version, typescript }) => {
   const templatesPath = join(__dirname, 'templates')
 
-  await generator(name, 'next')
+  return generator(name, 'next')
     .addDependencyStep({
       name: 'Add initial dependencies',
       packages: [
@@ -127,5 +123,6 @@ export default async function next({
         write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
       },
     })
-    .generate()
 }
+
+export default factory
