@@ -1,7 +1,7 @@
 {
   "name": "@prismify/ko",
   "description": "A project scaffolding CLI for the web",
-  "version": "0.1.0-0",
+  "version": "0.1.0-1",
   "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
   "bin": {
     "ko": "./bin/run"
@@ -45,10 +45,10 @@
     "simple-git": "^2.17.0",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.7",
     "vue-template-compiler": "^2.6.11",
     "which": "^2.0.2",
-    "yaml-template": "^1.0.0",
-    "typescript": "^3.9.7"
+    "yaml-template": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -72,11 +72,11 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "chalk": "^4.1.0",
     "eslint": "5.16.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-xo-typescript": "^0.32.0",
     "eslint-plugin-oclif": "^0.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-copy": "^4.0.1",
