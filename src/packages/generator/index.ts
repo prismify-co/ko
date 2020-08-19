@@ -5,14 +5,15 @@ import pkgm from '@ko/package-manager'
 import git from 'simple-git'
 import dbg from 'debug'
 import Steps from '@ko/steps'
-import Executor from '@ko/executor'
+import Executor, { ExecutorOptions } from '@ko/executor'
 
 const debug = dbg('ko:core:generate:next')
 
 export class Generator extends Steps {
   constructor(
     private readonly name: string,
-    private readonly framework: string
+    private readonly framework: string,
+    protected options: ExecutorOptions = {}
   ) {
     super()
   }
@@ -43,7 +44,7 @@ export class Generator extends Steps {
 
     debug('Initialize the application')
     await this.init()
-    const exe = new Executor(this.steps, this.options)
+    const exe = new Executor(this._steps, this.options)
 
     debug('Start generating the application')
     await exe.run()

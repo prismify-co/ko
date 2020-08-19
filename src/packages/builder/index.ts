@@ -16,9 +16,10 @@ export class Builder extends Steps {
       link: '',
     },
   }
-
+  protected options: BuilderOptions
   constructor(options: BuilderOptions = {}) {
-    super(options)
+    super()
+    this.options = options
   }
 
   setName(name: string) {
@@ -39,7 +40,7 @@ export class Builder extends Steps {
   }
 
   build() {
-    return new Executor(this.steps, this.options)
+    return new Executor(this._steps, this.options)
   }
 }
 

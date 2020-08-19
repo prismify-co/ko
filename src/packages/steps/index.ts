@@ -5,18 +5,16 @@ import {
   DependencyConfig,
   TransformConfig,
 } from '@ko/builder/types'
-import { BuilderOptions } from '@ko/builder'
 
 export default class Steps {
-  protected steps: StepsConfig[] = []
-  protected options: BuilderOptions
+  protected _steps: StepsConfig[] = []
 
-  constructor(options: BuilderOptions = {}) {
-    this.options = options
+  get steps() {
+    return this._steps
   }
 
   addCustomStep(step: Omit<CustomConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'custom',
       ...step,
     })
@@ -24,21 +22,21 @@ export default class Steps {
   }
 
   addFileStep(step: Omit<FileConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'file',
       ...step,
     })
     return this
   }
   addDependencyStep(step: Omit<DependencyConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'dependency',
       ...step,
     })
     return this
   }
   addTransformStep(step: Omit<TransformConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'transform',
       ...step,
     })
