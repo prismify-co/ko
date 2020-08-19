@@ -34,6 +34,9 @@ export class Generator extends Steps {
     return this
   }
 
+  /**
+   * Generate the application
+   */
   async generate() {
     console.log(
       `Creating a ✨ ${chalk.cyan('shiny')} ✨ new ${
