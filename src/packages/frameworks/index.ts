@@ -7,12 +7,8 @@ export default function ({
   ...rest
 }: CreateContext) {
   switch (framework) {
-    case 'nuxt':
-      return
     case 'next':
       return next({ typescript, ...rest })
-    case 'sapper':
-      return
     default:
       return
   }
