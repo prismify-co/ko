@@ -1,31 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`packages/transformer adds import at start of file with no imports present 1`] = `
-"import React from \\"react\\";
-export const truth = () => 42"
-`;
-
-exports[`packages/transformer adds import at the end of all imports if imports are present 1`] = `
-"import React from 'react'
-import \\"app/styles/app.css\\";
-export default function Comp() {
-  return <div>hello world!</div>
-}"
-`;
-
-exports[`packages/transformer shoudl add import at start of file with no imports present 1`] = `
-"import React from \\"react\\";
-export const truth = () => 42"
-`;
-
-exports[`packages/transformer shoudl add import at the end of all imports if imports are present 1`] = `
-"import React from 'react'
-import \\"app/styles/app.css\\";
-export default function Comp() {
-  return <div>hello world!</div>
-}"
-`;
-
 exports[`packages/transformer should add import at start of file with no imports present 1`] = `
 "import React from \\"react\\";
 export const truth = () => 42"
