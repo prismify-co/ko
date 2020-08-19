@@ -10,11 +10,10 @@ A project scaffolding and configuration CLI for the web
 [![License](https://img.shields.io/npm/l/@prismify/ko.svg)](https://github.com/prismify-co/ko/blob/master/package.json)
 
 <!-- toc -->
-
-- [ko](#ko)
-- [About](#about)
-- [Usage](#usage)
-- [Commands](#commands)
+* [ko](#ko)
+* [About](#about)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # About
@@ -77,67 +76,23 @@ yarn dev
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.25 darwin-x64 node-v14.0.0
+@prismify/ko/0.1.0-0 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-- [`ko create NAME`](#ko-create-name)
-- [`ko help [COMMAND]`](#ko-help-command)
-- [`ko install NAME`](#ko-install-name)
-
-## `ko clone REPOSITORY [DESTINATION]`
-
-clone an existing project
-
-```
-USAGE
-  $ ko clone REPOSITORY [DESTINATION]
-
-ARGUMENTS
-  REPOSITORY   The repository url (e.g. org/repo, github:org/repo, https://www.github.com/org/repo)
-  DESTINATION  The destination to clone (optional)
-```
-
-_See code: [src/packages/cli/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.25/src/packages/cli/clone.ts)_
-
-## `ko create NAME`
-
-create a new project
-
-```
-USAGE
-  $ ko create NAME
-
-ARGUMENTS
-  NAME  The name of the project or "." for cwd
-
-OPTIONS
-  -f, --framework=next   [default: next]
-  -j, --javascript       Use JavaScript
-  -p, --prompt
-  -v, --version=version  [default: latest]
-
-ALIASES
-  $ ko new
-```
-
-_See code: [src/packages/cli/create.ts](https://github.com/prismify-co/ko/blob/v0.0.25/src/packages/cli/create.ts)_
+* [`ko help [COMMAND]`](#ko-help-command)
 
 ## `ko help [COMMAND]`
 
@@ -155,28 +110,4 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
-
-## `ko install NAME`
-
-install the recipe and configure the app
-
-```
-USAGE
-  $ ko install NAME
-
-ARGUMENTS
-  NAME  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
-
-OPTIONS
-  -c, --cache
-  -d, --dryRun
-  -p, --prompt
-  --host=github|gitlab|bitbucket  [default: github]
-
-ALIASES
-  $ ko add
-```
-
-_See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.25/src/packages/cli/install.ts)_
-
 <!-- commandsstop -->
