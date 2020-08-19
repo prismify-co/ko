@@ -66,6 +66,10 @@ export class Generator extends Steps {
   }
 }
 
-export default function generator(name: string, framework: string) {
-  return new Generator(name, framework)
+export default function generator(
+  name: string,
+  framework: string,
+  options: ExecutorOptions = {}
+) {
+  return new Generator(name, framework, options)
 }
