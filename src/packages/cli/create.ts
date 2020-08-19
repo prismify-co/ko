@@ -41,12 +41,17 @@ export class CreateCommand extends Command {
   async run() {
     setupTsnode()
     const { args, flags } = this.parse(CreateCommand)
+
+    // Resolves the name of the directory
+    const resolveName = (path: string) =>
+      path === '.' ? process.cwd().split('/').splice(-1).join('') : path
+
     // Set the project name
     const name = args.name as string
 
     // Set the initial context for project creation
     let context: CreateContext = {
-      name,
+      name: resolveName(name),
       ...omit(flags, 'prompt', 'javascript'),
       typescript: flags.javascript === false,
     }
@@ -60,7 +65,7 @@ export class CreateCommand extends Command {
         {
           name: 'javascript',
           message: `The directory ${chalk.green(
-            name
+            resolveName(name)
           )} is not empty. Would you like to continue?`,
           type: 'confirm',
 
@@ -76,7 +81,7 @@ export class CreateCommand extends Command {
       console.log(
         `${chalk.green(
           context.framework
-        )} is not a supported framework 😭. Consider contributing to ko at https://github.com/prismify-co/ko`
+        )} is not a supported framework 😭. Consider contributing to ko at https://github.com/prismify-co/ko.`
       )
       return
     }
