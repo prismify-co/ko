@@ -78,7 +78,7 @@ export default class Installer {
   }
 
   async installLocal() {
-    const { dryRun } = this.context
+    const { dryRun, name } = this.context
     const cwd = process.cwd()
 
     debug(`${name} is local`)
