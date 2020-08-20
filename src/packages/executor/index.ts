@@ -1,14 +1,12 @@
 import globby from 'globby'
-import handlebars from 'handlebars'
 import pkgm from '@ko/package-manager'
-import { processFile } from '@ko/transformer'
-import { write, read } from '@ko/utils/fs'
 import { StepsConfig } from '@ko/steps/types'
 
 import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
+import * as vfs from 'vinyl-fs'
 
-import { resolve } from 'path'
+import { basename } from 'path'
 import chalk from 'chalk'
 import {
   DependencyConfig,
@@ -25,12 +23,16 @@ import {
 } from '@ko/types/events'
 
 import { EventEmitter } from 'events'
+import { handlebars, transformer } from '@ko/utils/streams'
+import gulp from 'gulp'
+import { Transformer } from '@ko/transformer/types'
 
 const debug = dbg('ko:packages:executor')
 
 export type ExecutorOptions = {
   cwd?: string
   dryRun?: boolean
+  git?: boolean
 }
 
 export default class Executor implements KoObservable {
@@ -100,30 +102,9 @@ export default class Executor implements KoObservable {
       if (dc.packages.length > 0 && dc.condition !== false) {
         // Install the packages
         await pkgm().add(dc.packages, { cwd: this.#options.cwd })
-        // Add the changes
-        await git(this.#options.cwd).add('*')
-        // Commit the changes
-        const commit = await git(this.#options.cwd).commit(dc.name)
-        this.commits.push(commit)
+        await this.#commit(dc.name)
       }
     }
-  }
-
-  transformFile = async (
-    { transform, name, condition }: TransformConfig,
-    path: string
-  ) => {
-    // Do not execute if the condition is false
-    if (condition === false) return
-
-    const original = read(path)
-    const processed = processFile(original, transform)
-    write(path, processed, 'utf-8')
-    // Add the changes
-    await git(this.#options.cwd).add('*')
-    // Commit the changes
-    const commit = await git(this.#options.cwd).commit(name)
-    this.commits.push(commit)
   }
 
   #transformFiles = async () => {
@@ -138,40 +119,24 @@ export default class Executor implements KoObservable {
       )
     }
 
+    const transform = (source: string, tr: Transformer) => {
+      return new Promise((resolve, reject) => {
+        const dest = vfs.dest(source.replace(basename(source), ''))
+        dest.on('finish', () => resolve())
+        dest.on('error', (error) => reject(error))
+        vfs.src(source).pipe(transformer(tr)).pipe(dest)
+      })
+    }
+
     for (const tc of transforms) {
       const paths = tc.files
-      for (const path of paths) {
-        if (globby.hasMagic(path)) {
-          for await (const p of globby.stream(path, {
-            expandDirectories: true,
-          })) {
-            await this.transformFile(tc, p.toString('utf-8'))
-          }
-          continue
-        }
-
-        await this.transformFile(tc, resolve(path))
+      for await (const path of globby.stream(paths, {
+        cwd: this.#options.cwd,
+      })) {
+        await transform(path.toString('utf-8'), tc.transform)
+        await this.#commit(tc.name)
       }
     }
-  }
-
-  createFile = async (
-    { name, context, path, condition }: FileConfig,
-    file: Buffer | string
-  ) => {
-    // Do not execute if the condition is false
-    if (condition === false) return
-
-    if (context) {
-      const template = handlebars.compile(read(file.toString('utf-8')))
-      file = template(context)
-    }
-    write(path, file)
-    // Add the changes
-    await git(this.#options.cwd).add('*')
-    // Commit the changes
-    const commit = await git(this.#options.cwd).commit(name)
-    this.commits.push(commit)
   }
 
   #createFiles = async () => {
@@ -186,18 +151,22 @@ export default class Executor implements KoObservable {
       )
     }
 
-    for (const fc of files) {
-      if (globby.hasMagic(fc.path)) {
-        for await (const file of globby.stream(fc.path, {
-          expandDirectories: true,
-        })) {
-          await this.createFile(fc, file)
-        }
-        continue
-      }
+    const copyAndInterpolate = (
+      source: string,
+      destination: string,
+      context: any
+    ) =>
+      new Promise((resolve, reject) => {
+        const dest = gulp.dest(destination)
+        dest.on('finish', () => resolve())
+        dest.on('error', (error) => reject(error))
 
-      const file = read(fc.path)
-      await this.createFile(fc, file)
+        vfs.src(source).pipe(handlebars(context)).pipe(dest)
+      })
+
+    for (const fc of files) {
+      await copyAndInterpolate(fc.path, fc.target, fc.context)
+      await this.#commit(fc.name)
     }
   }
 
@@ -220,6 +189,16 @@ export default class Executor implements KoObservable {
 
         await action.run()
       }
+    }
+  }
+
+  #commit = async (name: string) => {
+    if (this.#options.git) {
+      // Add the changes
+      await git(this.#options.cwd).add('*')
+      // Commit the changes
+      const commit = await git(this.#options.cwd).commit(name)
+      this.commits.push(commit)
     }
   }
 }
