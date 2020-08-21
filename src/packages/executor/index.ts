@@ -194,6 +194,7 @@ export default class Executor implements KoObservable {
 
   #commit = async (name: string) => {
     if (this.#options.git) {
+      debug('Adding changes to git')
       // Add the changes
       await git(this.#options.cwd).add('*')
       // Commit the changes
