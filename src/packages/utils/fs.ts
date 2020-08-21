@@ -1,5 +1,6 @@
 import { readFileSync, PathLike, writeFileSync } from 'fs'
 import { URL } from 'url'
+import { join } from 'path'
 
 export { existsSync as exists } from 'fs'
 /**
@@ -50,7 +51,8 @@ export interface JSONLikeArray
  * @param path A path to a file. If a URL is provided, it must use the file: protocol. URL support is experimental. If a file descriptor is provided, the underlying file will not be closed automatically.
  * @param options An object that may contain an optional flag. If a flag is not provided, it defaults to 'r'
  */
-export const readJSON = (path: string) => JSON.parse(read(path)) as JSONLike
+export const readJSON = (...path: string[]) =>
+  JSON.parse(read(join(...path))) as JSONLike
 
 /**
  * Synchronously writes data to a file, replacing the file if it already exists.
