@@ -7,13 +7,6 @@ import dbg from 'debug'
 // import Steps from '@ko/steps'
 // import Executor from '@ko/executor'
 import { EventEmitter } from 'events'
-// import {
-//   KoEventEmitter,
-//   KoEvents,
-//   KoEventType,
-//   KoObservable,
-// } from '@ko/types/events'
-import { GeneratorOptions } from './types'
 import Executor from '../executor'
 import Steps from '../steps'
 import { mkpdir } from '../utils/mkpdir'
@@ -26,6 +19,10 @@ import {
 } from '../../types/events'
 
 const debug = dbg('ko:packages:generator')
+
+import { ExecutorOptions } from '../executor'
+
+export interface GeneratorOptions extends ExecutorOptions {}
 
 export class Generator extends Steps implements KoObservable {
   private readonly observable = new EventEmitter() as KoEventEmitter

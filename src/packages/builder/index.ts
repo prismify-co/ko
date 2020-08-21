@@ -1,5 +1,4 @@
 // import Executor from '@ko/executor'
-import { RecipeMeta } from './types'
 import { merge } from 'lodash'
 import Steps from '../steps'
 import Executor from '../executor'
@@ -7,6 +6,17 @@ import Executor from '../executor'
 
 export type BuilderOptions = {
   cwd?: string
+}
+
+export interface RecipeMeta {
+  name: string
+  description: string
+  owner: string
+  repo: RepoMeta
+}
+
+export interface RepoMeta {
+  link: string
 }
 
 export class Builder extends Steps {

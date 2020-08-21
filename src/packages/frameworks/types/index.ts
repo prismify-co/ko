@@ -3,9 +3,8 @@
 // import { GeneratorOptions } from '@ko/generator/types'
 
 import { CreateContext } from '../../../types/contexts'
-import { GeneratorOptions } from '../../generator/types'
-import { Generator } from '../../generator'
 
+import { Generator, GeneratorOptions } from '../../generator'
 export type FrameworkFactory = (
   context: Omit<CreateContext, 'framework'> & GeneratorOptions
 ) => Generator
