@@ -120,7 +120,7 @@
     "lint": "eslint src --ext .ts",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "npm run build && npm run oclif-dev manifest && oclif-dev readme",
-    "test": "jest --coverage",
+    "test": "jest --coverage --runInBand",
     "version": "oclif-dev readme && git add README.md",
     "build": "npm run clean && gulp && tsc",
     "clean": "rm -rf lib"
