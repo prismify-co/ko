@@ -22,8 +22,8 @@ describe('packages/steps', () => {
   it('should add a file step', () => {
     const step = {
       name: 'test',
-      path: 'path',
-      target: 'target',
+      source: 'path',
+      destination: 'target',
       condition: true,
       context: { hello: 'world' },
       summary: 'Hello',
@@ -36,7 +36,7 @@ describe('packages/steps', () => {
   it('should add a transform step', () => {
     const step = {
       name: 'test',
-      files: ['file'],
+      source: ['file'],
       transform(ast: any) {
         return ast
       },

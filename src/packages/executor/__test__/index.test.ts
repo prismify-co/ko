@@ -84,8 +84,8 @@ describe('packages/executor', () => {
 
       steps.addFileStep({
         name: 'Copy and interpolate file',
-        path: join(FIXTURES_PATH, 'test.txt'),
-        target: FILE_DIR,
+        source: join(FIXTURES_PATH, 'test.txt'),
+        destination: FILE_DIR,
         context: {
           name: 'John Doe',
         },
@@ -114,8 +114,8 @@ describe('packages/executor', () => {
 
       steps.addFileStep({
         name: 'Copy and interpolate file',
-        path: join(FIXTURES_PATH, 'multi-file', '*.txt'),
-        target: join(FILE_DIR, 'multi-file'),
+        source: join(FIXTURES_PATH, 'multi-file', '*.txt'),
+        destination: join(FILE_DIR, 'multi-file'),
         context: {
           name: 'John Doe',
         },
@@ -158,7 +158,7 @@ describe('packages/executor', () => {
 
       steps.addTransformStep({
         name: 'Transform file',
-        files: [join(TRANSFORM_DIR, 'test.txt')],
+        source: [join(TRANSFORM_DIR, 'test.txt')],
         transform(ast: ASTNode) {
           visit(ast, {
             visitIdentifier(path) {

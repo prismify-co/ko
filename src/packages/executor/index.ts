@@ -138,7 +138,7 @@ export default class Executor implements KoObservable {
     }
 
     for (const tc of transforms) {
-      const paths = tc.files
+      const paths = tc.source
       for await (const path of globby.stream(paths, {
         cwd: this.#options.cwd,
       })) {
@@ -161,7 +161,7 @@ export default class Executor implements KoObservable {
     }
 
     const copyAndInterpolate = (
-      source: string,
+      source: string | string[],
       destination: string,
       context: any
     ) =>
@@ -174,7 +174,7 @@ export default class Executor implements KoObservable {
       })
 
     for (const fc of files) {
-      await copyAndInterpolate(fc.path, fc.target, fc.context)
+      await copyAndInterpolate(fc.source, fc.destination, fc.context)
       await this.#commit(fc.name)
     }
   }

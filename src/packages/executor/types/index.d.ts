@@ -35,11 +35,11 @@ export interface FileConfig extends ExecutorConfig {
   /**
    * The target directory
    */
-  target: string
+  destination: string
   /**
    * The path of the template file
    */
-  path: string
+  source: string | string[]
   /**
    * The handlebar context values
    */
@@ -47,7 +47,7 @@ export interface FileConfig extends ExecutorConfig {
 }
 
 export interface TransformConfig extends ExecutorConfig {
-  files: string[]
+  source: string | string[]
   transform: Transformer
 }
 
