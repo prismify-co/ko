@@ -122,7 +122,7 @@
     "prepack": "npm run build && npm run oclif-dev manifest && oclif-dev readme",
     "test": "jest --coverage --runInBand",
     "version": "oclif-dev readme && git add README.md",
-    "build": "npm run clean && gulp && tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf lib"
   },
   "types": "lib/index.d.ts"

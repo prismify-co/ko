@@ -3,8 +3,15 @@ import { join } from 'path'
 
 import factory from '../'
 import { nanoid } from 'nanoid'
-import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
-import { read, exists } from '@ko/utils/fs'
+import {
+  chtestdir,
+  rmmktestdir,
+  rmtestdir,
+  testdir,
+} from '../../../utils/tests'
+import { exists, read } from '../../../utils/fs'
+// import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
+// import { read, exists } from '@ko/utils/fs'
 
 const cwd = process.cwd()
 const testid = nanoid()

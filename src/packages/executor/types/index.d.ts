@@ -1,5 +1,8 @@
-import { NPMPackage } from '@ko/package-manager/types'
-import { Transformer } from '@ko/transformer/types'
+// import { NPMPackage } from '@ko/package-manager/types'
+
+import { NPMPackage } from '../../package-manager/types'
+import { Transformer } from '../../transformer/types'
+// import { Transformer } from '@ko/transformer/types'
 export type ExecutionType = 'dependency' | 'transform' | 'file' | 'custom'
 
 interface Context {

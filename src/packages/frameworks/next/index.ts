@@ -4,9 +4,11 @@ import handlebars from 'handlebars'
 import { join, resolve } from 'path'
 import { mkdir, touch } from 'shelljs'
 import { promisify } from 'util'
-import { write, read, readJSON, writeJSON } from '@ko/utils/fs'
-import generator from '@ko/generator'
+// import { write, read, readJSON, writeJSON } from '@ko/utils/fs'
+// import generator from '@ko/generator'
 import { FrameworkFactory } from '../types'
+import generator from '../../generator'
+import { read, write, readJSON, writeJSON } from '../../utils/fs'
 
 const GithubContent = require('github-content')
 

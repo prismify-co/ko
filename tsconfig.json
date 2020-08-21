@@ -4,8 +4,8 @@
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "lib",
-    "rootDir": "src",
-    "baseUrl": ".",
+    "rootDir": ".",
+    // "baseUrl": ".",
     // Target latest version of ECMAScript.
     "target": "ES2017",
     // Search under node_modules for non-relative imports.
@@ -17,15 +17,16 @@
     // Disallow features that require cross-file information for emit.
     "isolatedModules": true,
     // This compiler run should only output d.ts files
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
-    "noUnusedLocals": true,
-    "paths": {
-      "@ko/*": ["src/packages/*"],
-      "@ko/types": ["src/types"],
-      "@ko/types/*": ["src/types/*"]
-    }
+    "noUnusedLocals": true
+    // TODO: Figure out how to use this without going the monorepo route
+    // "paths": {
+    //   "@ko/*": ["src/packages/*"],
+    //   "@ko/types": ["src/types"],
+    //   "@ko/types/*": ["src/types/*"]
+    // }
   },
   "include": ["src"],
   "exclude": [

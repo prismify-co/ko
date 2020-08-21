@@ -3,7 +3,8 @@ import { existsSync as exists } from 'fs'
 import { resolve } from 'path'
 import { NPMPackage } from './types'
 import dbg from 'debug'
-import { read } from '@ko/utils/fs'
+import { read } from '../utils/fs'
+// import { read } from '@ko/utils/fs'
 const debug = dbg('ko:packages:package-manager')
 
 type PackageManagerName = 'yarn' | 'npm'

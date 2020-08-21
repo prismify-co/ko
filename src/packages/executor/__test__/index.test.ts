@@ -1,13 +1,18 @@
 import { mkdir, rm } from 'shelljs'
 import { join } from 'path'
-import pkgm from '@ko/package-manager'
-import Steps from '@ko/steps'
+// import pkgm from '@ko/package-manager'
+// import Steps from '@ko/steps'
 import Executor from '..'
-import { exists, read, write } from '@ko/utils/fs'
+// import { exists, read, write } from '@ko/utils/fs'
 import git from 'simple-git'
 import { visit } from 'recast'
 import { nanoid } from 'nanoid'
-import { testdir, rmmktestdir, chtestdir, rmtestdir } from '@ko/utils/tests'
+import { testdir, rmtestdir, rmmktestdir, chtestdir } from '../../utils/tests'
+import Steps from '../../steps'
+import { exists, read, write } from '../../utils/fs'
+import pkgm from '../../package-manager'
+import { ASTNode } from 'ast-types'
+// import { testdir, rmmktestdir, chtestdir, rmtestdir } from '@ko/utils/tests'
 
 const testid = nanoid()
 const cwd = process.cwd()
@@ -154,7 +159,7 @@ describe('packages/executor', () => {
       steps.addTransformStep({
         name: 'Transform file',
         files: [join(TRANSFORM_DIR, 'test.txt')],
-        transform(ast) {
+        transform(ast: ASTNode) {
           visit(ast, {
             visitIdentifier(path) {
               if (path.node.name === 'a') {

@@ -1,10 +1,12 @@
 import { existsSync as exists } from 'fs'
 import { join } from 'path'
 import { rm, cp } from 'shelljs'
-import { readJSON, writeJSON } from '@ko/utils/fs'
-import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
+// import { readJSON, writeJSON } from '@ko/utils/fs'
+// import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
 import { nanoid } from 'nanoid'
 import pkgm from '..'
+import { rmmktestdir, rmtestdir, chtestdir, testdir } from '../../utils/tests'
+import { readJSON, writeJSON } from '../../utils/fs'
 
 const cwd = process.cwd()
 const testid = nanoid()

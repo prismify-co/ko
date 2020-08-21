@@ -4,7 +4,13 @@ import {
   FileConfig,
   DependencyConfig,
   TransformConfig,
-} from '@ko/executor/types'
+} from '../executor/types'
+// import {
+//   CustomConfig,
+//   FileConfig,
+//   DependencyConfig,
+//   TransformConfig,
+// } from '@ko/executor/types'
 
 export default class Steps {
   protected _steps: StepsConfig[] = []

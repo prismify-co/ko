@@ -1,19 +1,29 @@
 import chalk from 'chalk'
-import { mkpdir } from '@ko/utils/mkpdir'
+// import { mkpdir } from '@ko/utils/mkpdir'
 import { resolve, join } from 'path'
-import pkgm from '@ko/package-manager'
+// import pkgm from '@ko/package-manager'
 import git from 'simple-git'
 import dbg from 'debug'
-import Steps from '@ko/steps'
-import Executor from '@ko/executor'
+// import Steps from '@ko/steps'
+// import Executor from '@ko/executor'
 import { EventEmitter } from 'events'
-import {
-  KoEventEmitter,
-  KoEvents,
-  KoEventType,
-  KoObservable,
-} from '@ko/types/events'
+// import {
+//   KoEventEmitter,
+//   KoEvents,
+//   KoEventType,
+//   KoObservable,
+// } from '@ko/types/events'
 import { GeneratorOptions } from './types'
+import Executor from '../executor'
+import Steps from '../steps'
+import { mkpdir } from '../utils/mkpdir'
+import pkgm from '../package-manager'
+import {
+  KoObservable,
+  KoEventEmitter,
+  KoEventType,
+  KoEvents,
+} from '../../types/events'
 
 const debug = dbg('ko:packages:generator')
 

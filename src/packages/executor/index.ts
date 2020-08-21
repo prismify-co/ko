@@ -1,6 +1,6 @@
 import globby from 'globby'
-import pkgm from '@ko/package-manager'
-import { StepsConfig } from '@ko/steps/types'
+// import pkgm from '@ko/package-manager'
+// import { StepsConfig } from '@ko/steps/types'
 
 import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
@@ -15,17 +15,26 @@ import {
   CustomConfig,
 } from './types'
 
-import {
-  KoEventEmitter,
-  KoObservable,
-  KoEvents,
-  KoEventType,
-} from '@ko/types/events'
-
+// import {
+//   KoEventEmitter,
+//   KoObservable,
+//   KoEvents,
+//   KoEventType,
+// } from '@ko/types/events'
+import { transformer, handlebars } from '../utils/streams'
 import { EventEmitter } from 'events'
-import { handlebars, transformer } from '@ko/utils/streams'
+// import { handlebars, transformer } from '@ko/utils/streams'
 import gulp from 'gulp'
-import { Transformer } from '@ko/transformer/types'
+import {
+  KoObservable,
+  KoEventEmitter,
+  KoEventType,
+  KoEvents,
+} from '../../types/events'
+import { StepsConfig } from '../steps/types'
+import pkgm from '../package-manager'
+import { Transformer } from '../transformer/types'
+// import { Transformer } from '@ko/transformer/types'
 
 const debug = dbg('ko:packages:executor')
 

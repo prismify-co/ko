@@ -2,8 +2,10 @@ import { JSONLike } from './fs'
 import { Transform } from 'stream'
 import File from 'vinyl'
 import hbs from 'handlebars'
-import { Transformer } from '@ko/transformer/types'
-import transform from '@ko/transformer'
+import transform from '../transformer'
+import { Transformer } from '../transformer/types'
+// import { Transformer } from '@ko/transformer/types'
+// import transform from '@ko/transformer'
 
 export const handlebars = (context?: JSONLike) =>
   new Transform({

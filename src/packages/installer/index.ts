@@ -1,15 +1,18 @@
-import { existsSync as exists } from 'fs'
 import { extract, fetch as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
 import { mkdir } from 'shelljs'
 
 import dbg from 'debug'
-import { read } from '@ko/utils/fs'
-import Executor from '@ko/executor'
-import { InstallContext } from '@ko/types/contexts'
-import pkgm from '@ko/package-manager'
+// import { read } from '@ko/utils/fs'
+// import Executor from '@ko/executor'
+// import { InstallContext } from '@ko/types/contexts'
+// import pkgm from '@ko/package-manager'
 import GitlyOptions from 'gitly/lib/interfaces/options'
+import pkgm from '../package-manager'
+import { InstallContext } from '../../types/contexts'
+import Executor from '../executor'
+import { exists, read } from '../utils/fs'
 const debug = dbg('ko:packages:installer')
 
 export const isNavtiveRecipe = (path: string) => /^([\w\-_]*)$/.test(path)
