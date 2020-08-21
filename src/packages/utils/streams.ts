@@ -1,4 +1,3 @@
-// import hbs from 'handlebars'
 import { JSONLike } from './fs'
 import { Transform } from 'stream'
 import File from 'vinyl'
