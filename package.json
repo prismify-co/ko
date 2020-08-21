@@ -106,7 +106,7 @@
     "oclif"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/src/index.js",
   "oclif": {
     "commands": "./lib/packages/cli",
     "bin": "ko",
