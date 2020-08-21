@@ -15,7 +15,7 @@ import {
 } from '@ko/types/events'
 import { GeneratorOptions } from './types'
 
-const debug = dbg('ko:core:generate:next')
+const debug = dbg('ko:packages:generator')
 
 export class Generator extends Steps implements KoObservable {
   private readonly observable = new EventEmitter() as KoEventEmitter
@@ -54,10 +54,15 @@ export class Generator extends Steps implements KoObservable {
    * Initialize the application
    */
   private async init() {
+    debug(
+      `Initializing at ${join(this.options.cwd || process.cwd(), this.name)}`
+    )
     // Create app directory
     mkpdir(this.name)
+    debug(`Changing directory to ${this.options.cwd || resolve(this.name)}`)
     // Change directory
     process.chdir(this.options.cwd || resolve(this.name))
+    debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
     // Initialize git
