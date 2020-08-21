@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { mkpdir } from '@ko/utils/mkpdir'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import pkgm from '@ko/package-manager'
 import git from 'simple-git'
 import dbg from 'debug'
@@ -65,8 +65,7 @@ export class Generator extends Steps implements KoObservable {
     debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
-    // Initialize git
-    await git().init()
+    await this.#commit()
 
     return this
   }
@@ -83,15 +82,9 @@ export class Generator extends Steps implements KoObservable {
       } app in ${chalk.green(resolve(this.name))}`
     )
 
-    debug('Initialize the application')
     await this.init()
-    debug('Start generating the application')
     await this.executor.run()
-
-    debug(`Add changes to git`)
-    await git().add('*')
-    // Add the changes to the commit
-    await git().commit('Add initial files')
+    await this.#commit()
 
     this.observable.emit('event', `${chalk.green('Success!')} 🎉`)
     this.observable.emit(
@@ -100,6 +93,15 @@ export class Generator extends Steps implements KoObservable {
     )
     this.observable.emit('end')
     return this
+  }
+
+  #commit = async () => {
+    if (this.options.git) {
+      debug(`Adding changes to git`)
+      await git().add('*')
+      // Add the changes to the commit
+      await git().commit('Add initial files')
+    }
   }
 }
 
