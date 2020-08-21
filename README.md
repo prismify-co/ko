@@ -81,7 +81,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.1.0-1 darwin-x64 node-v14.0.0
+@prismify/ko/0.1.0-2 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -92,48 +92,7 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`ko clone REPOSITORY [DESTINATION]`](#ko-clone-repository-destination)
-* [`ko create NAME`](#ko-create-name)
 * [`ko help [COMMAND]`](#ko-help-command)
-* [`ko install NAME`](#ko-install-name)
-
-## `ko clone REPOSITORY [DESTINATION]`
-
-clone an existing project
-
-```
-USAGE
-  $ ko clone REPOSITORY [DESTINATION]
-
-ARGUMENTS
-  REPOSITORY   The repository url (e.g. org/repo, github:org/repo, https://www.github.com/org/repo)
-  DESTINATION  The destination to clone (optional)
-```
-
-_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.1.0-1/lib/packages/cli/clone.js)_
-
-## `ko create NAME`
-
-create a new project
-
-```
-USAGE
-  $ ko create NAME
-
-ARGUMENTS
-  NAME  The name of the project or "." for cwd
-
-OPTIONS
-  -f, --framework=next   [default: next]
-  -j, --javascript       Use JavaScript
-  -p, --prompt
-  -v, --version=version  [default: latest]
-
-ALIASES
-  $ ko new
-```
-
-_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.1.0-1/lib/packages/cli/create.js)_
 
 ## `ko help [COMMAND]`
 
@@ -151,27 +110,4 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
-
-## `ko install NAME`
-
-install the recipe and configure the app
-
-```
-USAGE
-  $ ko install NAME
-
-ARGUMENTS
-  NAME  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
-
-OPTIONS
-  -c, --cache
-  -d, --dryRun
-  -p, --prompt
-  --host=github|gitlab|bitbucket  [default: github]
-
-ALIASES
-  $ ko add
-```
-
-_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.1.0-1/lib/packages/cli/install.js)_
 <!-- commandsstop -->
