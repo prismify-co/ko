@@ -6,25 +6,32 @@ import Executor from '..'
 import { exists, read, write } from '@ko/utils/fs'
 import git from 'simple-git'
 import { visit } from 'recast'
+import { nanoid } from 'nanoid'
+import { testdir, rmmktestdir, chtestdir, rmtestdir } from '@ko/utils/tests'
 
-const OUTPUT_DIR = join(__dirname, 'output')
-const NPM_DIR = join(OUTPUT_DIR, 'npm')
-const FILE_DIR = join(OUTPUT_DIR, 'file')
-const TRANSFORM_DIR = join(OUTPUT_DIR, 'transform')
-const FIXTURES_DIR = join(__dirname, '__fixtures__')
+const testid = nanoid()
+const cwd = process.cwd()
+
+const NPM_DIR = testdir(testid, 'npm')
+const FILE_DIR = testdir(testid, 'file')
+const TRANSFORM_DIR = testdir(testid, 'transform')
+const FIXTURES_PATH = join(__dirname, '__fixtures__')
 
 describe('packages/executor', () => {
   beforeAll(() => {
-    if (exists(OUTPUT_DIR)) {
-      rm('-rf', OUTPUT_DIR)
-    }
+    rmtestdir()
+    rmmktestdir(testid)
 
-    mkdir('-p', OUTPUT_DIR)
     mkdir('-p', NPM_DIR)
     mkdir('-p', FILE_DIR)
     mkdir('-p', TRANSFORM_DIR)
   })
-  beforeEach(() => process.chdir(OUTPUT_DIR))
+
+  beforeEach(() => chtestdir())
+  afterAll(() => {
+    process.chdir(cwd)
+    rmmktestdir(testid)
+  })
 
   describe('addDependencyStep', () => {
     beforeAll(async () => {
@@ -63,7 +70,7 @@ describe('packages/executor', () => {
 
   describe('addFileStep', () => {
     beforeAll(async () => {
-      process.chdir(FIXTURES_DIR)
+      process.chdir(FIXTURES_PATH)
       await git().init()
     })
 
@@ -72,7 +79,7 @@ describe('packages/executor', () => {
 
       steps.addFileStep({
         name: 'Copy and interpolate file',
-        path: join(FIXTURES_DIR, 'test.txt'),
+        path: join(FIXTURES_PATH, 'test.txt'),
         target: FILE_DIR,
         context: {
           name: 'John Doe',
@@ -102,7 +109,7 @@ describe('packages/executor', () => {
 
       steps.addFileStep({
         name: 'Copy and interpolate file',
-        path: join(FIXTURES_DIR, 'multi-file', '*.txt'),
+        path: join(FIXTURES_PATH, 'multi-file', '*.txt'),
         target: join(FILE_DIR, 'multi-file'),
         context: {
           name: 'John Doe',

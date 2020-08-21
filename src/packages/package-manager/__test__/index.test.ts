@@ -11,13 +11,14 @@ const testid = nanoid()
 const FIXTURES_PATH = join(__dirname, '__fixtures__')
 describe('packages/package-manager', () => {
   beforeAll(() => {
+    rmtestdir()
     rmmktestdir(testid)
     chtestdir(testid)
   })
 
   afterAll(() => {
-    rmtestdir()
     process.chdir(cwd)
+    rmtestdir()
   })
 
   describe('init', () => {
