@@ -81,7 +81,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.1.0-7 darwin-x64 node-v14.0.0
+@prismify/ko/0.1.0 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -110,7 +110,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.1.0-7/lib/packages/cli/clone.js)_
+_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.1.0/lib/packages/cli/clone.js)_
 
 ## `ko create NAME`
 
@@ -126,6 +126,7 @@ ARGUMENTS
 OPTIONS
   -f, --framework=next   [default: next]
   -f, --offline
+  -g, --no-git
   -j, --javascript       Use JavaScript
   -p, --prompt
   -v, --version=version  [default: latest]
@@ -134,7 +135,7 @@ ALIASES
   $ ko new
 ```
 
-_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.1.0-7/lib/packages/cli/create.js)_
+_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.1.0/lib/packages/cli/create.js)_
 
 ## `ko help [COMMAND]`
 
@@ -168,6 +169,7 @@ OPTIONS
   -c, --cache
   -d, --dryRun
   -f, --offline
+  -g, --no-git
   -p, --prompt
   --host=github|gitlab|bitbucket  [default: github]
 
@@ -175,5 +177,5 @@ ALIASES
   $ ko add
 ```
 
-_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.1.0-7/lib/packages/cli/install.js)_
+_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.1.0/lib/packages/cli/install.js)_
 <!-- commandsstop -->
