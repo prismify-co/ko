@@ -10,18 +10,24 @@ import { Transformer } from '../transformer/types'
 export const handlebars = (context?: JSONLike) =>
   new Transform({
     objectMode: true,
-    transform(chunk: File, encoding, callback) {
+    transform(chunk: string | Buffer | File, encoding, callback) {
       if (context) {
-        const template = hbs.compile(chunk.contents?.toString())
+        const template = hbs.compile(
+          chunk instanceof File
+            ? chunk.contents?.toString()
+            : chunk.toString('utf-8')
+        )
         this.push(
-          new File({
-            base: chunk.base,
-            path: chunk.path,
-            cwd: chunk.cwd,
-            history: chunk.history as any,
-            stat: chunk.stat as any,
-            contents: Buffer.from(template(context)),
-          })
+          chunk instanceof File
+            ? new File({
+                base: chunk.base,
+                path: chunk.path,
+                cwd: chunk.cwd,
+                history: chunk.history as any,
+                stat: chunk.stat as any,
+                contents: Buffer.from(template(context)),
+              })
+            : template(context)
         )
         return callback()
       }
@@ -35,18 +41,20 @@ export const handlebars = (context?: JSONLike) =>
 export const transformer = (transformer: Transformer) =>
   new Transform({
     objectMode: true,
-    transform(chunk: File, encoding, callback) {
+    transform(chunk: string | Buffer | File, encoding, callback) {
       this.push(
-        new File({
-          base: chunk.base,
-          path: chunk.path,
-          cwd: chunk.cwd,
-          history: chunk.history as any,
-          stat: chunk.stat as any,
-          contents: Buffer.from(
-            transform(chunk.contents?.toString('utf-8') || '', transformer)
-          ),
-        })
+        chunk instanceof File
+          ? new File({
+              base: chunk.base,
+              path: chunk.path,
+              cwd: chunk.cwd,
+              history: chunk.history as any,
+              stat: chunk.stat as any,
+              contents: Buffer.from(
+                transform(chunk.contents?.toString('utf-8') || '', transformer)
+              ),
+            })
+          : transform(chunk.toString('utf-8') || '', transformer)
       )
       return callback()
     },
