@@ -7,7 +7,7 @@ import Executor from '..'
 import git from 'simple-git'
 import { visit } from 'recast'
 import { nanoid } from 'nanoid'
-import { testdir, rmtestdir, rmmktestdir, chtestdir } from '../../utils/tests'
+import { testdir, rmmktestdir, chtestdir, mktestdir } from '../../utils/tests'
 import Steps from '../../steps'
 import { exists, read, write } from '../../utils/fs'
 import pkgm from '../../package-manager'
@@ -23,7 +23,7 @@ const FIXTURES_PATH = join(__dirname, '__fixtures__')
 
 describe('packages/executor', () => {
   beforeAll(() => {
-    rmtestdir()
+    mktestdir()
     rmmktestdir(testid)
 
     mkdir('-p', NPM_DIR)
@@ -60,8 +60,8 @@ describe('packages/executor', () => {
       const endListener = jest.fn()
 
       executor
-      .subscribeOnce('start', startListener)
-      .subscribeOnce('end', endListener)
+        .subscribeOnce('start', startListener)
+        .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -97,8 +97,8 @@ describe('packages/executor', () => {
       const endListener = jest.fn()
 
       executor
-      .subscribeOnce('start', startListener)
-      .subscribeOnce('end', endListener)
+        .subscribeOnce('start', startListener)
+        .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -128,8 +128,8 @@ describe('packages/executor', () => {
       const endListener = jest.fn()
 
       executor
-      .subscribeOnce('start', startListener)
-      .subscribeOnce('end', endListener)
+        .subscribeOnce('start', startListener)
+        .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -180,8 +180,8 @@ describe('packages/executor', () => {
       const endListener = jest.fn()
 
       executor
-      .subscribeOnce('start', startListener)
-      .subscribeOnce('end', endListener)
+        .subscribeOnce('start', startListener)
+        .subscribeOnce('end', endListener)
 
       await executor.run()
 
