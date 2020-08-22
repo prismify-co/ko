@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { tempdir, mkdir, rm, cp } from 'shelljs'
+import { tempdir, mkdir, rm, } from 'shelljs'
 
 /**
  * Returns the test directory.
