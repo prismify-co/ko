@@ -106,21 +106,25 @@ export default class Executor implements KoObservable {
   }
 
   subscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+     /* instabul ignore next */
     this.observable.on<T>(event, listener)
     return this
   }
 
   subscribeOnce<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+     /* instabul ignore next */
     this.observable.once<T>(event, listener)
     return this
   }
 
   unsubscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+     /* instabul ignore next */
     this.observable.off<T>(event, listener)
     return this
   }
 
   unsubscribeAll<T extends KoEventType>(event?: T) {
+    /* instabul ignore next */
     this.observable.removeAllListeners(event)
     return this
   }
