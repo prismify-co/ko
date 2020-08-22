@@ -9,5 +9,5 @@ export function mkpdir(name: string) {
     return
   }
 
-  return mkdir('-p', resolve(name))
+  mkdir('-p', resolve(name))
 }
