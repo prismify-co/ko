@@ -234,11 +234,11 @@ describe('packages/package-manager', () => {
   describe('has', () => {
     const PATH = [testid, 'has']
     const PKG_PATH = [...PATH, 'package.json']
-    beforeAll(async () => {
+    beforeAll(() => {
       mktestdir(...PATH)
       chtestdir(...PATH)
       cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH))
-      await pkgm().add(['express'])
+      pkgm().addSync(['express'])
     })
 
     it('should find express in dependencies', () => {
