@@ -43,6 +43,7 @@ export class CreateCommand extends Command {
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
     offline: flags.boolean({ default: false, char: 'f' }),
+    'no-git': flags.boolean({ default: false, char: 'g' }),
   }
 
   async run() {
@@ -62,6 +63,7 @@ export class CreateCommand extends Command {
       ...omit(flags, 'prompt', 'javascript'),
       typescript: flags.javascript === false,
       offline: flags.offline || (await isOnline(await pkgm().which())),
+      git: flags['no-git'] === false,
     }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
@@ -177,5 +179,14 @@ async function prompt() {
       default: await isOnline(await pkgm().which()),
     },
   ])
-  return { framework, version, typescript: javascript === false, offline }
+
+  const git = await inquirer.prompt([
+    {
+      name: 'git',
+      message: 'Use Git?',
+      type: 'confirm',
+      default: true,
+    },
+  ])
+  return { framework, version, typescript: javascript === false, offline, git }
 }

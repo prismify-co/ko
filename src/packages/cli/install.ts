@@ -36,6 +36,7 @@ export class InstallCommand extends Command {
     prompt: flags.boolean({ default: false, char: 'p' }),
     cache: flags.boolean({ default: true, char: 'c' }),
     offline: flags.boolean({ default: false, char: 'f' }),
+    'no-git': flags.boolean({ default: false, char: 'g' }),
   }
 
   async run() {
@@ -49,6 +50,7 @@ export class InstallCommand extends Command {
     let context: InstallContext = merge(omit(flags, 'prompt'), {
       name,
       offline: flags.offline || (await isOnline(await pkgm().which())),
+      git: flags['no-git'] === false,
     })
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(await prompt(), context)
@@ -95,5 +97,14 @@ async function prompt() {
     },
   ])
 
-  return { host, cache, offline }
+  const git = await inquirer.prompt([
+    {
+      name: 'git',
+      message: 'Use Git?',
+      type: 'confirm',
+      default: true,
+    },
+  ])
+
+  return { host, cache, offline, git }
 }
