@@ -25,14 +25,6 @@ export const rmmktestdir = (...paths: string[]) => {
 }
 
 /**
- *
- * @param path
- * @param destination The destination path which is followed by the test directory.
- */
-export const cptestdir = (path: string | string[], ...destination: string[]) =>
-  cp('-r', path, testdir(...destination))
-
-/**
  * Changes to test directory
  * @param path The paths which is followed by the test directory
  */
