@@ -5,7 +5,7 @@ import { rm, cp } from 'shelljs'
 // import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
 import { nanoid } from 'nanoid'
 import pkgm from '..'
-import { rmmktestdir, rmtestdir, chtestdir, testdir, mktestdir } from '../../utils/tests'
+import { rmmktestdir, chtestdir, testdir, mktestdir } from '../../utils/tests'
 import { readJSON, writeJSON } from '../../utils/fs'
 
 const cwd = process.cwd()
@@ -66,32 +66,42 @@ describe('packages/package-manager', () => {
 
   describe('install', () => {
     const PATH = [testid, 'install']
-    const NODE_MODULES_PATH = [...PATH, 'node_modules']
+    const PATH_ASYNC = [...PATH, 'async']
+    const PATH_SYNC = [...PATH, 'sync']
+    const NODE_MODULES_PATH_ASYNC = [...PATH_ASYNC, 'node_modules']
+    const NODE_MODULES_PATH_SYNC = [...PATH_SYNC, 'node_modules']
     beforeAll(() => {
       mktestdir(...PATH)
-      chtestdir(...PATH)
+      mktestdir(...PATH_ASYNC)
+      mktestdir(...PATH_SYNC)
+
       const pkgPath = join(FIXTURES_PATH, 'package.json.txt')
       const pkg = readJSON(pkgPath)
 
-      writeJSON(testdir(...PATH, 'package.json'), {
+      writeJSON(testdir(...PATH_ASYNC, 'package.json'), {
+        ...pkg,
+        dependencies: { lodash: '4.17.20' }
+      })
+
+      writeJSON(testdir(...PATH_SYNC, 'package.json'), {
         ...pkg,
         dependencies: { lodash: '4.17.20' },
       })
     })
 
     describe('async', () => {
-      beforeAll(() => rmtestdir(...NODE_MODULES_PATH))
+      beforeAll(() => chtestdir(...PATH_ASYNC))
       it('should install node_modules', async () => {
         await pkgm().install()
-        expect(exists(testdir(...NODE_MODULES_PATH))).toEqual(true)
+        expect(exists(testdir(...NODE_MODULES_PATH_ASYNC))).toEqual(true)
       })
     })
 
     describe('sync', () => {
-      beforeAll(() => rmtestdir(...NODE_MODULES_PATH))
+      beforeAll(() => chtestdir(...PATH_SYNC))
       it('should install node_modules', () => {
         pkgm().installSync()
-        expect(exists(testdir(...NODE_MODULES_PATH))).toEqual(true)
+        expect(exists(testdir(...NODE_MODULES_PATH_SYNC))).toEqual(true)
       })
     })
   })
