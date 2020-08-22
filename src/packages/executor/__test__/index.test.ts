@@ -59,8 +59,9 @@ describe('packages/executor', () => {
       const startListener = jest.fn()
       const endListener = jest.fn()
 
-      executor.subscribeOnce('start', startListener)
-      executor.subscribeOnce('end', endListener)
+      executor
+      .subscribeOnce('start', startListener)
+      .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -95,8 +96,9 @@ describe('packages/executor', () => {
       const startListener = jest.fn()
       const endListener = jest.fn()
 
-      executor.subscribeOnce('start', startListener)
-      executor.subscribeOnce('end', endListener)
+      executor
+      .subscribeOnce('start', startListener)
+      .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -125,8 +127,9 @@ describe('packages/executor', () => {
       const startListener = jest.fn()
       const endListener = jest.fn()
 
-      executor.subscribeOnce('start', startListener)
-      executor.subscribeOnce('end', endListener)
+      executor
+      .subscribeOnce('start', startListener)
+      .subscribeOnce('end', endListener)
 
       await executor.run()
 
@@ -176,8 +179,9 @@ describe('packages/executor', () => {
       const startListener = jest.fn()
       const endListener = jest.fn()
 
-      executor.subscribeOnce('start', startListener)
-      executor.subscribeOnce('end', endListener)
+      executor
+      .subscribeOnce('start', startListener)
+      .subscribeOnce('end', endListener)
 
       await executor.run()
 
