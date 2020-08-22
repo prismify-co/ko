@@ -3,7 +3,7 @@ export interface CreateContext {
   framework: string
   version?: string
   typescript?: boolean
-  offline?: boolean
+  offline: boolean
 }
 
 export interface InstallContext {
@@ -11,5 +11,5 @@ export interface InstallContext {
   dryRun: boolean
   host: string
   cache: boolean
-  offline?: boolean
+  offline: boolean
 }
