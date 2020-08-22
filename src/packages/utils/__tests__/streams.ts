@@ -18,6 +18,20 @@ describe('packages/utils/streams', () => {
       })
       expect(actual).toEqual('hello')
     })
+
+    it('should stream and return the input', async () => {
+      const actual = await new Promise<string>((resolve, reject) => {
+        ;(StreamTest.v2.fromChunks(['hello']) as ReadStream)
+          .pipe(handlebars())
+          .pipe(
+            StreamTest.v2.toText(function (error: Error, text: string) {
+              if (error) reject(error)
+              else resolve(text)
+            })
+          )
+      })
+      expect(actual).toEqual('hello')
+    })
   })
 
   describe('transformer', () => {
