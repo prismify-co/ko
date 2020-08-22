@@ -161,7 +161,7 @@ export default class Executor implements KoObservable {
     for (const dc of dependencies) {
       if (dc.packages.length > 0 && dc.condition !== false) {
         // Install the packages
-        await pkgm().add(dc.packages, { cwd: this.#options.cwd })
+        await pkgm({ cwd: this.#options.cwd }).add(dc.packages)
         await this.#commit(dc.name)
       }
     }

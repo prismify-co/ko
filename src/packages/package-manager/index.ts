@@ -17,6 +17,8 @@ export type NPMPackageManagerOptions = {
 }
 
 export class PackageManager {
+  constructor(private readonly options: NPMPackageManagerOptions = {}) {}
+
   which(): PackageManagerName {
     if (exists(resolve('yarn.lock'))) {
       return 'yarn'
@@ -24,57 +26,45 @@ export class PackageManager {
     return 'npm'
   }
 
-  async init(options: NPMPackageManagerOptions = {}) {
-    const manager: PackageManagerName = options?.manager || this.which()
+  async init() {
+    const manager: PackageManagerName = this.options?.manager || this.which()
     await execa(manager, ['init', '-y'])
   }
 
-  async add(
-    packages: (string | NPMPackage)[],
-    options: NPMPackageManagerOptions = {}
-  ) {
+  async add(packages: (string | NPMPackage)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    await this.run(manager, 'add', dependencies, false, options)
+    await this.run(manager, 'add', dependencies, false)
     // Install dev dependencies
-    await this.run(manager, 'add', devDependencies, true, options)
+    await this.run(manager, 'add', devDependencies, true)
   }
 
-  addSync(
-    packages: (string | NPMPackage)[],
-    options: NPMPackageManagerOptions = {}
-  ) {
+  addSync(packages: (string | NPMPackage)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    this.runSync(manager, 'add', dependencies, false, options)
+    this.runSync(manager, 'add', dependencies, false)
     // Install dev dependencies
-    this.runSync(manager, 'add', devDependencies, true, options)
+    this.runSync(manager, 'add', devDependencies, true)
   }
 
-  async remove(
-    packages: (string | Omit<NPMPackage, 'version'>)[],
-    options: NPMPackageManagerOptions = {}
-  ) {
+  async remove(packages: (string | Omit<NPMPackage, 'version'>)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    await this.run(manager, 'remove', dependencies, false, options)
+    await this.run(manager, 'remove', dependencies, false)
     // Install dev dependencies
-    await this.run(manager, 'remove', devDependencies, true, options)
+    await this.run(manager, 'remove', devDependencies, true)
   }
 
-  removeSync(
-    packages: (string | Omit<NPMPackage, 'version'>)[],
-    options: NPMPackageManagerOptions = {}
-  ) {
+  removeSync(packages: (string | Omit<NPMPackage, 'version'>)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    this.runSync(manager, 'remove', dependencies, false, options)
+    this.runSync(manager, 'remove', dependencies, false)
     // Install dev dependencies
-    this.runSync(manager, 'remove', devDependencies, true, options)
+    this.runSync(manager, 'remove', devDependencies, true)
   }
 
   private packages(packages: (string | NPMPackage)[]) {
@@ -99,21 +89,21 @@ export class PackageManager {
     return { devDependencies, dependencies }
   }
 
-  async install(options: NPMPackageManagerOptions = {}) {
+  async install() {
     debug('Installing existing packages')
 
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     return await execa(manager, ['install'], {
-      cwd: options.cwd || process.cwd(),
+      cwd: this.options.cwd || process.cwd(),
     })
   }
 
-  installSync(options: NPMPackageManagerOptions = {}) {
+  installSync() {
     debug('Installing existing packages')
 
-    const manager: PackageManagerName = options?.manager || this.which()
+    const manager: PackageManagerName = this.options?.manager || this.which()
     return execa.sync(manager, ['install'], {
-      cwd: options.cwd || process.cwd(),
+      cwd: this.options.cwd || process.cwd(),
     })
   }
 
@@ -141,8 +131,7 @@ export class PackageManager {
     manager: PackageManagerName,
     command: 'add' | 'remove',
     packages: string[],
-    dev: boolean,
-    options: NPMPackageManagerOptions
+    dev: boolean
   ) {
     if (packages.length === 0) return
 
@@ -155,7 +144,7 @@ export class PackageManager {
     }
 
     return await execa(manager, args, {
-      cwd: options.cwd || process.cwd(),
+      cwd: this.options.cwd || process.cwd(),
     })
   }
 
@@ -163,33 +152,32 @@ export class PackageManager {
     manager: PackageManagerName,
     command: 'add' | 'remove',
     packages: string[],
-    dev: boolean,
-    options: NPMPackageManagerOptions
+    dev: boolean
   ) {
     if (packages.length === 0) return
 
     let args: string[] = [command]
 
     if (command === 'remove' || (!dev && command === 'add')) {
-      args = [...args, ...packages]
-
-      if (options.offline) {
+      if (this.options.offline) {
         if (manager === 'yarn') {
           args = [...args, '--offline']
         } else {
           args = [...args, '--prefer-offline']
         }
       }
+
+      args = [...args, ...packages]
     } else {
       args = [...args, '-D', ...packages]
     }
 
     return execa.sync(manager, args, {
-      cwd: options.cwd || process.cwd(),
+      cwd: this.options.cwd || process.cwd(),
     })
   }
 }
 
-export default function pkgm() {
-  return new PackageManager()
+export default function pkgm(options: NPMPackageManagerOptions = {}) {
+  return new PackageManager(options)
 }

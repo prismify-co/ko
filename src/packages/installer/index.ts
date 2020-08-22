@@ -60,7 +60,7 @@ export default class Installer {
   }
 
   async installNative() {
-    const { name, dryRun } = this.context
+    const { name, dryRun, offline } = this.context
     const cwd = process.cwd()
 
     debug(`${name} is native`)
@@ -77,11 +77,12 @@ export default class Installer {
       path,
       entry: await entry(path),
       dryRun,
+      offline
     })
   }
 
   async installLocal() {
-    const { dryRun, name } = this.context
+    const { dryRun, name, offline } = this.context
     const cwd = process.cwd()
 
     debug(`${name} is local`)
@@ -92,11 +93,12 @@ export default class Installer {
       path,
       entry: await entry(path),
       dryRun,
+      offline
     })
   }
 
   async installRemote() {
-    const { cwd, dryRun, name } = this.context
+    const { cwd, dryRun, name, offline } = this.context
     debug(`${name} is remote`)
     // Download from host
     const source = await gitly(name, this.gitlyOpts)
@@ -110,6 +112,7 @@ export default class Installer {
       path: destination,
       entry: await entry(destination),
       dryRun,
+      offline
     })
   }
 
@@ -125,16 +128,18 @@ export default class Installer {
     path,
     entry,
     dryRun,
+    offline
   }: {
     cwd: string
     path: string
     entry: string
     dryRun: boolean
+    offline: boolean
   }) {
     // Set the current working directory to the destination
     process.chdir(path)
     // Install the packages
-    await pkgm().install({ silent: true })
+    await pkgm({ silent: true, offline }).install()
     // Restore the current working directory
     process.chdir(cwd)
     // Grab the executor
