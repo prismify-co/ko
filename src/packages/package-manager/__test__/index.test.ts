@@ -237,8 +237,12 @@ describe('packages/package-manager', () => {
     beforeAll(() => {
       mktestdir(...PATH)
       chtestdir(...PATH)
-      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH))
-      pkgm().addSync(['express'])
+      const pkgPath = join(FIXTURES_PATH, 'package.json.txt')
+      const pkg = readJSON(pkgPath)
+      writeJSON(testdir(...PKG_PATH), {
+        ...pkg,
+        dependencies: { express: '4.0.0' },
+      })
     })
 
     it('should find express in dependencies', () => {
