@@ -8,6 +8,8 @@ import * as vfs from 'vinyl-fs'
 
 import { basename } from 'path'
 import chalk from 'chalk'
+// @ts-ignore
+import unixify from 'unixify'
 
 // import {
 //   KoEventEmitter,
@@ -90,6 +92,7 @@ export type ExecutorOptions = {
   cwd?: string
   dryRun?: boolean
   git?: boolean
+  offline?: boolean
 }
 
 export default class Executor implements KoObservable {
@@ -180,24 +183,29 @@ export default class Executor implements KoObservable {
       return new Promise((resolve, reject) => {
         const dest = vfs.dest(source.replace(basename(source), ''))
         dest.on('finish', () => resolve())
-        dest.on('error', (error) => reject(error))
+        dest.on('error', (error: any) => reject(error))
         vfs.src(source).pipe(transformer(tr)).pipe(dest)
       })
     }
 
     for (const tc of transforms) {
-      const paths = tc.source
+      const paths = (typeof tc.source === 'string'
+        ? [tc.source]
+        : tc.source
+      ).map(unixify) as string[]
 
-      if (globby.hasMagic(paths) || typeof paths !== 'string') {
+      if (!globby.hasMagic(paths)) {
+        for (const path of paths) {
+          await transform(path, tc.transform)
+          await this.#commit(tc.name)
+        }
+      } else {
         for await (const path of globby.stream(paths, {
           cwd: this.#options.cwd,
         })) {
           await transform(path.toString('utf-8'), tc.transform)
           await this.#commit(tc.name)
         }
-      } else {
-        await transform(paths, tc.transform)
-        await this.#commit(tc.name)
       }
     }
   }
@@ -222,7 +230,7 @@ export default class Executor implements KoObservable {
       new Promise((resolve, reject) => {
         const dest = gulp.dest(destination)
         dest.on('finish', () => resolve())
-        dest.on('error', (error) => reject(error))
+        dest.on('error', (error: any) => reject(error))
 
         vfs.src(source).pipe(handlebars(context)).pipe(dest)
       })
