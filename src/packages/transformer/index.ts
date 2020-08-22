@@ -1,8 +1,7 @@
-import { namedTypes } from 'ast-types/gen/namedTypes'
-import { parse, print, types } from 'recast'
 import * as babel from 'recast/parsers/babel'
 import getBabelOptions, { Overrides } from 'recast/parsers/_babel_options'
 import { Transformer } from './types'
+import j from 'jscodeshift'
 
 export const customTsParser = {
   parse(source: string, options?: Overrides) {
@@ -28,6 +27,6 @@ export default function transform(
   transformerFn: Transformer,
   parser = customTsParser
 ): string {
-  const ast = parse(original, { parser })
-  return print(transformerFn(ast, types.builders, namedTypes)).code
+  const program = j(original, {parser })
+  return transformerFn(program).toSource()
 }

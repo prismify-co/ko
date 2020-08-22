@@ -5,7 +5,7 @@
 // import { builders } from 'ast-types/gen/builders'
 
 import transform from '..'
-import { visit } from 'recast'
+import j from 'jscodeshift'
 
 describe('packages/transformer', () => {
   it('it should return an identity (ast -> ast)', () => {
@@ -19,16 +19,13 @@ describe('packages/transformer', () => {
 
   it('it should return const b = 1', () => {
     const file = `const a = 1`
-    const code = transform(file, function (ast) {
-      visit(ast, {
-        visitIdentifier(path) {
-          if (path.node.name === 'a') {
-            path.node.name = 'b'
-          }
-          return false
-        },
+    const code = transform(file, function (program) {
+      program.find(j.Identifier).forEach(path => {
+        j(path).replaceWith(
+          j.identifier('b')
+        );
       })
-      return ast
+      return program
     })
 
     expect(code).toEqual(`const b = 1`)

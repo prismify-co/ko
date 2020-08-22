@@ -1,9 +1,6 @@
-import { builders } from 'ast-types/gen/builders'
-import { NamedTypes } from 'ast-types/gen/namedTypes'
-import { types } from 'recast'
+import j from 'jscodeshift'
+import { Collection } from 'jscodeshift/src/Collection'
 
 export type Transformer = (
-  ast: types.ASTNode,
-  builder: builders,
-  types: NamedTypes
-) => types.ASTNode
+  program: Collection<j.Program>
+) => Collection<j.Program>
