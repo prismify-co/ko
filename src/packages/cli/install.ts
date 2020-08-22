@@ -1,12 +1,14 @@
 import Command, { flags } from '@oclif/command'
-import { cli } from 'cli-ux'
 import dbg from 'debug'
 import inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
-import { InstallContext } from '@ko/types'
-import install from '@ko/core/install'
-import { setupTsnode } from '@ko/utils/setup-ts-node'
+// import { InstallContext } from '@ko/types/contexts'
+// import Installer from '@ko/installer'
+// import { setupTsnode } from '@ko/utils/setup-ts-node'
 import chalk from 'chalk'
+import { setupTsnode } from '../utils/setup-ts-node'
+import { InstallContext } from '../../types/contexts'
+import Installer from '../installer'
 
 const debug = dbg('ko:commands:install')
 
@@ -49,7 +51,7 @@ export class InstallCommand extends Command {
     console.log('Configuring your app')
     console.log()
 
-    await install(context)
+    await new Installer({ ...context, cwd: process.cwd() }).install()
 
     console.log(`${chalk.green('Success!')} 🎉`)
     console.log()
@@ -69,16 +71,14 @@ async function prompt() {
     },
   ])) as string).toLowerCase()
 
-  const cache =
-    (await inquirer.prompt([
-      {
-        name: 'cache',
-        message: 'Disable cache?',
-        type: 'list',
-        choices: ['Yes', 'No'],
-        default: 'No',
-      },
-    ])) === 'No'
+  const cache = await inquirer.prompt([
+    {
+      name: 'cache',
+      message: 'Disable cache?',
+      type: 'confirm',
+      default: false,
+    },
+  ])
 
   return { host, cache }
 }

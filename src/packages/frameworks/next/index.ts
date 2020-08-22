@@ -4,9 +4,11 @@ import handlebars from 'handlebars'
 import { join, resolve } from 'path'
 import { mkdir, touch } from 'shelljs'
 import { promisify } from 'util'
-import { write, read, readJSON, writeJSON } from '@ko/utils/fs'
-import generator from '@ko/generator'
-import { CreateContext } from '@ko/types'
+// import { write, read, readJSON, writeJSON } from '@ko/utils/fs'
+// import generator from '@ko/generator'
+import { FrameworkFactory } from '../types'
+import generator from '../../generator'
+import { read, write, readJSON, writeJSON } from '../../utils/fs'
 
 const GithubContent = require('github-content')
 
@@ -24,15 +26,19 @@ const download: (
   contents: Buffer
 }> = promisify(gc.file) as any
 
-export default async function next({
+const factory: FrameworkFactory = ({
   name,
-  framework,
   version,
   typescript,
-}: CreateContext) {
+  dryRun = false,
+  cwd,
+}) => {
   const templatesPath = join(__dirname, 'templates')
 
-  await generator(name, framework)
+  return generator(name, 'next', {
+    cwd,
+    dryRun,
+  })
     .addDependencyStep({
       name: 'Add initial dependencies',
       packages: [
@@ -128,5 +134,6 @@ export default async function next({
         write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
       },
     })
-    .generate()
 }
+
+export default factory

@@ -1,23 +1,27 @@
 import {
-  RecipeMeta,
-  StepsConfig,
-  CustomConfig,
-  FileConfig,
+  ExecutorConfig,
   DependencyConfig,
+  FileConfig,
   TransformConfig,
-} from './types'
-import { BuilderOptions, executor } from '.'
+  CustomConfig,
+} from '../executor'
 
-export class BuilderBase {
-  protected steps: StepsConfig[] = []
-  protected options: BuilderOptions
+export type StepsConfig =
+  | ExecutorConfig
+  | DependencyConfig
+  | FileConfig
+  | TransformConfig
+  | CustomConfig
 
-  constructor(options: BuilderOptions = {}) {
-    this.options = options
+export default class Steps {
+  protected _steps: StepsConfig[] = []
+
+  get steps() {
+    return this._steps
   }
 
   addCustomStep(step: Omit<CustomConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'custom',
       ...step,
     })
@@ -25,28 +29,24 @@ export class BuilderBase {
   }
 
   addFileStep(step: Omit<FileConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'file',
       ...step,
     })
     return this
   }
   addDependencyStep(step: Omit<DependencyConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'dependency',
       ...step,
     })
     return this
   }
   addTransformStep(step: Omit<TransformConfig, 'type'>) {
-    this.steps.push({
+    this._steps.push({
       type: 'transform',
       ...step,
     })
     return this
-  }
-
-  build() {
-    return executor(this.steps, this.options)
   }
 }

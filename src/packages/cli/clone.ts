@@ -3,7 +3,8 @@ import dbg from 'debug'
 import { extract, fetch } from 'gitly'
 import { homedir } from 'os'
 import { join } from 'path'
-import { setupTsnode } from '@ko/utils/setup-ts-node'
+import { setupTsnode } from '../utils/setup-ts-node'
+// import { setupTsnode } from '@ko/utils/setup-ts-node'
 const debug = dbg('ko:cli:clone')
 
 export class CloneCommand extends Command {

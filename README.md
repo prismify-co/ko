@@ -3,6 +3,7 @@
 A project scaffolding and configuration CLI for the web
 
 [![Node CI](https://github.com/prismify-co/ko/workflows/Node/badge.svg)](https://github.com/prismify-co/ko/actions?query=workflow%3ANode)
+[![codecov](https://codecov.io/gh/prismify-co/ko/branch/master/graph/badge.svg)](https://codecov.io/gh/prismify-co/ko)
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
 [![Downloads/week](https://img.shields.io/npm/dw/@prismify/ko.svg)](https://npmjs.org/package/@prismify/ko)
@@ -28,7 +29,7 @@ At the time of this writng, ko can generate a basic Next.js app and clone reposi
 ### Features
 
 - Generate Next.js projects
-- :warning: **Experiemental** Configure the project via [Recipes](https://www.github.com/prismify-co/ko-recipes)
+- :warning: **Experimental** Configure the project via [Recipes](https://www.github.com/prismify-co/ko-recipes)
 
 ### Roadmap
 
@@ -80,7 +81,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.0.22 darwin-x64 node-v14.0.0
+@prismify/ko/0.1.0-5 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -109,7 +110,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [src/packages/cli/clone.ts](https://github.com/prismify-co/ko/blob/v0.0.22/src/packages/cli/clone.ts)_
+_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.1.0-5/lib/packages/cli/clone.js)_
 
 ## `ko create NAME`
 
@@ -132,7 +133,7 @@ ALIASES
   $ ko new
 ```
 
-_See code: [src/packages/cli/create.ts](https://github.com/prismify-co/ko/blob/v0.0.22/src/packages/cli/create.ts)_
+_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.1.0-5/lib/packages/cli/create.js)_
 
 ## `ko help [COMMAND]`
 
@@ -172,5 +173,5 @@ ALIASES
   $ ko add
 ```
 
-_See code: [src/packages/cli/install.ts](https://github.com/prismify-co/ko/blob/v0.0.22/src/packages/cli/install.ts)_
+_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.1.0-5/lib/packages/cli/install.js)_
 <!-- commandsstop -->

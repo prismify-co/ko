@@ -3,7 +3,8 @@ import { existsSync as exists } from 'fs'
 import { resolve } from 'path'
 import { NPMPackage } from './types'
 import dbg from 'debug'
-import { read } from '@ko/utils/fs'
+import { read } from '../utils/fs'
+// import { read } from '@ko/utils/fs'
 const debug = dbg('ko:packages:package-manager')
 
 type PackageManagerName = 'yarn' | 'npm'
@@ -97,26 +98,22 @@ export class PackageManager {
     return { devDependencies, dependencies }
   }
 
-  async install(options: NPMPackageManagerOptions = {}): Promise<void> {
+  async install(options: NPMPackageManagerOptions = {}) {
     debug('Installing existing packages')
 
     const manager: PackageManagerName = options?.manager || this.which()
-    const { stdout } = await execa(manager, ['install'], {
+    return await execa(manager, ['install'], {
       cwd: options.cwd || process.cwd(),
     })
-
-    debug(stdout)
   }
 
-  installSync(options: NPMPackageManagerOptions = {}): void {
+  installSync(options: NPMPackageManagerOptions = {}) {
     debug('Installing existing packages')
 
     const manager: PackageManagerName = options?.manager || this.which()
-    const { stdout } = execa.sync(manager, ['install'], {
+    return execa.sync(manager, ['install'], {
       cwd: options.cwd || process.cwd(),
     })
-
-    debug(stdout)
   }
 
   /**
@@ -129,8 +126,10 @@ export class PackageManager {
       const pkg = JSON.parse(read(pkgPath))
       const { devDependencies, dependencies } = pkg
       return (
-        (devDependencies && devDependencies[name]) ||
-        (dependencies && dependencies[name])
+        typeof (
+          (devDependencies && devDependencies[name]) ||
+          (dependencies && dependencies[name])
+        ) !== 'undefined'
       )
     }
 
@@ -154,15 +153,12 @@ export class PackageManager {
       args = [...args, '-D', ...packages]
     }
 
-    const { stdout } = await execa(manager, args, {
+    return await execa(manager, args, {
       cwd: options.cwd || process.cwd(),
     })
-
-    debug(stdout)
-    // if (!options.silent) console.log(stdout)
   }
 
-  async runSync(
+  runSync(
     manager: PackageManagerName,
     command: 'add' | 'remove',
     packages: string[],
@@ -179,12 +175,9 @@ export class PackageManager {
       args = [...args, '-D', ...packages]
     }
 
-    const { stdout } = await execa.sync(manager, args, {
+    return execa.sync(manager, args, {
       cwd: options.cwd || process.cwd(),
     })
-
-    debug(stdout)
-    // if (!options.silent) console.log(stdout)
   }
 }
 
