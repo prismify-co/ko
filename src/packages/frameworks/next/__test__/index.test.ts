@@ -43,6 +43,7 @@ describe('packages/frameworks/next', () => {
           name: APP_LATEST,
           typescript: true,
           git: true,
+          offline: true
         }).generate()
       })
       afterAll(() => {
@@ -116,6 +117,7 @@ describe('packages/frameworks/next', () => {
           version: '9.3.0',
           typescript: true,
           git: true,
+          offline: true
         }).generate()
       })
 
@@ -145,6 +147,7 @@ describe('packages/frameworks/next', () => {
           name: APP_JAVASCRIPT,
           typescript: false,
           git: true,
+          offline: true
         }).generate()
       })
 
