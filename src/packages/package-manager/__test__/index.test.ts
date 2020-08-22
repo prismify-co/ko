@@ -79,10 +79,8 @@ describe('packages/package-manager', () => {
       })
     })
 
-    // Remove the node_modules for each test
-    beforeEach(() => rmtestdir(...NODE_MODULES_PATH))
-
     describe('async', () => {
+      beforeAll(() => rmtestdir(...NODE_MODULES_PATH))
       it('should install node_modules', async () => {
         await pkgm().install()
         expect(exists(testdir(...NODE_MODULES_PATH))).toEqual(true)
@@ -90,6 +88,7 @@ describe('packages/package-manager', () => {
     })
 
     describe('sync', () => {
+      beforeAll(() => rmtestdir(...NODE_MODULES_PATH))
       it('should install node_modules', () => {
         pkgm().installSync()
         expect(exists(testdir(...NODE_MODULES_PATH))).toEqual(true)
