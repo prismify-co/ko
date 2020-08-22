@@ -80,7 +80,7 @@ describe('packages/package-manager', () => {
 
       writeJSON(testdir(...PATH_ASYNC, 'package.json'), {
         ...pkg,
-        dependencies: { lodash: '4.17.20' }
+        dependencies: { lodash: '4.17.20' },
       })
 
       writeJSON(testdir(...PATH_SYNC, 'package.json'), {
@@ -91,6 +91,7 @@ describe('packages/package-manager', () => {
 
     describe('async', () => {
       beforeAll(() => chtestdir(...PATH_ASYNC))
+      afterAll(() => chtestdir(...PATH))
       it('should install node_modules', async () => {
         await pkgm().install()
         expect(exists(testdir(...NODE_MODULES_PATH_ASYNC))).toEqual(true)
@@ -99,6 +100,7 @@ describe('packages/package-manager', () => {
 
     describe('sync', () => {
       beforeAll(() => chtestdir(...PATH_SYNC))
+      afterAll(() => chtestdir(...PATH))
       it('should install node_modules', () => {
         pkgm().installSync()
         expect(exists(testdir(...NODE_MODULES_PATH_SYNC))).toEqual(true)
