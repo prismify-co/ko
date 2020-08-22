@@ -104,24 +104,28 @@ export default class Executor implements KoObservable {
     this.#steps = steps
     this.#options = options
   }
+  /* istanbul ignore next */
 
   subscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
-     /* instabul ignore next */
+    /* instabul ignore next */
     this.observable.on<T>(event, listener)
     return this
   }
+  /* istanbul ignore next */
 
   subscribeOnce<T extends KoEventType>(event: T, listener: KoEvents[T]) {
-     /* instabul ignore next */
+    /* instabul ignore next */
     this.observable.once<T>(event, listener)
     return this
   }
+  /* istanbul ignore next */
 
   unsubscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
-     /* instabul ignore next */
+    /* instabul ignore next */
     this.observable.off<T>(event, listener)
     return this
   }
+  /* istanbul ignore next */
 
   unsubscribeAll<T extends KoEventType>(event?: T) {
     /* instabul ignore next */
@@ -129,8 +133,11 @@ export default class Executor implements KoObservable {
     return this
   }
 
+  /* istanbul ignore next */
   setOptions(options: ExecutorOptions) {
+    /* istanbul ignore next */
     this.#options = options
+    /* istanbul ignore next */
     return this
   }
 
@@ -268,12 +275,17 @@ export default class Executor implements KoObservable {
   }
 
   #commit = async (name: string) => {
+    /* istanbul ignore next */
     if (this.#options.git) {
+      /* istanbul ignore next */
       debug('Adding changes to git')
       // Add the changes
+      /* istanbul ignore next */
       await git(this.#options.cwd).add('*')
       // Commit the changes
+      /* istanbul ignore next */
       const commit = await git(this.#options.cwd).commit(name)
+      /* istanbul ignore next */
       this.commits.push(commit)
     }
   }

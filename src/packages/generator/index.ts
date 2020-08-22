@@ -37,6 +37,7 @@ export class Generator extends Steps implements KoObservable {
     this.executor = new Executor(this._steps, this.options)
   }
 
+  /* istanbul ignore next */
   subscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
     /* istanbul ignore next */
     this.observable.on<T>(event, listener)
@@ -44,6 +45,7 @@ export class Generator extends Steps implements KoObservable {
     return this
   }
 
+  /* istanbul ignore next */
   subscribeOnce<T extends KoEventType>(event: T, listener: KoEvents[T]) {
     /* istanbul ignore next */
     this.observable.once<T>(event, listener)
@@ -51,6 +53,7 @@ export class Generator extends Steps implements KoObservable {
     return this
   }
 
+  /* istanbul ignore next */
   unsubscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
     /* istanbul ignore next */
     this.observable.off<T>(event, listener)
@@ -58,6 +61,7 @@ export class Generator extends Steps implements KoObservable {
     return this
   }
 
+  /* istanbul ignore next */
   unsubscribeAll<T extends KoEventType>(event?: T) {
     /* istanbul ignore next */
     this.observable.removeAllListeners(event)
@@ -114,10 +118,14 @@ export class Generator extends Steps implements KoObservable {
   }
 
   #commit = async () => {
+    /* istanbul ignore next */
     if (this.options.git) {
+      /* istanbul ignore next */
       debug(`Adding changes to git`)
+      /* instabul ignore next */
       await git().add('*')
       // Add the changes to the commit
+      /* instabul ignore next */
       await git().commit('Add initial files')
     }
   }
