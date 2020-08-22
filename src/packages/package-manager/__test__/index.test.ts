@@ -110,52 +110,60 @@ describe('packages/package-manager', () => {
 
   describe('run', () => {
     const PATH = [testid, 'run']
-    const PKG_PATH = [...PATH, 'package.json']
+    const PATH_ASYNC = [...PATH, 'async']
+    const PATH_SYNC = [...PATH, 'sync']
+    const PKG_PATH_ASYNC = [...PATH, 'package.json']
+    const PKG_PATH_SYNC = [...PATH, 'package.json']
     beforeAll(() => {
       mktestdir(...PATH)
+      mktestdir(...PATH_ASYNC)
+      mktestdir(...PATH_SYNC)
+
       chtestdir(...PATH)
-      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH))
+      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_ASYNC))
+      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_SYNC))
     })
     describe('add', () => {
-      // beforeEach(() => process.chdir(OUTPUT_DIR))
+      beforeEach(() => chtestdir(...PATH_ASYNC))
 
       describe('async', () => {
         it('should install a dependency', async () => {
           await pkgm().add(['lodash'])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
           expect(pkg?.dependencies?.lodash).not.toBeUndefined()
         })
 
         it('should install a dependency with version', async () => {
           await pkgm().add([{ name: 'moment', version: '2.9.0' }])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
           expect(pkg?.dependencies?.moment).toContain('2.9.0')
         })
 
         it('should install a dev dependency', async () => {
           await pkgm().add([{ name: 'babel', dev: true }])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
           expect(pkg?.devDependencies?.babel).not.toBeUndefined()
         })
       })
 
       describe('sync', () => {
+        beforeAll(() => chtestdir(...PATH_SYNC))
         it('should install a dependency', () => {
           pkgm().addSync(['react'])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_SYNC)) as any
           expect(pkg?.dependencies?.react).not.toBeUndefined()
         })
 
         it('should install a dependency with version', () => {
           pkgm().addSync([{ name: 'react-dom', version: '15.4.1' }])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_SYNC)) as any
           expect(pkg?.dependencies).not.toBeUndefined()
           expect(pkg?.dependencies['react-dom']).toContain('15.4.1')
         })
 
         it('should install a dev dependency', () => {
           pkgm().addSync([{ name: 'vue', dev: true }])
-          const pkg = readJSON(testdir(...PKG_PATH)) as any
+          const pkg = readJSON(testdir(...PKG_PATH_SYNC)) as any
           expect(pkg?.devDependencies?.vue).not.toBeUndefined()
         })
       })
@@ -164,51 +172,67 @@ describe('packages/package-manager', () => {
 
   describe('remove', () => {
     const PATH = [testid, 'remove']
-    const PKG_PATH = testdir(...[...PATH, 'package.json'])
-    beforeAll(async () => {
+    const PATH_ASYNC = [...PATH, 'async']
+    const PATH_SYNC = [...PATH, 'sync']
+    const PKG_PATH_ASYNC = [...PATH_ASYNC, 'package.json']
+    const PKG_PATH_SYNC = [...PATH_SYNC, 'package.json']
+
+    beforeAll(() => {
       mktestdir(...PATH)
+      mktestdir(...PATH_ASYNC)
+      mktestdir(...PATH_SYNC)
+
       chtestdir(...PATH)
-      cp(join(FIXTURES_PATH, 'package.json.txt'), PKG_PATH)
-      await pkgm().add(['lodash', { name: 'babel', dev: true }])
+      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_ASYNC))
+      cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_SYNC))
+
     })
     describe('async', () => {
+      beforeAll(async () =>{
+        chtestdir(...PATH_ASYNC)
+        await pkgm().add(['lodash', { name: 'babel', dev: true }])
+    })
       it('should remove a dependency', async () => {
         await pkgm().remove(['lodash'])
-        const pkg = readJSON(PKG_PATH) as any
+        const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.dependencies?.lodash).toBeUndefined()
       })
 
       it('should remove a dev dependency', async () => {
         await pkgm().remove([{ name: 'babel', dev: true }])
-        const pkg = readJSON(PKG_PATH) as any
+        const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.devDependencies?.babel).toBeUndefined()
       })
     })
 
     describe('sync', () => {
+      beforeAll(async () => {
+        chtestdir(...PATH_SYNC)
+        await pkgm().add(['lodash', { name: 'babel', dev: true }])
+      })
       it('should install a dependency', () => {
         pkgm().removeSync(['react'])
-        const pkg = readJSON(PKG_PATH) as any
+        const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.dependencies?.react).toBeUndefined()
       })
 
       it('should install a dependency with version', () => {
         pkgm().removeSync([{ name: 'react-dom' }])
-        const pkg = readJSON(PKG_PATH) as any
+        const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.dependencies).not.toBeUndefined()
         expect(pkg?.dependencies['react-dom']).toBeUndefined()
       })
 
       it('should install a dev dependency', () => {
         pkgm().removeSync([{ name: 'vue', dev: true }])
-        const pkg = readJSON(PKG_PATH) as any
+        const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.devDependencies?.vue).toBeUndefined()
       })
     })
   })
 
   describe('has', () => {
-    const PATH = [testid, 'remove']
+    const PATH = [testid, 'has']
     const PKG_PATH = [...PATH, 'package.json']
     beforeAll(async () => {
       mktestdir(...PATH)
