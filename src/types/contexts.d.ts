@@ -4,6 +4,7 @@ export interface CreateContext {
   version?: string
   typescript?: boolean
   offline: boolean
+  git: boolean
 }
 
 export interface InstallContext {
@@ -12,4 +13,5 @@ export interface InstallContext {
   host: string
   cache: boolean
   offline: boolean
+  git: boolean
 }
