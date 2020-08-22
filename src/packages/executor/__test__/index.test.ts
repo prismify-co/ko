@@ -16,7 +16,6 @@ import { ASTNode } from 'ast-types'
 
 const testid = nanoid()
 const cwd = process.cwd()
-
 const NPM_DIR = testdir(testid, 'npm')
 const FILE_DIR = testdir(testid, 'file')
 const TRANSFORM_DIR = testdir(testid, 'transform')

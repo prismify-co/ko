@@ -5,7 +5,7 @@ import { rm, cp } from 'shelljs'
 // import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
 import { nanoid } from 'nanoid'
 import pkgm from '..'
-import { rmmktestdir, rmtestdir, chtestdir, testdir } from '../../utils/tests'
+import { rmmktestdir, rmtestdir, chtestdir, testdir, mktestdir } from '../../utils/tests'
 import { readJSON, writeJSON } from '../../utils/fs'
 
 const cwd = process.cwd()
@@ -13,21 +13,18 @@ const testid = nanoid()
 const FIXTURES_PATH = join(__dirname, '__fixtures__')
 describe('packages/package-manager', () => {
   beforeAll(() => {
-    rmtestdir()
     rmmktestdir(testid)
     chtestdir(testid)
   })
 
   afterAll(() => {
     process.chdir(cwd)
-    rmtestdir()
   })
 
   describe('init', () => {
     const PATH = [testid, 'init']
     beforeAll(() => {
       rmmktestdir(...PATH)
-      chtestdir(...PATH)
       chtestdir(...PATH)
     })
 
@@ -42,8 +39,8 @@ describe('packages/package-manager', () => {
     const YARN_PATH = [testid, 'which', 'yarn']
 
     beforeAll(() => {
-      rmmktestdir(...NPM_PATH)
-      rmmktestdir(...YARN_PATH)
+      mktestdir(...NPM_PATH)
+      mktestdir(...YARN_PATH)
     })
 
     describe('npm', () => {
@@ -71,7 +68,7 @@ describe('packages/package-manager', () => {
     const PATH = [testid, 'install']
     const NODE_MODULES_PATH = [...PATH, 'node_modules']
     beforeAll(() => {
-      rmmktestdir(...PATH)
+      mktestdir(...PATH)
       chtestdir(...PATH)
       const pkgPath = join(FIXTURES_PATH, 'package.json.txt')
       const pkg = readJSON(pkgPath)
@@ -83,7 +80,7 @@ describe('packages/package-manager', () => {
     })
 
     // Remove the node_modules for each test
-    beforeEach(() => rmmktestdir(...NODE_MODULES_PATH))
+    beforeEach(() => rmtestdir(...NODE_MODULES_PATH))
 
     describe('async', () => {
       it('should install node_modules', async () => {
@@ -104,7 +101,7 @@ describe('packages/package-manager', () => {
     const PATH = [testid, 'run']
     const PKG_PATH = [...PATH, 'package.json']
     beforeAll(() => {
-      rmmktestdir(...PATH)
+      mktestdir(...PATH)
       chtestdir(...PATH)
       cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH))
     })
@@ -158,7 +155,7 @@ describe('packages/package-manager', () => {
     const PATH = [testid, 'remove']
     const PKG_PATH = testdir(...[...PATH, 'package.json'])
     beforeAll(async () => {
-      rmmktestdir(...PATH)
+      mktestdir(...PATH)
       chtestdir(...PATH)
       cp(join(FIXTURES_PATH, 'package.json.txt'), PKG_PATH)
       await pkgm().add(['lodash', { name: 'babel', dev: true }])
@@ -203,7 +200,7 @@ describe('packages/package-manager', () => {
     const PATH = [testid, 'remove']
     const PKG_PATH = [...PATH, 'package.json']
     beforeAll(async () => {
-      rmmktestdir(...PATH)
+      mktestdir(...PATH)
       chtestdir(...PATH)
       cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH))
       await pkgm().add(['express'])
