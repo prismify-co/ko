@@ -9,6 +9,8 @@ import chalk from 'chalk'
 import { setupTsnode } from '../utils/setup-ts-node'
 import { InstallContext } from '../../types/contexts'
 import Installer from '../installer'
+import { isOnline } from '../utils/net'
+import pkgm from '../package-manager'
 
 const debug = dbg('ko:commands:install')
 
@@ -33,6 +35,7 @@ export class InstallCommand extends Command {
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
     cache: flags.boolean({ default: true, char: 'c' }),
+    offline: flags.boolean({ default: false, char: 'f' }),
   }
 
   async run() {
@@ -43,7 +46,10 @@ export class InstallCommand extends Command {
     // Set the recipe name
     const name = args.name as string
     // Set the initial context for recipe installation
-    let context: InstallContext = merge(omit(flags, 'prompt'), { name })
+    let context: InstallContext = merge(omit(flags, 'prompt'), {
+      name,
+      offline: flags.offline || (await isOnline(await pkgm().which())),
+    })
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(await prompt(), context)
 
@@ -80,5 +86,14 @@ async function prompt() {
     },
   ])
 
-  return { host, cache }
+  const offline = await inquirer.prompt([
+    {
+      name: 'offline',
+      message: 'Use package manager cache?',
+      type: 'confirm',
+      default: await isOnline(await pkgm().which()),
+    },
+  ])
+
+  return { host, cache, offline }
 }

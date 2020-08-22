@@ -13,6 +13,8 @@ import { setupTsnode } from '../utils/setup-ts-node'
 import { exists } from '../utils/fs'
 import { CreateContext } from '../../types/contexts'
 import { FrameworkFactory } from '../frameworks/types'
+import { isOnline } from '../utils/net'
+import pkgm from '../package-manager'
 // import { FrameworkFactory } from '@ko/frameworks/types'
 
 export class CreateCommand extends Command {
@@ -40,6 +42,7 @@ export class CreateCommand extends Command {
       description: 'Use JavaScript',
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
+    offline: flags.boolean({ default: false, char: 'f' }),
   }
 
   async run() {
@@ -58,6 +61,7 @@ export class CreateCommand extends Command {
       name: resolveName(name),
       ...omit(flags, 'prompt', 'javascript'),
       typescript: flags.javascript === false,
+      offline: flags.offline || (await isOnline(await pkgm().which())),
     }
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
@@ -164,5 +168,14 @@ async function prompt() {
       default: false,
     },
   ])
-  return { framework, version, typescript: javascript === false }
+
+  const offline = await inquirer.prompt([
+    {
+      name: 'offline',
+      message: 'Use package manager cache?',
+      type: 'confirm',
+      default: await isOnline(await pkgm().which()),
+    },
+  ])
+  return { framework, version, typescript: javascript === false, offline }
 }

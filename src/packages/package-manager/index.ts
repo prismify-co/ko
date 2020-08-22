@@ -13,6 +13,7 @@ export type NPMPackageManagerOptions = {
   silent?: boolean
   manager?: PackageManagerName
   cwd?: string
+  offline?: boolean
 }
 
 export class PackageManager {
@@ -171,6 +172,14 @@ export class PackageManager {
 
     if (command === 'remove' || (!dev && command === 'add')) {
       args = [...args, ...packages]
+
+      if (options.offline) {
+        if (manager === 'yarn') {
+          args = [...args, '--offline']
+        } else {
+          args = [...args, '--prefer-offline']
+        }
+      }
     } else {
       args = [...args, '-D', ...packages]
     }
