@@ -17,7 +17,7 @@ export type NPMPackageManagerOptions = {
 }
 
 export class PackageManager {
-  constructor(private readonly options: NPMPackageManagerOptions = {}) {}
+  constructor(private readonly options: NPMPackageManagerOptions = {cwd: process.cwd()}) {}
 
   which(): PackageManagerName {
     if (exists(resolve('yarn.lock'))) {
@@ -138,6 +138,14 @@ export class PackageManager {
     let args: string[] = [command]
 
     if (command === 'remove' || (!dev && command === 'add')) {
+      /* instabul ignore next */
+      if (this.options.offline) {
+        if (manager === 'yarn') {
+          args = [...args, '--offline']
+        } else {
+          args = [...args, '--prefer-offline']
+        }
+      }
       args = [...args, ...packages]
     } else {
       args = [...args, '-D', ...packages]
@@ -159,6 +167,7 @@ export class PackageManager {
     let args: string[] = [command]
 
     if (command === 'remove' || (!dev && command === 'add')) {
+      /* instabul ignore next */
       if (this.options.offline) {
         if (manager === 'yarn') {
           args = [...args, '--offline']
