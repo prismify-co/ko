@@ -77,7 +77,7 @@ export default class Installer {
       path,
       entry: await entry(path),
       dryRun,
-      offline
+      offline,
     })
   }
 
@@ -93,7 +93,7 @@ export default class Installer {
       path,
       entry: await entry(path),
       dryRun,
-      offline
+      offline,
     })
   }
 
@@ -112,7 +112,7 @@ export default class Installer {
       path: destination,
       entry: await entry(destination),
       dryRun,
-      offline
+      offline,
     })
   }
 
@@ -128,7 +128,7 @@ export default class Installer {
     path,
     entry,
     dryRun,
-    offline
+    offline,
   }: {
     cwd: string
     path: string
