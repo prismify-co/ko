@@ -232,7 +232,7 @@ describe('packages/package-manager', () => {
   })
 
   describe('has', () => {
-    const PATH = [testid, 'remove']
+    const PATH = [testid, 'has']
     const PKG_PATH = [...PATH, 'package.json']
     beforeAll(async () => {
       mktestdir(...PATH)
