@@ -38,21 +38,25 @@ export class Generator extends Steps implements KoObservable {
   }
 
   subscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    /* istanbul ignore next */
     this.observable.on<T>(event, listener)
     return this
   }
 
   subscribeOnce<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    /* istanbul ignore next */
     this.observable.once<T>(event, listener)
     return this
   }
 
   unsubscribe<T extends KoEventType>(event: T, listener: KoEvents[T]) {
+    /* istanbul ignore next */
     this.observable.off<T>(event, listener)
     return this
   }
 
   unsubscribeAll<T extends KoEventType>(event?: T) {
+    /* istanbul ignore next */
     this.observable.removeAllListeners(event)
     return this
   }
@@ -93,11 +97,14 @@ export class Generator extends Steps implements KoObservable {
     await this.executor.run()
     await this.#commit()
 
+    /* istanbul ignore next */
     this.observable.emit('event', `${chalk.green('Success!')} 🎉`)
+    /* istanbul ignore next */
     this.observable.emit(
       'event',
       `${chalk.cyan('cd')} into ${chalk.green(this.name)} and start developing!`
     )
+    /* istanbul ignore next */
     this.observable.emit('end')
     return this
   }
