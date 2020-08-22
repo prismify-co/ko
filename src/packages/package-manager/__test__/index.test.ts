@@ -24,7 +24,7 @@ describe('packages/package-manager', () => {
   describe('init', () => {
     const PATH = [testid, 'init']
     beforeAll(() => {
-      rmmktestdir(...PATH)
+      mktestdir(...PATH)
       chtestdir(...PATH)
     })
 
@@ -185,13 +185,19 @@ describe('packages/package-manager', () => {
       chtestdir(...PATH)
       cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_ASYNC))
       cp(join(FIXTURES_PATH, 'package.json.txt'), testdir(...PKG_PATH_SYNC))
-
     })
     describe('async', () => {
-      beforeAll(async () =>{
+      beforeAll(() => {
         chtestdir(...PATH_ASYNC)
-        await pkgm().add(['lodash', { name: 'babel', dev: true }])
-    })
+        const pkgPath = join(FIXTURES_PATH, 'package.json.txt')
+        const pkg = readJSON(pkgPath)
+
+        writeJSON(testdir(...PATH_ASYNC, 'package.json'), {
+          ...pkg,
+          dependencies: { lodash: '4.17.20' },
+          devDependencies: { '@babel/core': '7.0.0' },
+        })
+      })
       it('should remove a dependency', async () => {
         await pkgm().remove(['lodash'])
         const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
@@ -199,16 +205,23 @@ describe('packages/package-manager', () => {
       })
 
       it('should remove a dev dependency', async () => {
-        await pkgm().remove([{ name: 'babel', dev: true }])
+        await pkgm().remove([{ name: '@babel/core', dev: true }])
         const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.devDependencies?.babel).toBeUndefined()
       })
     })
 
     describe('sync', () => {
-      beforeAll(async () => {
+      beforeAll(() => {
         chtestdir(...PATH_SYNC)
-        await pkgm().add(['lodash', { name: 'babel', dev: true }])
+        const pkgPath = join(FIXTURES_PATH, 'package.json.txt')
+        const pkg = readJSON(pkgPath)
+
+        writeJSON(testdir(...PATH_SYNC, 'package.json'), {
+          ...pkg,
+          dependencies: { lodash: '4.17.20' },
+          devDependencies: { '@babel/core': '7.0.0' },
+        })
       })
       it('should install a dependency', () => {
         pkgm().removeSync(['react'])
