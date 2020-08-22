@@ -11,6 +11,9 @@ import { readJSON, writeJSON } from '../../utils/fs'
 const cwd = process.cwd()
 const testid = nanoid()
 const FIXTURES_PATH = join(__dirname, '__fixtures__')
+
+jest.setTimeout(300000)
+
 describe('packages/package-manager', () => {
   beforeAll(() => {
     rmmktestdir(testid)
