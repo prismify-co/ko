@@ -87,7 +87,6 @@ export class Generator extends Steps implements KoObservable {
     if (this.options.git) {
       await git(this.options.cwd).init()
     }
-    // await this.#commit()
 
     return this
   }
@@ -121,7 +120,6 @@ export class Generator extends Steps implements KoObservable {
   }
 
   #commit = async () => {
-    console.log(this.options.git)
     /* istanbul ignore next */
     if (this.options.git) {
       /* istanbul ignore next */
