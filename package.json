@@ -1,7 +1,7 @@
 {
   "name": "@prismify/ko",
   "description": "A project scaffolding CLI for the web",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
   "bin": {
     "ko": "./bin/run"
