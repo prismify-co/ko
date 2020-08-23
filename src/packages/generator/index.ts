@@ -84,7 +84,10 @@ export class Generator extends Steps implements KoObservable {
     debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
-    await this.#commit()
+    if (this.options.git) {
+      await git(this.options.cwd).init()
+    }
+    // await this.#commit()
 
     return this
   }
@@ -118,15 +121,16 @@ export class Generator extends Steps implements KoObservable {
   }
 
   #commit = async () => {
+    console.log(this.options.git)
     /* istanbul ignore next */
     if (this.options.git) {
       /* istanbul ignore next */
       debug(`Adding changes to git`)
       /* instabul ignore next */
-      await git().add('*')
+      await git(this.options.cwd).add('*')
       // Add the changes to the commit
       /* instabul ignore next */
-      await git().commit('Add initial files')
+      await git(this.options.cwd).commit('Add initial files')
     }
   }
 }
