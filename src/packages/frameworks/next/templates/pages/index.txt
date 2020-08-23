@@ -86,7 +86,7 @@ export default function Home() {
           Powered by{' '}
           <div className={styles.logo}>
             <svg  height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="125" cy="125" r="120" fill="#fff" stroke="#000" stroke-width="10" />
+              <circle cx="125" cy="125" r="120" fill="#fff" stroke="#000" strokeWidth="10" />
               <path d="M26.632 185l83.447-149.864L196.603 185H26.632z" stroke="#000" strokeWidth="10" />
               <path d="M50.01 185l86.602-150 86.603 150H50.01z" stroke="#000" strokeWidth="10" />
             </svg>
