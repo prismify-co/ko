@@ -100,6 +100,7 @@ export class CreateCommand extends Command {
     const generator = factory({
       ...context,
       cwd: resolve(name),
+      // TODO: Implement dry-run
       dryRun: false,
     })
     const executor = generator.executor
