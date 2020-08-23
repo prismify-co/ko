@@ -1,5 +1,5 @@
 {
-  "name": "{{name}}",
+  "name": "<%- name %>",
   "scripts": {
     "dev": "next",
     "build": "next build",

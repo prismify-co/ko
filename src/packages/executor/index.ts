@@ -17,9 +17,8 @@ import unixify from 'unixify'
 //   KoEvents,
 //   KoEventType,
 // } from '@ko/types/events'
-import { transformer, handlebars } from '../utils/streams'
+import { transformer, lodash } from '../utils/streams'
 import { EventEmitter } from 'events'
-// import { handlebars, transformer } from '@ko/utils/streams'
 import gulp from 'gulp'
 import {
   KoObservable,
@@ -243,7 +242,7 @@ export default class Executor implements KoObservable {
         dest.on('finish', () => resolve())
         dest.on('error', (error: any) => reject(error))
 
-        vfs.src(source).pipe(handlebars(context)).pipe(dest)
+        vfs.src(source).pipe(lodash(context)).pipe(dest)
       })
 
     for (const fc of files) {

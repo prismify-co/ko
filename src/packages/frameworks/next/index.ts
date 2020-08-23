@@ -1,6 +1,4 @@
 import dbg from 'debug'
-
-import handlebars from 'handlebars'
 import { join, resolve } from 'path'
 import { mkdir, touch } from 'shelljs'
 import { promisify } from 'util'
@@ -9,6 +7,7 @@ import { promisify } from 'util'
 import { FrameworkFactory } from '../types'
 import generator from '../../generator'
 import { read, write, readJSON, writeJSON } from '../../utils/fs'
+import { template } from 'lodash'
 
 const GithubContent = require('github-content')
 
@@ -32,12 +31,14 @@ const factory: FrameworkFactory = ({
   typescript,
   dryRun = false,
   cwd,
+  git,
 }) => {
   const templatesPath = join(__dirname, 'templates')
 
   return generator(name, 'next', {
     cwd,
     dryRun,
+    git,
   })
     .addDependencyStep({
       name: 'Add initial dependencies',
@@ -105,7 +106,7 @@ const factory: FrameworkFactory = ({
         for (const file of pages) {
           const script = file.replace('txt', typescript ? 'tsx' : 'js')
           const page = read(join(templatesPath, `pages/${file}`))
-          write(resolve(`pages/${script}`), handlebars.compile(page)({ name }))
+          write(resolve(`pages/${script}`), template(page)({ name }))
         }
       },
     })
