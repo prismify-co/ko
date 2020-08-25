@@ -71,7 +71,7 @@ export class CreateCommand extends Command {
     // Determine if the app directory already exists
     if (
       exists(resolve(name)) &&
-      (await inquirer.prompt([
+      !(await inquirer.prompt([
         {
           name: 'javascript',
           message: `The directory ${chalk.green(
