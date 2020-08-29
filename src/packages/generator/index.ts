@@ -21,6 +21,7 @@ import {
 const debug = dbg('ko:packages:generator')
 
 import { ExecutorOptions } from '../executor'
+import { exists } from '../utils/fs'
 
 export interface GeneratorOptions extends ExecutorOptions {}
 
@@ -84,7 +85,8 @@ export class Generator extends Steps implements KoObservable {
     debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
-    if (this.options.git) {
+    // Initialize git if it doesn't exist
+    if (this.options.git && !exists('.git/')) {
       await git(this.options.cwd).init()
     }
 
