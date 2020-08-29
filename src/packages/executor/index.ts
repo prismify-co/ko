@@ -142,12 +142,12 @@ export default class Executor implements KoObservable {
 
   async run() {
     this.observable.emit('start')
+    debug('Running custom actions')
+    await this.#customActions()
     debug('Installing packages')
     await this.#installPackages()
     debug('Creating files')
     await this.#createFiles()
-    debug('Running custom actions')
-    await this.#customActions()
     debug('Transforming files')
     await this.#transformFiles()
     this.observable.emit('end')
