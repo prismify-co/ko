@@ -6,7 +6,7 @@ import { merge, omit } from 'lodash'
 // import { setupTsnode } from '@ko/utils/setup-ts-node'
 // import { exists } from '@ko/utils/fs'
 import chalk from 'chalk'
-import { resolve, join } from 'path'
+import { resolve, join, sep } from 'path'
 import execa from 'execa'
 import latestVersion from 'latest-version'
 import { setupTsnode } from '../utils/setup-ts-node'
@@ -15,6 +15,7 @@ import { CreateContext } from '../../types/contexts'
 import { FrameworkFactory } from '../frameworks/types'
 import { isOnline } from '../utils/net'
 import pkgm from '../package-manager'
+import { ls } from 'shelljs'
 // import { FrameworkFactory } from '@ko/frameworks/types'
 
 export class CreateCommand extends Command {
@@ -43,45 +44,47 @@ export class CreateCommand extends Command {
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
     offline: flags.boolean({ default: false, char: 'f' }),
-    'no-git': flags.boolean({ default: false, char: 'g' }),
+    'no-git': flags.boolean({ default: false }),
   }
 
   async run() {
     setupTsnode()
     const { args, flags } = this.parse(CreateCommand)
 
-    // Resolves the name of the directory
-    const resolveName = (path: string) =>
-      path === '.' ? process.cwd().split('/').splice(-1).join('') : path
-
     // Set the project name
     const name = args.name as string
+
+    // Resolves the name of the directory
+    const resolveName = (name: string) => {
+      if (name === '.' || name.includes(sep))
+        return resolve(name).split(sep).slice(-1).join('')
+      return name
+    }
+
+    const resolvePath = (name: string) => {
+      if (name.includes(sep)) return name
+      return resolve(name)
+    }
 
     // Set the initial context for project creation
     let context: CreateContext = {
       name: resolveName(name),
+      path: resolvePath(name),
       ...omit(flags, 'prompt', 'javascript'),
       typescript: flags.javascript === false,
       offline: flags.offline || (await isOnline(await pkgm().which())),
       git: flags['no-git'] === false,
     }
+
+    console.log(context)
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
 
     // Determine if the app directory already exists
     if (
-      exists(resolve(name)) &&
-      !(await inquirer.prompt([
-        {
-          name: 'javascript',
-          message: `The directory ${chalk.green(
-            resolveName(name)
-          )} is not empty. Would you like to continue?`,
-          type: 'confirm',
-
-          default: false,
-        },
-      ]))
+      exists(join(context.path, name)) &&
+      ls(join(context.path, name)).length > 0 &&
+      (await promptDirtyDirectory(context.name))
     ) {
       return
     }
@@ -99,7 +102,8 @@ export class CreateCommand extends Command {
     const factory = (await import(frameworkDir)).default as FrameworkFactory
     const generator = factory({
       ...context,
-      cwd: resolve(name),
+      cwd: process.cwd(),
+      path: context.path,
       // TODO: Implement dry-run
       dryRun: false,
     })
@@ -129,6 +133,20 @@ export class CreateCommand extends Command {
     if (error?.oclif?.exit === 0) return
     throw error
   }
+}
+
+async function promptDirtyDirectory(name: string) {
+  return await inquirer.prompt([
+    {
+      name: 'javascript',
+      message: `The directory ${chalk.green(
+        name
+      )} is not empty. Would you like to continue?`,
+      type: 'confirm',
+
+      default: false,
+    },
+  ])
 }
 
 async function prompt() {
