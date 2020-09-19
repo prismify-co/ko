@@ -41,7 +41,9 @@ describe('packages/frameworks/next', () => {
       beforeAll(async () => {
         await factory({
           name: APP_LATEST,
+          framework: 'next',
           typescript: true,
+          path: '',
           git: true,
           offline: true,
         }).generate()
@@ -114,6 +116,8 @@ describe('packages/frameworks/next', () => {
       beforeAll(async () => {
         await factory({
           name: APP_VERSION,
+          framework: 'next',
+          path: '',
           version: '9.3.0',
           typescript: true,
           git: true,
@@ -145,6 +149,8 @@ describe('packages/frameworks/next', () => {
       beforeAll(async () => {
         await factory({
           name: APP_JAVASCRIPT,
+          framework: 'next',
+          path: '',
           typescript: false,
           git: true,
           offline: true,

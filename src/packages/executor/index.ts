@@ -6,7 +6,7 @@ import git, { CommitSummary } from 'simple-git'
 import dbg from 'debug'
 import * as vfs from 'vinyl-fs'
 
-import { basename } from 'path'
+import { basename, join } from 'path'
 import chalk from 'chalk'
 // @ts-ignore
 import unixify from 'unixify'
@@ -88,6 +88,8 @@ export interface CustomConfig extends ExecutorConfig {
 }
 
 export type ExecutorOptions = {
+  path?: string
+  name?: string
   cwd?: string
   dryRun?: boolean
   git?: boolean
@@ -102,6 +104,9 @@ export default class Executor implements KoObservable {
   constructor(steps: StepsConfig[], options: ExecutorOptions) {
     this.#steps = steps
     this.#options = options
+    this.#options.path =
+      options.path ??
+      join(this.#options.cwd || process.cwd(), this.#options.name || '')
   }
   /* istanbul ignore next */
 
@@ -171,7 +176,9 @@ export default class Executor implements KoObservable {
     for (const dc of dependencies) {
       if (dc.packages.length > 0 && dc.condition !== false) {
         // Install the packages
-        await pkgm({ cwd: this.#options.cwd }).add(dc.packages)
+        await pkgm({
+          cwd: this.#options.path,
+        }).add(dc.packages)
         await this.#commit(dc.name)
       }
     }
@@ -211,7 +218,7 @@ export default class Executor implements KoObservable {
         }
       } else {
         for await (const path of globby.stream(paths, {
-          cwd: this.#options.cwd,
+          cwd: this.#options.path,
         })) {
           await transform(path.toString('utf-8'), tc.transform)
           await this.#commit(tc.name)
@@ -280,10 +287,10 @@ export default class Executor implements KoObservable {
       debug('Adding changes to git')
       // Add the changes
       /* istanbul ignore next */
-      await git(this.#options.cwd).add('*')
+      await git(this.#options.path).add('*')
       // Commit the changes
       /* istanbul ignore next */
-      const commit = await git(this.#options.cwd).commit(name)
+      const commit = await git(this.#options.path).commit(name)
       /* istanbul ignore next */
       this.commits.push(commit)
     }

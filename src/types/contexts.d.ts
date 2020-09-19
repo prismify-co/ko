@@ -1,5 +1,6 @@
 export interface CreateContext {
   name: string
+  path: string
   framework: string
   version?: string
   typescript?: boolean

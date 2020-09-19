@@ -9,7 +9,6 @@ import dbg from 'debug'
 import { EventEmitter } from 'events'
 import Executor from '../executor'
 import Steps from '../steps'
-import { mkpdir } from '../utils/mkpdir'
 import pkgm from '../package-manager'
 import {
   KoObservable,
@@ -22,20 +21,22 @@ const debug = dbg('ko:packages:generator')
 
 import { ExecutorOptions } from '../executor'
 import { exists } from '../utils/fs'
+import { mkdir } from 'shelljs'
 
-export interface GeneratorOptions extends ExecutorOptions {}
+export interface GeneratorOptions extends ExecutorOptions {
+  name: string
+  framework: string
+}
 
 export class Generator extends Steps implements KoObservable {
   private readonly observable = new EventEmitter() as KoEventEmitter
   readonly executor: Executor
-  constructor(
-    private readonly name: string,
-    private readonly framework: string,
-    readonly options: GeneratorOptions
-  ) {
+  constructor(readonly options: GeneratorOptions) {
     super()
     this.options = options
-    this.executor = new Executor(this._steps, this.options)
+    this.executor = new Executor(this._steps, {
+      ...this.options,
+    })
   }
 
   /* istanbul ignore next */
@@ -74,19 +75,22 @@ export class Generator extends Steps implements KoObservable {
    * Initialize the application
    */
   private async init() {
-    debug(
-      `Initializing at ${join(this.options.cwd || process.cwd(), this.name)}`
-    )
-    // Create app directory
-    mkpdir(this.name)
-    debug(`Changing directory to ${this.options.cwd || resolve(this.name)}`)
-    // Change directory
-    process.chdir(this.options.cwd || resolve(this.name))
+    const cwd = this.options.cwd || process.cwd()
+
+    debug(`Initializing at ${join(cwd, this.options.name)}`)
+    console.log(cwd, join(cwd, this.options.name))
+    if (cwd !== this.options.path) {
+      debug(`Creating directory ${this.options.name} at ${cwd}`)
+      mkdir('-p', join(cwd, this.options.name))
+      debug(`Changing directory to ${join(cwd, this.options.name)}`)
+      // Change directory
+      process.chdir(join(cwd, this.options.name))
+    }
     debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
     // Initialize git if it doesn't exist
-    if (this.options.git && !exists('.git/')) {
+    if (this.options.git && !exists(join(cwd, '.git/'))) {
       await git(this.options.cwd).init()
     }
 
@@ -101,8 +105,8 @@ export class Generator extends Steps implements KoObservable {
     this.observable.emit(
       'event',
       `Creating a ✨ ${chalk.cyan('shiny')} ✨ new ${
-        this.framework
-      } app in ${chalk.green(resolve(this.name))}`
+        this.options.framework
+      } app in ${chalk.green(resolve(this.options.name))}`
     )
 
     await this.init()
@@ -111,11 +115,15 @@ export class Generator extends Steps implements KoObservable {
 
     /* istanbul ignore next */
     this.observable.emit('event', `${chalk.green('Success!')} 🎉`)
-    /* istanbul ignore next */
-    this.observable.emit(
-      'event',
-      `${chalk.cyan('cd')} into ${chalk.green(this.name)} and start developing!`
-    )
+    if (this.options.cwd !== this.options.path) {
+      /* istanbul ignore next */
+      this.observable.emit(
+        'event',
+        `${chalk.cyan('cd')} into ${chalk.green(
+          this.options.name
+        )} and start developing!`
+      )
+    }
     /* istanbul ignore next */
     this.observable.emit('end')
     return this
@@ -135,10 +143,6 @@ export class Generator extends Steps implements KoObservable {
   }
 }
 
-export default function generator(
-  name: string,
-  framework: string,
-  options: GeneratorOptions
-) {
-  return new Generator(name, framework, options)
+export default function generator(options: GeneratorOptions) {
+  return new Generator(options)
 }
