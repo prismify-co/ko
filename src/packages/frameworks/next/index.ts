@@ -32,10 +32,14 @@ const factory: FrameworkFactory = ({
   dryRun = false,
   cwd,
   git,
+  ...rest
 }) => {
   const templatesPath = join(__dirname, 'templates')
 
-  return generator(name, 'next', {
+  return generator({
+    ...rest,
+    name,
+    framework: 'next',
     cwd,
     dryRun,
     git,
