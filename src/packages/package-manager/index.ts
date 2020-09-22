@@ -17,7 +17,9 @@ export type NPMPackageManagerOptions = {
 }
 
 export class PackageManager {
-  constructor(private readonly options: NPMPackageManagerOptions = {cwd: process.cwd()}) {}
+  constructor(
+    private readonly options: NPMPackageManagerOptions = { cwd: process.cwd() }
+  ) {}
 
   which(): PackageManagerName {
     if (exists(resolve('yarn.lock'))) {
@@ -33,38 +35,34 @@ export class PackageManager {
 
   async add(packages: (string | NPMPackage)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    await this.run(manager, 'add', dependencies, false)
+    await this.run('add', dependencies, false)
     // Install dev dependencies
-    await this.run(manager, 'add', devDependencies, true)
+    await this.run('add', devDependencies, true)
   }
 
   addSync(packages: (string | NPMPackage)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    this.runSync(manager, 'add', dependencies, false)
+    this.runSync('add', dependencies, false)
     // Install dev dependencies
-    this.runSync(manager, 'add', devDependencies, true)
+    this.runSync('add', devDependencies, true)
   }
 
   async remove(packages: (string | Omit<NPMPackage, 'version'>)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    await this.run(manager, 'remove', dependencies, false)
+    await this.run('remove', dependencies, false)
     // Install dev dependencies
-    await this.run(manager, 'remove', devDependencies, true)
+    await this.run('remove', devDependencies, true)
   }
 
   removeSync(packages: (string | Omit<NPMPackage, 'version'>)[]) {
     const { dependencies, devDependencies } = this.packages(packages)
-    const manager: PackageManagerName = this.options?.manager || this.which()
     // Install dependencies
-    this.runSync(manager, 'remove', dependencies, false)
+    this.runSync('remove', dependencies, false)
     // Install dev dependencies
-    this.runSync(manager, 'remove', devDependencies, true)
+    this.runSync('remove', devDependencies, true)
   }
 
   private packages(packages: (string | NPMPackage)[]) {
@@ -127,61 +125,55 @@ export class PackageManager {
     return false
   }
 
-  async run(
-    manager: PackageManagerName,
-    command: 'add' | 'remove',
-    packages: string[],
-    dev: boolean
-  ) {
-    if (packages.length === 0) return
+  async run(command: 'add' | 'remove' | 'run', args: string[], dev: boolean) {
+    if (args.length === 0) return
 
-    let args: string[] = [command]
+    const manager = this.options.manager || this.which()
+
+    let finalArgs: string[] = [command]
 
     if (command === 'remove' || (!dev && command === 'add')) {
       /* instabul ignore next */
       if (this.options.offline) {
         if (manager === 'yarn') {
-          args = [...args, '--offline']
+          finalArgs = [...finalArgs, '--offline']
         } else {
-          args = [...args, '--prefer-offline']
+          finalArgs = [...finalArgs, '--prefer-offline']
         }
       }
-      args = [...args, ...packages]
+      finalArgs = [...finalArgs, ...args]
     } else {
-      args = [...args, '-D', ...packages]
+      finalArgs = [...finalArgs, '-D', ...args]
     }
 
-    return await execa(manager, args, {
+    return await execa(manager, finalArgs, {
       cwd: this.options.cwd || process.cwd(),
     })
   }
 
-  runSync(
-    manager: PackageManagerName,
-    command: 'add' | 'remove',
-    packages: string[],
-    dev: boolean
-  ) {
-    if (packages.length === 0) return
+  runSync(command: 'add' | 'remove' | 'run', args: string[], dev: boolean) {
+    if (args.length === 0) return
 
-    let args: string[] = [command]
+    const manager = this.options.manager || this.which()
+
+    let finalArgs: string[] = [command]
 
     if (command === 'remove' || (!dev && command === 'add')) {
       /* instabul ignore next */
       if (this.options.offline) {
         if (manager === 'yarn') {
-          args = [...args, '--offline']
+          finalArgs = [...finalArgs, '--offline']
         } else {
-          args = [...args, '--prefer-offline']
+          finalArgs = [...finalArgs, '--prefer-offline']
         }
       }
 
-      args = [...args, ...packages]
+      finalArgs = [...finalArgs, ...args]
     } else {
-      args = [...args, '-D', ...packages]
+      finalArgs = [...finalArgs, '-D', ...args]
     }
 
-    return execa.sync(manager, args, {
+    return execa.sync(manager, finalArgs, {
       cwd: this.options.cwd || process.cwd(),
     })
   }
