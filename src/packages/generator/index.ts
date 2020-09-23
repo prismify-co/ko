@@ -134,7 +134,7 @@ export class Generator extends Steps implements KoObservable {
     /* istanbul ignore next */
     if (this.options.git && exists(join(this.options.path || '', '.git'))) {
       /* istanbul ignore next */
-      debug(`Adding initial changes to commit at ${this.options.path}`)
+      debug(`Adding "Add initial files" to commit at ${this.options.path}`)
       /* instabul ignore next */
       await git(this.options.path).add('*')
       // Add the changes to the commit
