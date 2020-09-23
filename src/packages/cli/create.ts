@@ -76,7 +76,6 @@ export class CreateCommand extends Command {
       git: flags['no-git'] === false,
     }
 
-    console.log(context)
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(context, await prompt())
 
