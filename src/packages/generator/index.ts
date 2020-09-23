@@ -133,7 +133,7 @@ export class Generator extends Steps implements KoObservable {
     /* istanbul ignore next */
     if (this.options.git) {
       /* istanbul ignore next */
-      debug(`Adding changes to git`)
+      debug(`Adding changes to git at ${this.options.path}`)
       /* instabul ignore next */
       await git(this.options.cwd).add('*')
       // Add the changes to the commit

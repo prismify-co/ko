@@ -284,7 +284,7 @@ export default class Executor implements KoObservable {
     /* istanbul ignore next */
     if (this.#options.git) {
       /* istanbul ignore next */
-      debug('Adding changes to git')
+      debug(`Adding changes to git at: ${this.#options.path}`)
       // Add the changes
       /* istanbul ignore next */
       await git(this.#options.path).add('*')
