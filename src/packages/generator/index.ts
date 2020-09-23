@@ -22,7 +22,6 @@ const debug = dbg('ko:packages:generator')
 import { ExecutorOptions } from '../executor'
 import { exists } from '../utils/fs'
 import { mkdir } from 'shelljs'
-
 export interface GeneratorOptions extends ExecutorOptions {
   name: string
   framework: string
@@ -75,23 +74,25 @@ export class Generator extends Steps implements KoObservable {
    * Initialize the application
    */
   private async init() {
-    const cwd = this.options.cwd || process.cwd()
+    let cwd = this.options.cwd || process.cwd()
 
     debug(`Initializing at ${join(cwd, this.options.name)}`)
     console.log(cwd, join(cwd, this.options.name))
     if (cwd !== this.options.path) {
       debug(`Creating directory ${this.options.name} at ${cwd}`)
-      mkdir('-p', join(cwd, this.options.name))
-      debug(`Changing directory to ${join(cwd, this.options.name)}`)
+      cwd = join(cwd, this.options.name)
+      mkdir('-p', cwd)
+      debug(`Changing directory to ${cwd}`)
       // Change directory
-      process.chdir(join(cwd, this.options.name))
+      process.chdir(cwd)
     }
     debug(`Initializing package.json`)
     // Initialize package.json
     await pkgm().init()
     // Initialize git if it doesn't exist
-    if (this.options.git && !exists(join(cwd, '.git/'))) {
-      await git(this.options.cwd).init()
+    if (this.options.git && !exists(join(cwd, '.git'))) {
+      debug(`Initializing git at ${cwd}`)
+      await git(cwd).init()
     }
 
     return this
@@ -131,14 +132,14 @@ export class Generator extends Steps implements KoObservable {
 
   #commit = async () => {
     /* istanbul ignore next */
-    if (this.options.git) {
+    if (this.options.git && exists(join(this.options.path || '', '.git'))) {
       /* istanbul ignore next */
       debug(`Adding changes to git at ${this.options.path}`)
       /* instabul ignore next */
-      await git(this.options.cwd).add('*')
+      await git(this.options.path).add('*')
       // Add the changes to the commit
       /* instabul ignore next */
-      await git(this.options.cwd).commit('Add initial files')
+      await git(this.options.path).commit('Add initial files')
     }
   }
 }
