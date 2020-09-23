@@ -11,7 +11,7 @@ import { template } from 'lodash'
 
 const GithubContent = require('github-content')
 
-const debug = dbg('ko:core:generate:next')
+const debug = dbg('ko:packages:frameworks:next')
 
 const gc = new GithubContent({
   owner: 'github',
