@@ -275,6 +275,8 @@ export default class Executor implements KoObservable {
           continue
         }
 
+        debug(`Running action "${action.name}" at ${this.#options.path}`)
+
         await action.run()
       }
     }
