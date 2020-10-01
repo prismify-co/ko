@@ -77,7 +77,7 @@ export class Generator extends Steps implements KoObservable {
     let cwd = this.options.cwd || process.cwd()
 
     debug(`Initializing at ${join(cwd, this.options.name)}`)
-    console.log(cwd, join(cwd, this.options.name))
+
     if (cwd !== this.options.path) {
       debug(`Creating directory ${this.options.name} at ${cwd}`)
       cwd = join(cwd, this.options.name)
