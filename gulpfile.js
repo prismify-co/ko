@@ -6,9 +6,12 @@ const { series, src, dest } = require('gulp')
 // }
 
 function copy() {
-  return src(['src/**/*.txt', 'src/**/*.css', '**/types/*.ts']).pipe(
-    dest('lib')
-  )
+  return src([
+    'src/**/*.txt',
+    'src/**/*.css',
+    'src/**/types/*.ts',
+    'src/**/**/types/*.ts',
+  ]).pipe(dest('lib'))
 }
 
 exports.default = series(copy)
