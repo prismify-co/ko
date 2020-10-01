@@ -30,7 +30,7 @@ export class PackageManager {
 
   async init() {
     const manager: PackageManagerName = this.options?.manager || this.which()
-    await execa(manager, ['init', '-y'])
+    await execa(manager, ['init', '-y'], { cwd: this.options.cwd })
   }
 
   async add(packages: (string | NPMPackage)[]) {
