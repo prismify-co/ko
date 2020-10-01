@@ -28,7 +28,7 @@
     //   "@ko/types/*": ["src/types/*"]
     // }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
     "**/output/**",
@@ -36,6 +36,7 @@
     "**/**/output/**",
     "**/**/__fixture__/**",
     "**/**/**/output/**",
-    "**/**/**/__fixture__/**"
+    "**/**/**/__fixture__/**",
+    "**/*.test.ts"
   ]
 }
