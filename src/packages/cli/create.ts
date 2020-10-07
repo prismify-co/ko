@@ -43,7 +43,7 @@ export class CreateCommand extends Command {
       description: 'Use JavaScript',
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
-    offline: flags.boolean({ default: false, char: 'f' }),
+    offline: flags.boolean({ default: false, }),
     'no-git': flags.boolean({ default: false }),
   }
 
