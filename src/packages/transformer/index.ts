@@ -27,6 +27,5 @@ export default function transform(
   transformerFn: Transformer,
   parser = customTsParser
 ): string {
-  const program = j(original, {parser })
-  return transformerFn(program).toSource()
+  return transformerFn(j(original, { parser })).toSource()
 }
