@@ -34,7 +34,7 @@ export class InstallCommand extends Command {
       options: ['github', 'gitlab', 'bitbucket'],
     }),
     prompt: flags.boolean({ default: false, char: 'p' }),
-    cache: flags.boolean({ default: true, char: 'c' }),
+    'no-cache': flags.boolean({ default: false, char: 'c' }),
     offline: flags.boolean({ default: false, char: 'f' }),
     'no-git': flags.boolean({ default: false, char: 'g' }),
   }
@@ -51,6 +51,7 @@ export class InstallCommand extends Command {
       name,
       offline: flags.offline || (await isOnline(await pkgm().which())),
       git: flags['no-git'] === false,
+      cache: flags['no-cache'] === false,
     })
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(await prompt(), context)

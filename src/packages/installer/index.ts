@@ -36,7 +36,7 @@ export default class Installer {
     this.gitlyOpts = {
       temp: join(homedir(), '.ko'),
       ...(host ? { host } : {}),
-      ...(cache === false ? { force: true } : {}),
+      ...{ force: cache === false },
     }
   }
 
