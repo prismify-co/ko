@@ -4,7 +4,7 @@
   "version": "0.3.11",
   "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
   "bin": {
-    "ko": "./bin/run"
+    "ko": "bin/run"
   },
   "bugs": "https://github.com/prismify-co/ko.git/issues",
   "dependencies": {
