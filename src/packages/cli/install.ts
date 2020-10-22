@@ -52,6 +52,8 @@ export class InstallCommand extends Command {
       offline: flags.offline || (await isOnline(await pkgm().which())),
       git: flags['no-git'] === false,
       cache: flags['no-cache'] === false,
+      dryRun: false,
+      host: ''
     })
     // Update the context if prompt was specified
     if (flags.prompt) context = merge(await prompt(), context)
