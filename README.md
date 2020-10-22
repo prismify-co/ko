@@ -81,7 +81,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.3.11 darwin-x64 node-v14.0.0
+@prismify/ko/0.3.12 darwin-x64 node-v14.0.0
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -110,7 +110,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.3.11/lib/packages/cli/clone.js)_
+_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/clone.js)_
 
 ## `ko create NAME`
 
@@ -125,17 +125,17 @@ ARGUMENTS
 
 OPTIONS
   -f, --framework=next   [default: next]
-  -f, --offline
   -j, --javascript       Use JavaScript
   -p, --prompt
   -v, --version=version  [default: latest]
   --no-git
+  --offline
 
 ALIASES
   $ ko new
 ```
 
-_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.3.11/lib/packages/cli/create.js)_
+_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/create.js)_
 
 ## `ko help [COMMAND]`
 
@@ -166,7 +166,7 @@ ARGUMENTS
   NAME  The name of the recipe or the repository where the recipe (e.g. "tailwind", org/repo, github:org/repo)
 
 OPTIONS
-  -c, --cache
+  -c, --no-cache
   -d, --dryRun
   -f, --offline
   -g, --no-git
@@ -177,5 +177,5 @@ ALIASES
   $ ko add
 ```
 
-_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.3.11/lib/packages/cli/install.js)_
+_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/install.js)_
 <!-- commandsstop -->
