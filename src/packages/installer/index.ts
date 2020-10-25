@@ -64,13 +64,17 @@ export default class Installer {
     const cwd = process.cwd()
 
     debug(`${name} is native`)
+    debug(`Gitly options`, this.gitlyOpts)
     // Grab the recipes
     const source = await gitly('prismify-co/ko-recipes', this.gitlyOpts)
+    debug('Recipe source: %s', source)
     // Create a temp directory if it doesn't exist
     mkdir('-p', join(tmpdir(), 'ko-recipes'))
     // Extract the recipes into temp dir
     const destination = await extract(source, join(tmpdir(), 'ko-recipes'))
+    debug('Recipe destination: %s', destination)
     const path = join(destination, name, 'next')
+    debug('Execution path: %s', path)
     // Execute from directory
     return this.execute({
       cwd,
