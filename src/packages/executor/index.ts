@@ -197,7 +197,7 @@ export default class Executor implements KoObservable {
     }
 
     const transform = (source: string, tr: Transformer) => {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         const dest = vfs.dest(source.replace(basename(source), ''))
         dest.on('finish', () => resolve())
         dest.on('error', (error: any) => reject(error))
@@ -244,7 +244,7 @@ export default class Executor implements KoObservable {
       destination: string,
       context: any
     ) =>
-      new Promise((resolve, reject) => {
+      new Promise<void>((resolve, reject) => {
         const dest = gulp.dest(destination)
         dest.on('finish', () => resolve())
         dest.on('error', (error: any) => reject(error))
