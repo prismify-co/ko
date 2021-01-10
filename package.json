@@ -65,7 +65,7 @@
     "@oclif/tslint": "^3",
     "@types/common-tags": "^1.8.0",
     "@types/diff": "^5.0.0",
-    "@types/gulp": "^4.0.7",
+    "@types/gulp": "^4.0.8",
     "@types/handlebars": "^4.1.0",
     "@types/inquirer": "^7.3.1",
     "@types/jest": "^26.0.20",
