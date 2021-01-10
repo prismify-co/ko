@@ -1,4 +1,4 @@
-import { extract, fetch as gitly } from 'gitly'
+import { extract, download as gitly } from 'gitly'
 import { homedir, tmpdir } from 'os'
 import { join, resolve } from 'path'
 import { mkdir } from 'shelljs'
