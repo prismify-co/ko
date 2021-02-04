@@ -81,7 +81,7 @@ $ npm install -g @prismify/ko
 $ ko COMMAND
 running command...
 $ ko (-v|--version|version)
-@prismify/ko/0.3.12 darwin-x64 node-v14.0.0
+@prismify/ko/0.3.13 darwin-x64 node-v15.0.1
 $ ko --help [COMMAND]
 USAGE
   $ ko COMMAND
@@ -110,7 +110,7 @@ ARGUMENTS
   DESTINATION  The destination to clone (optional)
 ```
 
-_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/clone.js)_
+_See code: [lib/packages/cli/clone.js](https://github.com/prismify-co/ko/blob/v0.3.13/lib/packages/cli/clone.js)_
 
 ## `ko create NAME`
 
@@ -135,7 +135,7 @@ ALIASES
   $ ko new
 ```
 
-_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/create.js)_
+_See code: [lib/packages/cli/create.js](https://github.com/prismify-co/ko/blob/v0.3.13/lib/packages/cli/create.js)_
 
 ## `ko help [COMMAND]`
 
@@ -152,7 +152,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 
 ## `ko install NAME`
 
@@ -177,5 +177,5 @@ ALIASES
   $ ko add
 ```
 
-_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.3.12/lib/packages/cli/install.js)_
+_See code: [lib/packages/cli/install.js](https://github.com/prismify-co/ko/blob/v0.3.13/lib/packages/cli/install.js)_
 <!-- commandsstop -->
