@@ -1,6 +1,6 @@
 import Command from '@oclif/command'
 import dbg from 'debug'
-import { extract, fetch } from 'gitly'
+import { extract, download } from 'gitly'
 import { homedir } from 'os'
 import { join } from 'path'
 import { setupTsnode } from '../utils/setup-ts-node'
@@ -39,7 +39,7 @@ export class CloneCommand extends Command {
     }
 
     debug(`Fetching ${name}`)
-    const source = await fetch(name, opts)
+    const source = await download(name, opts)
     debug(`Extracting ${source} into ${destination}`)
     await extract(source, destination, opts)
   }
