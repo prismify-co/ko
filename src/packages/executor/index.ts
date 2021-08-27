@@ -2,7 +2,7 @@ import globby from 'globby'
 // import pkgm from '@ko/package-manager'
 // import { StepsConfig } from '@ko/steps/types'
 
-import git, { CommitSummary } from 'simple-git'
+import git, { CommitResult } from 'simple-git'
 import dbg from 'debug'
 import * as vfs from 'vinyl-fs'
 
@@ -99,7 +99,7 @@ export type ExecutorOptions = {
 export default class Executor implements KoObservable {
   #steps: StepsConfig[]
   #options: ExecutorOptions
-  readonly commits: CommitSummary[] = []
+  readonly commits: CommitResult[] = []
   private readonly observable = new EventEmitter() as KoEventEmitter
   constructor(steps: StepsConfig[], options: ExecutorOptions) {
     this.#steps = steps
@@ -206,9 +206,8 @@ export default class Executor implements KoObservable {
     }
 
     for (const tc of transforms) {
-      const paths = (typeof tc.source === 'string'
-        ? [tc.source]
-        : tc.source
+      const paths = (
+        typeof tc.source === 'string' ? [tc.source] : tc.source
       ).map(unixify) as string[]
 
       if (!globby.hasMagic(paths)) {
