@@ -18,9 +18,7 @@ const gc = new GithubContent({
   repo: 'gitignore',
 })
 
-const download: (
-  param: any
-) => Promise<{
+const download: (param: any) => Promise<{
   path: string
   contents: Buffer
 }> = promisify(gc.file) as any
@@ -48,8 +46,14 @@ const factory: FrameworkFactory = ({
       name: 'Add initial dependencies',
       packages: [
         { name: 'next', version },
-        'react',
-        'react-dom',
+        {
+          name: 'react',
+          version: version?.includes('9') ? '16.x' : version || 'latest',
+        },
+        {
+          name: 'react-dom',
+          version: version?.includes('9') ? '16.x' : version || 'latest',
+        },
         ...(typescript
           ? [
               { name: 'typescript', dev: true },

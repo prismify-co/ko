@@ -152,7 +152,7 @@ describe('packages/package-manager', () => {
       describe('sync', () => {
         beforeAll(() => chtestdir(...PATH_SYNC))
         it('should install a dependency', () => {
-          pkgm().addSync(['react'])
+          pkgm().addSync([{ name: 'react', version: '15.4.1' }])
           const pkg = readJSON(testdir(...PKG_PATH_SYNC)) as any
           expect(pkg?.dependencies?.react).not.toBeUndefined()
         })
@@ -226,17 +226,17 @@ describe('packages/package-manager', () => {
           devDependencies: { '@babel/core': '7.0.0' },
         })
       })
-      it('should install a dependency', () => {
+      it('should remove a dependency', () => {
         pkgm().removeSync(['react'])
         const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
         expect(pkg?.dependencies?.react).toBeUndefined()
       })
 
-      it('should install a dependency with version', () => {
+      it('should remove a dependency with version', () => {
         pkgm().removeSync([{ name: 'react-dom' }])
         const pkg = readJSON(testdir(...PKG_PATH_ASYNC)) as any
-        expect(pkg?.dependencies).not.toBeUndefined()
-        expect(pkg?.dependencies['react-dom']).toBeUndefined()
+        expect(pkg?.dependencies).toBeUndefined()
+        expect('react-dom' in (pkg?.dependencies || {})).toEqual(false)
       })
 
       it('should install a dev dependency', () => {
