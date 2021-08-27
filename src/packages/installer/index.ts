@@ -79,13 +79,13 @@ export default class Installer {
     return this.execute({
       cwd,
       path,
-      entry: await entry(path),
+      entry: entry(path),
       dryRun,
       offline,
     })
   }
 
-  async installLocal() {
+  installLocal() {
     const { dryRun, name, offline } = this.context
     const cwd = process.cwd()
 
@@ -95,7 +95,7 @@ export default class Installer {
     return this.execute({
       cwd,
       path,
-      entry: await entry(path),
+      entry: entry(path),
       dryRun,
       offline,
     })
@@ -114,7 +114,7 @@ export default class Installer {
     return this.execute({
       cwd,
       path: destination,
-      entry: await entry(destination),
+      entry: entry(destination),
       dryRun,
       offline,
     })
@@ -169,11 +169,11 @@ export function entry(path: string) {
     const json = JSON.parse(read(pkgPath))
 
     if (!json.main) {
-      throw new Error('A valid entry point does not exist')
+      throw new Error('A valid entry point does not exist in package.json')
     }
 
     return resolve(path, json.main)
   }
 
-  throw new Error('A valid package.json does not exist')
+  throw new Error(`A valid package.json does not exist at ${path}`)
 }
