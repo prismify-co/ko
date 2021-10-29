@@ -1,17 +1,15 @@
-import { mkdir, rm } from 'shelljs'
-import { join } from 'path'
-// import pkgm from '@ko/package-manager'
-// import Steps from '@ko/steps'
+import {mkdir, rm} from 'shelljs'
+import {join} from 'path'
 import Executor from '..'
-// import { exists, read, write } from '@ko/utils/fs'
 import git from 'simple-git'
-import { nanoid } from 'nanoid'
-import { testdir, rmmktestdir, chtestdir, mktestdir } from '../../utils/tests'
+import {nanoid} from 'nanoid'
+import {chtestdir, mktestdir, rmmktestdir, testdir} from '../../utils/tests'
 import Steps from '../../steps'
-import { exists, read, write } from '../../utils/fs'
 import pkgm from '../../package-manager'
-// import { testdir, rmmktestdir, chtestdir, rmtestdir } from '@ko/utils/tests'
+// @ts-ignore
 import j from 'jscodeshift'
+import {existsSync} from "fs";
+import {readSync, writeSync} from "../../utils/fs";
 
 const testid = nanoid()
 const cwd = process.cwd()
@@ -40,7 +38,7 @@ describe('packages/executor', () => {
     beforeAll(async () => {
       process.chdir(NPM_DIR)
       await git().init()
-      await pkgm().init()
+      await pkgm().initSync()
     })
     beforeEach(() => {
       process.chdir(NPM_DIR)
@@ -68,7 +66,7 @@ describe('packages/executor', () => {
       expect(endListener).toHaveBeenCalledTimes(1)
 
       executor.unsubscribeAll()
-      expect(exists(join(NPM_DIR, 'node_modules')))
+      expect(existsSync(join(NPM_DIR, 'node_modules')))
     })
   })
 
@@ -105,8 +103,8 @@ describe('packages/executor', () => {
       expect(endListener).toHaveBeenCalledTimes(1)
 
       executor.unsubscribeAll()
-      expect(exists(join(FILE_DIR, 'test.txt'))).toEqual(true)
-      expect(read(join(FILE_DIR, 'test.txt'))).toContain('John Doe')
+      expect(existsSync(join(FILE_DIR, 'test.txt'))).toEqual(true)
+      expect(readSync(join(FILE_DIR, 'test.txt'))).toContain('John Doe')
     })
 
     it('should copy and interpolate multiple files to target path', async () => {
@@ -138,8 +136,8 @@ describe('packages/executor', () => {
       executor.unsubscribeAll()
       const files = ['a.txt', 'b.txt', 'c.txt']
       for (const file of files) {
-        expect(exists(join(FILE_DIR, 'multi-file', file))).toEqual(true)
-        expect(read(join(FILE_DIR, 'multi-file', file))).toContain('John Doe')
+        expect(existsSync(join(FILE_DIR, 'multi-file', file))).toEqual(true)
+        expect(readSync(join(FILE_DIR, 'multi-file', file))).toContain('John Doe')
       }
     })
   })
@@ -147,11 +145,11 @@ describe('packages/executor', () => {
   describe('addTransformStep', () => {
     beforeAll(() => {
       const file = join(TRANSFORM_DIR, 'test.txt')
-      if (exists(file)) {
+      if (existsSync(file)) {
         rm('-f', file)
       }
       process.chdir(TRANSFORM_DIR)
-      write(file, `const a = 1`)
+      writeSync(file, `const a = 1`)
     })
 
     it('should transform the file', async () => {
@@ -186,7 +184,7 @@ describe('packages/executor', () => {
 
       executor.unsubscribeAll()
 
-      expect(read(join(TRANSFORM_DIR, 'test.txt'))).toEqual(`const b = 1`)
+      expect(readSync(join(TRANSFORM_DIR, 'test.txt'))).toEqual(`const b = 1`)
     })
   })
 })

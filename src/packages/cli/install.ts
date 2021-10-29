@@ -2,9 +2,6 @@ import Command, { flags } from '@oclif/command'
 import dbg from 'debug'
 import inquirer from 'inquirer'
 import { merge, omit } from 'lodash'
-// import { InstallContext } from '@ko/types/contexts'
-// import Installer from '@ko/installer'
-// import { setupTsnode } from '@ko/utils/setup-ts-node'
 import chalk from 'chalk'
 import { setupTsnode } from '../utils/setup-ts-node'
 import { InstallContext } from '../../types/contexts'
@@ -49,9 +46,9 @@ export class InstallCommand extends Command {
     // Set the initial context for recipe installation
     let context: InstallContext = merge(omit(flags, 'prompt'), {
       name,
-      offline: flags.offline || (await isOnline(await pkgm().which())),
-      git: flags['no-git'] === false,
-      cache: flags['no-cache'] === false,
+      offline: flags.offline || (await isOnline(await pkgm().whichSync())),
+      git: !flags['no-git'],
+      cache: !flags['no-cache'],
       dryRun: false,
       host: ''
     })
@@ -96,7 +93,7 @@ async function prompt() {
       name: 'offline',
       message: 'Use package manager cache?',
       type: 'confirm',
-      default: await isOnline(await pkgm().which()),
+      default: await isOnline(await pkgm().whichSync()),
     },
   ])
 

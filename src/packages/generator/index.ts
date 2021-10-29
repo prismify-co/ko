@@ -1,11 +1,7 @@
 import chalk from 'chalk'
-// import { mkpdir } from '@ko/utils/mkpdir'
 import { resolve, join } from 'path'
-// import pkgm from '@ko/package-manager'
 import git from 'simple-git'
 import dbg from 'debug'
-// import Steps from '@ko/steps'
-// import Executor from '@ko/executor'
 import { EventEmitter } from 'events'
 import Executor from '../executor'
 import Steps from '../steps'
@@ -20,8 +16,8 @@ import {
 const debug = dbg('ko:packages:generator')
 
 import { ExecutorOptions } from '../executor'
-import { exists } from '../utils/fs'
 import { mkdir } from 'shelljs'
+import {existsSync} from "fs";
 export interface GeneratorOptions extends ExecutorOptions {
   name: string
   framework: string
@@ -88,9 +84,9 @@ export class Generator extends Steps implements KoObservable {
     }
     debug(`Initializing package.json`)
     // Initialize package.json
-    await pkgm().init()
+    await pkgm().initSync()
     // Initialize git if it doesn't exist
-    if (this.options.git && !exists(join(cwd, '.git'))) {
+    if (this.options.git && !existsSync(join(cwd, '.git'))) {
       debug(`Initializing git at ${cwd}`)
       await git(cwd).init()
     }
@@ -132,7 +128,7 @@ export class Generator extends Steps implements KoObservable {
 
   #commit = async () => {
     /* istanbul ignore next */
-    if (this.options.git && exists(join(this.options.path || '', '.git'))) {
+    if (this.options.git && existsSync(join(this.options.path || '', '.git'))) {
       /* istanbul ignore next */
       debug(`Adding "Add initial files" to commit at ${this.options.path}`)
       /* instabul ignore next */
