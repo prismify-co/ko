@@ -1,21 +1,18 @@
-import Command, { flags } from '@oclif/command'
+import Command, {flags} from '@oclif/command'
 import * as inquirer from 'inquirer'
-import { merge, omit } from 'lodash'
-
-// import { CreateContext } from '@ko/types/contexts'
-// import { setupTsnode } from '@ko/utils/setup-ts-node'
-// import { exists } from '@ko/utils/fs'
+import {merge, omit} from 'lodash'
 import chalk from 'chalk'
-import { resolve, join, sep } from 'path'
+import {join, resolve, sep} from 'path'
 import execa from 'execa'
 import latestVersion from 'latest-version'
-import { setupTsnode } from '../utils/setup-ts-node'
-import { exists } from '../utils/fs'
-import { CreateContext } from '../../types/contexts'
-import { FrameworkFactory } from '../frameworks/types'
-import { isOnline } from '../utils/net'
+import {setupTsnode} from '../utils/setup-ts-node'
+import {CreateContext} from '../../types/contexts'
+import {FrameworkFactory} from '../frameworks/types'
+import {isOnline} from '../utils/net'
 import pkgm from '../package-manager'
-import { ls } from 'shelljs'
+import {ls} from 'shelljs'
+import {existsSync} from "fs";
+
 // import { FrameworkFactory } from '@ko/frameworks/types'
 
 export class CreateCommand extends Command {
@@ -71,9 +68,9 @@ export class CreateCommand extends Command {
       name: resolveName(name),
       path: resolvePath(name),
       ...omit(flags, 'prompt', 'javascript'),
-      typescript: flags.javascript === false,
-      offline: flags.offline || (await isOnline(await pkgm().which())),
-      git: flags['no-git'] === false,
+      typescript: !flags.javascript,
+      offline: flags.offline || (await isOnline(await pkgm().whichSync())),
+      git: !flags['no-git'],
     }
 
     // Update the context if prompt was specified
@@ -81,7 +78,7 @@ export class CreateCommand extends Command {
 
     // Determine if the app directory already exists
     if (
-      exists(join(context.path, name)) &&
+      existsSync(join(context.path, name)) &&
       ls(join(context.path, name)).length > 0 &&
       (await promptDirtyDirectory(context.name))
     ) {
@@ -89,7 +86,7 @@ export class CreateCommand extends Command {
     }
 
     const frameworkDir = join(__dirname, '../', 'frameworks', context.framework)
-    if (!exists(frameworkDir)) {
+    if (!existsSync(frameworkDir)) {
       console.log(
         `${chalk.green(
           context.framework
@@ -135,7 +132,7 @@ export class CreateCommand extends Command {
 }
 
 async function promptDirtyDirectory(name: string) {
-  return await inquirer.prompt([
+  await inquirer.prompt([
     {
       name: 'javascript',
       message: `The directory ${chalk.green(
@@ -194,7 +191,7 @@ async function prompt() {
       name: 'offline',
       message: 'Use package manager cache?',
       type: 'confirm',
-      default: await isOnline(await pkgm().which()),
+      default: await isOnline(await pkgm().whichSync()),
     },
   ])
 
