@@ -1,7 +1,6 @@
 import { existsSync as exists } from 'fs'
 import { resolve } from 'path'
-import { write } from '../utils/fs'
-// import { write } from '@ko/utils/fs'
+import { writeSync } from '../utils/fs'
 
 export const KO_CONFIG_FILENAME = 'ko.config.json'
 export const KO_CONFIG_REPOSITORY_NAME = '@prismify/ko-tasks'
@@ -28,7 +27,7 @@ class Config {
       return
     }
 
-    return write(
+    return writeSync(
       path,
       JSON.stringify({
         name: this.#options.name,
