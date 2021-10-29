@@ -1,10 +1,9 @@
 import {constants, PathLike, readFileSync, writeFileSync} from 'fs'
 import {join} from 'path'
-import {access, FileHandle, readFile} from "fs/promises";
+import { promises as fs } from "fs";
 import {tryCatchAsync} from "rambdax";
-
 export { existsSync } from 'fs'
-
+const {access, readFile}  = fs
 /**
  * Test whether or not the given path exists by checking with the file system.
  * @param path A path to a file. If a URL is provided, it must use the `file:` protocol.
@@ -20,7 +19,7 @@ export const exists: (path: PathLike) => Promise<boolean> = tryCatchAsync(async 
  * @param path A path to a file. If a URL is provided, it must use the file: protocol. URL support is experimental. If a file descriptor is provided, the underlying file will not be closed automatically.
  * @param options An object that may contain an optional flag. If a flag is not provided, it defaults to 'r'
  */
-export const read = (path: PathLike | FileHandle, options: any = {}): Promise<string> => {
+export const read = (path: PathLike, options: any = {}): Promise<string> => {
   return readFile(path, options).then(value => value.toString('utf-8'))
 }
 
