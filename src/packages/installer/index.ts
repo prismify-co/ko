@@ -1,24 +1,22 @@
-import { extract, download as gitly } from 'gitly'
-import { homedir, tmpdir } from 'os'
-import { join, resolve } from 'path'
-import { mkdir } from 'shelljs'
+import {download as gitly, extract} from 'gitly'
+import {homedir, tmpdir} from 'os'
+import {join, resolve} from 'path'
+import {mkdir} from 'shelljs'
 
 import dbg from 'debug'
-// import { read } from '@ko/utils/fs'
-// import Executor from '@ko/executor'
-// import { InstallContext } from '@ko/types/contexts'
-// import pkgm from '@ko/package-manager'
 import GitlyOptions from 'gitly/lib/interfaces/options'
 import pkgm from '../package-manager'
-import { InstallContext } from '../../types/contexts'
+import {InstallContext} from '../../types/contexts'
 import Executor from '../executor'
-import { exists, read } from '../utils/fs'
+import {readSync} from '../utils/fs'
+import {existsSync} from "fs";
+
 const debug = dbg('ko:packages:installer')
 
 export const isNavtiveRecipe = (path: string) => /^([\w\-_]*)$/.test(path)
 
 export const isUrlRecipe = (path: string) =>
-  /(https?\:\/\/)?(www\.)?(github|bitbucket|gitlab)\.com\//.test(path)
+  /(https?:\/\/)?(www\.)?(github|bitbucket|gitlab)\.com\//.test(path)
 
 export const isRepoShorthandRecipe = (path: string) =>
   /^([\w-_]*)\/([\w-_]*)$/.test(path)
@@ -27,7 +25,7 @@ export const isLocalPath = (path: string) =>
   !isNavtiveRecipe(path) &&
   !isUrlRecipe(path) &&
   !isRepoShorthandRecipe(path) &&
-  exists(resolve(path))
+  existsSync(resolve(path))
 
 export default class Installer {
   private gitlyOpts: GitlyOptions
@@ -36,7 +34,7 @@ export default class Installer {
     this.gitlyOpts = {
       temp: join(homedir(), '.ko'),
       ...(host ? { host } : {}),
-      ...{ force: cache === false },
+      ...{ force: !cache },
     }
   }
 
@@ -165,8 +163,8 @@ export function entry(path: string) {
   const pkgPath = join(path, 'package.json')
 
   // Determine whether the entry point exists
-  if (exists(pkgPath)) {
-    const json = JSON.parse(read(pkgPath))
+  if (existsSync(pkgPath)) {
+    const json = JSON.parse(readSync(pkgPath))
 
     if (!json.main) {
       throw new Error('A valid entry point does not exist in package.json')
