@@ -9,9 +9,9 @@ import {
   rmtestdir,
   testdir,
 } from '../../../utils/tests'
-import { exists, read } from '../../../utils/fs'
+import { existsSync, readSync } from '../../../utils/fs'
 // import { rmmktestdir, chtestdir, rmtestdir, testdir } from '@ko/utils/tests'
-// import { read, exists } from '@ko/utils/fs'
+// import { read, existsSync } from '@ko/utils/fs'
 
 const cwd = process.cwd()
 const testid = nanoid()
@@ -53,24 +53,24 @@ describe('packages/frameworks/next', () => {
       })
 
       it('should create a directory for the project', () => {
-        expect(exists(LATEST_PATH)).toEqual(true)
+        expect(existsSync(LATEST_PATH)).toEqual(true)
       })
 
       it('should create a package.json file', () => {
-        expect(exists(join(LATEST_PATH, 'package.json'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'package.json'))).toEqual(true)
       })
 
       it('should create a tsconfig.json file', () => {
-        expect(exists(join(LATEST_PATH, 'tsconfig.json'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'tsconfig.json'))).toEqual(true)
       })
 
       it('should create a next.config.js file', () => {
-        expect(exists(join(LATEST_PATH, 'next.config.js'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'next.config.js'))).toEqual(true)
       })
 
       it('should have the latest version of next', async () => {
         const { dependencies } = JSON.parse(
-          read(join(LATEST_PATH, 'package.json'))
+          readSync(join(LATEST_PATH, 'package.json'))
         )
 
         expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
@@ -79,36 +79,36 @@ describe('packages/frameworks/next', () => {
       it('should create the directories for next', () => {
         const pages = ['components', 'pages', 'styles', 'public']
         for (const dir of pages) {
-          expect(exists(join(LATEST_PATH, dir))).toEqual(true)
+          expect(existsSync(join(LATEST_PATH, dir))).toEqual(true)
         }
       })
 
       it('should create an index.tsx', () => {
-        expect(exists(join(LATEST_PATH, 'pages', 'index.tsx'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'pages', 'index.tsx'))).toEqual(true)
       })
 
       it('should create an _app.tsx', () => {
-        expect(exists(join(LATEST_PATH, 'pages', '_app.tsx'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'pages', '_app.tsx'))).toEqual(true)
       })
 
       it('should create an _document.tsx', () => {
-        expect(exists(join(LATEST_PATH, 'pages', '_document.tsx'))).toEqual(
+        expect(existsSync(join(LATEST_PATH, 'pages', '_document.tsx'))).toEqual(
           true
         )
       })
 
       it('should create an home.module.css', () => {
-        expect(exists(join(LATEST_PATH, 'styles', 'home.module.css'))).toEqual(
+        expect(existsSync(join(LATEST_PATH, 'styles', 'home.module.css'))).toEqual(
           true
         )
       })
 
       it('should create an globals.css', () => {
-        expect(exists(join(LATEST_PATH, 'styles', 'globals.css'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, 'styles', 'globals.css'))).toEqual(true)
       })
 
       it('should create a gitignore file', () => {
-        expect(exists(join(LATEST_PATH, '.gitignore'))).toEqual(true)
+        expect(existsSync(join(LATEST_PATH, '.gitignore'))).toEqual(true)
       })
     })
 
@@ -130,16 +130,16 @@ describe('packages/frameworks/next', () => {
       })
 
       it('should create a directory for the project', () => {
-        expect(exists(VERSION_PATH)).toEqual(true)
+        expect(existsSync(VERSION_PATH)).toEqual(true)
       })
 
       it('should create a package.json file', () => {
-        expect(exists(join(VERSION_PATH, 'package.json'))).toEqual(true)
+        expect(existsSync(join(VERSION_PATH, 'package.json'))).toEqual(true)
       })
 
       it('should have the latest version of next', () => {
         const { dependencies } = JSON.parse(
-          read(join(VERSION_PATH, 'package.json'))
+          readSync(join(VERSION_PATH, 'package.json'))
         )
         expect(dependencies.next).toEqual(`^9.3.0`)
       })
@@ -162,24 +162,24 @@ describe('packages/frameworks/next', () => {
       })
 
       it('should create a directory for the project', () => {
-        expect(exists(JAVASCRIPT_PATH)).toEqual(true)
+        expect(existsSync(JAVASCRIPT_PATH)).toEqual(true)
       })
 
       it('should create a package.json file', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'package.json'))).toEqual(true)
+        expect(existsSync(join(JAVASCRIPT_PATH, 'package.json'))).toEqual(true)
       })
 
       it('should create a tsconfig.json file', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'tsconfig.json'))).toEqual(false)
+        expect(existsSync(join(JAVASCRIPT_PATH, 'tsconfig.json'))).toEqual(false)
       })
 
       it('should create a next.config.js file', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'next.config.js'))).toEqual(true)
+        expect(existsSync(join(JAVASCRIPT_PATH, 'next.config.js'))).toEqual(true)
       })
 
       it('should have the latest version of next', async () => {
         const { dependencies } = JSON.parse(
-          read(join(JAVASCRIPT_PATH, 'package.json'))
+          readSync(join(JAVASCRIPT_PATH, 'package.json'))
         )
 
         expect(dependencies.next).toEqual(`^${await latestVersion('next')}`)
@@ -188,38 +188,38 @@ describe('packages/frameworks/next', () => {
       it('should create the directories for next', () => {
         const pages = ['components', 'pages', 'styles', 'public']
         for (const dir of pages) {
-          expect(exists(join(JAVASCRIPT_PATH, dir))).toEqual(true)
+          expect(existsSync(join(JAVASCRIPT_PATH, dir))).toEqual(true)
         }
       })
 
       it('should create an index.js', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'pages', 'index.js'))).toEqual(true)
+        expect(existsSync(join(JAVASCRIPT_PATH, 'pages', 'index.js'))).toEqual(true)
       })
 
       it('should create an _app.js', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'pages', '_app.js'))).toEqual(true)
+        expect(existsSync(join(JAVASCRIPT_PATH, 'pages', '_app.js'))).toEqual(true)
       })
 
       it('should create an _document.js', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'pages', '_document.js'))).toEqual(
+        expect(existsSync(join(JAVASCRIPT_PATH, 'pages', '_document.js'))).toEqual(
           true
         )
       })
 
       it('should create an home.module.css', () => {
         expect(
-          exists(join(JAVASCRIPT_PATH, 'styles', 'home.module.css'))
+          existsSync(join(JAVASCRIPT_PATH, 'styles', 'home.module.css'))
         ).toEqual(true)
       })
 
       it('should create an globals.css', () => {
-        expect(exists(join(JAVASCRIPT_PATH, 'styles', 'globals.css'))).toEqual(
+        expect(existsSync(join(JAVASCRIPT_PATH, 'styles', 'globals.css'))).toEqual(
           true
         )
       })
 
       it('should create a gitignore file', () => {
-        expect(exists(join(JAVASCRIPT_PATH, '.gitignore'))).toEqual(true)
+        expect(existsSync(join(JAVASCRIPT_PATH, '.gitignore'))).toEqual(true)
       })
     })
   })
