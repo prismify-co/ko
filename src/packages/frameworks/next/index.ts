@@ -6,7 +6,7 @@ import { promisify } from 'util'
 // import generator from '@ko/generator'
 import { FrameworkFactory } from '../types'
 import generator from '../../generator'
-import { read, write, readJSON, writeJSON } from '../../utils/fs'
+import { readSync, writeSync, readJSONSync, writeJSONSync } from '../../utils/fs'
 import { template } from 'lodash'
 
 const GithubContent = require('github-content')
@@ -67,8 +67,8 @@ const factory: FrameworkFactory = ({
       name: 'Add scripts to package.json',
       run: () => {
         const pkgPath = resolve('package.json')
-        const pkg = readJSON(pkgPath)
-        writeJSON(pkgPath, {
+        const pkg = readJSONSync(pkgPath)
+        writeJSONSync(pkgPath, {
           ...pkg,
           scripts: {
             dev: 'next dev',
@@ -82,9 +82,9 @@ const factory: FrameworkFactory = ({
       name: 'Add next.config.js',
       run: () => {
         debug('Creating next.config.json')
-        write(
+        writeSync(
           resolve('next.config.js'),
-          read(join(templatesPath, 'next.config.txt'))
+          readSync(join(templatesPath, 'next.config.txt'))
         )
       },
     })
@@ -113,8 +113,8 @@ const factory: FrameworkFactory = ({
 
         for (const file of pages) {
           const script = file.replace('txt', typescript ? 'tsx' : 'js')
-          const page = read(join(templatesPath, `pages/${file}`))
-          write(resolve(`pages/${script}`), template(page)({ name }))
+          const page = readSync(join(templatesPath, `pages/${file}`))
+          writeSync(resolve(`pages/${script}`), template(page)({ name }))
         }
       },
     })
@@ -125,9 +125,9 @@ const factory: FrameworkFactory = ({
         debug('Creating files under styles/')
         const styles = ['globals.css', 'home.module.css']
         for (const file of styles) {
-          write(
+          writeSync(
             resolve(`styles/${file}`),
-            read(join(templatesPath, `styles/${file}`))
+            readSync(join(templatesPath, `styles/${file}`))
           )
         }
       },
@@ -140,7 +140,7 @@ const factory: FrameworkFactory = ({
         const gitignore = await download.apply(gc, ['Node.gitignore'])
         // Write the .gitignore file
         debug(`Writing .gitignore to ${process.cwd()}`)
-        write(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
+        writeSync(resolve('.gitignore'), gitignore.contents.toString('utf-8'))
       },
     })
 }
